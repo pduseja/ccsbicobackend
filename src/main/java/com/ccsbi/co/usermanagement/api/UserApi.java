@@ -1,6 +1,9 @@
 package com.ccsbi.co.usermanagement.api;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -49,23 +52,23 @@ public class UserApi {
 	@PostMapping(path = "/login", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_XML_VALUE,
 					MediaType.APPLICATION_JSON_VALUE })
-	public String login(@ApiParam(value = "", required = true) @RequestBody UsersLoginRecord login) {
+	public List<Object> login(@ApiParam(value = "", required = true) @RequestBody UsersLoginRecord login) {
 		LOGGER.info("Inside {}.login()", getClass().getSimpleName());
-		String success = new String();
+		List<Object> list = new ArrayList<>();
 
 		if (StringUtils.isEmpty(login.getToken())) {
-			success = loginService.login(convertLogin(login)).trim();
-			if (!StringUtils.isEmpty(success)) {
-				success = "Login Successfully!!";
+			list = loginService.login(convertLogin(login));
+			if (!list.isEmpty()) {
+				return list;
 			} else {
-				success = "Unable to Login due to some internal error!!";
+				return null;
 			}
 		} else {
-			success = loginService.getUserName(convertLogin(login));
+			list = loginService.getUserName(convertLogin(login));
 			
 		}
 
-		return success;
+		return list;
 	}
 
 	private com.ccsbi.co.usermanagement.service.model.UsersLoginRecord convertLogin(UsersLoginRecord login) {

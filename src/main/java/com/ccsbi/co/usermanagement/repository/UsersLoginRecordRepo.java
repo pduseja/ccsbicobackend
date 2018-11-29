@@ -10,7 +10,7 @@ import com.ccsbi.co.usermanagement.repository.entity.UsersLoginRecord;
 @Repository
 public interface UsersLoginRecordRepo extends JpaRepository<UsersLoginRecord, Long> {
 	
-	@Query("SELECT userId FROM usersloginrecord WHERE cookie=:cookie and token=:token")
-	int verifyUser(@Param("cookie") String cookie,@Param("token") String token);
+	@Query("SELECT ulr FROM usersloginrecord ulr WHERE ulr.cookie=:cookie and ulr.token=:token")
+	UsersLoginRecord verifyUser(@Param("cookie") String cookie,@Param("token") String token);
 
 }

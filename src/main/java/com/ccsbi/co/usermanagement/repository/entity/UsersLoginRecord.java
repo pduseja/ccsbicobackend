@@ -18,7 +18,7 @@ public class UsersLoginRecord implements Serializable{
 	private int userLoginTrackID;
 	
 	@Column(name = "userid")
-	private String userId;
+	private int userId;
 	
 	@Column(name = "username")
 	private String userName;
@@ -56,20 +56,6 @@ public class UsersLoginRecord implements Serializable{
 	 */
 	public void setUserLoginTrackID(int userLoginTrackID) {
 		this.userLoginTrackID = userLoginTrackID;
-	}
-
-	/**
-	 * @return the userId
-	 */
-	public String getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 	/**
@@ -182,5 +168,19 @@ public class UsersLoginRecord implements Serializable{
 	 */
 	public void setLastLogouttime(Timestamp lastLogouttime) {
 		this.lastLogouttime = lastLogouttime;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }

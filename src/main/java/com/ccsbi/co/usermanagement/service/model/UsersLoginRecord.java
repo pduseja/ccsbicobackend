@@ -5,6 +5,8 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class UsersLoginRecord implements Serializable{
 
+	private int userId;
+	
 	private String userName;
 	
 	private String password;
@@ -116,6 +118,21 @@ public class UsersLoginRecord implements Serializable{
 	public void setCookieExpirytime(int cookieExpirytime) {
 		this.cookieExpirytime = cookieExpirytime;
 	}
+
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
 
 
 }

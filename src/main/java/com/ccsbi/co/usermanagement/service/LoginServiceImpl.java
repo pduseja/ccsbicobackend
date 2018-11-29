@@ -1,5 +1,8 @@
 package com.ccsbi.co.usermanagement.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,39 +30,47 @@ public class LoginServiceImpl implements ILoginService {
 	private Mapper dozerMapper;
 	
 	@Override
-	public String login(UsersLoginRecord login) {
-
+	public List<Object> login(UsersLoginRecord login) {
+		List<Object> list = new ArrayList<>();
 		String userName = login.getUserName();
 		String password = null;
-		int userId = usersRepo.loginUser(userName);
+		Users user = convertUsers(usersRepo.loginUser(userName));
 
-		if (userId >0) {
+		if (user.getUserId() >0) {
 
-			password = usersDetailsRepo.loginUser(userId);
+			password = usersDetailsRepo.loginUser(user.getUserId());
 		}
 		if (password.equals(login.getPassword())) {
-			return "Success";
+			list.add(user);
+			return list;
 		} else {
-			return "";
+			return list;
 		}
 
 	}
 
 	@Override
-	public String getUserName(UsersLoginRecord login) {
+	public List<Object> getUserName(UsersLoginRecord login) {
+		List<Object> list = new ArrayList<>();
 		String token = login.getToken();
 		String cookie = login.getCookie();
 		Users users = new Users();
 		String name = null;
-		int userId = usersLoginRecordRepo.verifyUser(cookie, token);
+		UsersLoginRecord usersLoginRecord = convertULR(usersLoginRecordRepo.verifyUser(cookie, token));
 		
-		if(userId>0) {
-			users = convertUsers(usersRepo.getUsers(userId));
+		if(usersLoginRecord.getUserId()>0) {
+			users = convertUsers(usersRepo.getUsers(usersLoginRecord.getUserId()));
 			if (!StringUtils.isEmpty(users.getFirstName())){
-				name = users.getFirstName()+ " "+ users.getLastName();
+				list.add(users);
+				list.add(usersLoginRecord);
 			}
 		}
-		return name;
+		return list;
+	}
+
+	private UsersLoginRecord convertULR(com.ccsbi.co.usermanagement.repository.entity.UsersLoginRecord verifyUser) {
+		
+		return dozerMapper.map(verifyUser,UsersLoginRecord.class);
 	}
 
 	private Users convertUsers(com.ccsbi.co.usermanagement.repository.entity.Users users) {
