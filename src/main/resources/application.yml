@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: ccsbico
+  jackson:
+    default-property-inclusion: non-empty
+    deserialization:
+      accept-empty-string-as-null-object: true
+      accept-empty-array-as-null-object: true
+      fail-on-null-for-primitives: true
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    
+  datasource:
+    username: root 
+    password: Sogeti@12
+    name: ccsbitrans
+    url: jdbc:mysql://localhost:3306/ccsbitrans?useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+        
+server:
+  port: 9090
+  
+management:
+  server:
+    servlet:
+      context-path: /actuator
+  info:
+    git:
+      mode: full
+    
+logging:
+  level:
+    root: warn
+    com.ccsbi.coin: debug
+    
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /

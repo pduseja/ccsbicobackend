@@ -1,0 +1,48 @@
+* {
+    outline: none !important;
+}
+
+a:hover {
+    text-decoration: none
+}
+
+li {
+    list-style-type: none;
+}
+
+img {
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+label {
+    font-weight: 500;
+}
+
+input[type=radio], input[type=checkbox] {
+    float: left;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top:4px;
+}
+
+/**** Error Message ****/
+.error-message {
+    color: #da4911;
+    font-size: 12px;
+}
+
+
+/**** Button ****/
+
+button:disabled{
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    cursor: default !important;
+}
