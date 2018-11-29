@@ -30,8 +30,8 @@ public class LoginServiceImpl implements ILoginService {
 	private Mapper dozerMapper;
 	
 	@Override
-	public List<Object> login(UsersLoginRecord login) {
-		List<Object> list = new ArrayList<>();
+	public Users login(UsersLoginRecord login) {
+		
 		String userName = login.getUserName();
 		String password = null;
 		Users user = convertUsers(usersRepo.loginUser(userName));
@@ -41,10 +41,10 @@ public class LoginServiceImpl implements ILoginService {
 			password = usersDetailsRepo.loginUser(user.getUserId());
 		}
 		if (password.equals(login.getPassword())) {
-			list.add(user);
-			return list;
+			
+			return user;
 		} else {
-			return list;
+			return new Users();
 		}
 
 	}
@@ -55,7 +55,7 @@ public class LoginServiceImpl implements ILoginService {
 		String token = login.getToken();
 		String cookie = login.getCookie();
 		Users users = new Users();
-		String name = null;
+
 		UsersLoginRecord usersLoginRecord = convertULR(usersLoginRecordRepo.verifyUser(cookie, token));
 		
 		if(usersLoginRecord.getUserId()>0) {

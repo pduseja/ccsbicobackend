@@ -95,9 +95,9 @@ public class Users implements Serializable{
 	@JacksonXmlProperty(localName = "dateofbirth")
 	private Date dateofbirth;
 
-	@ApiModelProperty(name = "fatherId", value = "fatherId")
-	@JsonProperty("fatherId")
-	@JacksonXmlProperty(localName = "fatherId")
+	@ApiModelProperty(name = "nationality", value = "nationality")
+	@JsonProperty("nationality")
+	@JacksonXmlProperty(localName = "nationality")
 	private String nationality;
 
 	@ApiModelProperty(name = "fatherId", value = "fatherId")
