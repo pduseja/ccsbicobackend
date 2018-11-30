@@ -2,17 +2,22 @@ import React, {Component} from 'react';
 import MenuLinks from "./MenuLinks";
 import {Link} from "react-router-dom";
 import '../Styles/Header.css'
+import Helpers from "../Utils/Helpers";
 
 export default class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: false
+            isOpen: false,
+            user: '',
+            currentPage: ''
         };
     }
 
     componentDidMount() {
+        this.getUserDetails();
         document.addEventListener('click', this._handleDocumentClick, false);
+
     }
 
     componentWillUnmount() {
@@ -25,7 +30,6 @@ export default class Header extends Component {
                 isOpen: false
             });
         }
-        ;
     };
 
     _menuToggle = (e) => {
@@ -35,23 +39,57 @@ export default class Header extends Component {
         });
     };
 
+    getUserDetails = () =>{
+        let authData = Helpers.authenticateUser();
+        if (authData) {
+            this.setState({
+                user: authData
+            })
+        }
+        else{
+            this.setState({
+                user: ''
+            })
+        }
+    };
+
+    login = () => {
+      this.props.history.push('/login');
+      this.setState({'isOpen': false})
+    };
+
+    logout = () => {
+        localStorage.removeItem('user');
+        this.props.history.push('/');
+        this.setState({'isOpen': false})
+    };
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        let login = nextProps.location.pathname === '/login'
+        this.setState({currentPage: login});
+        this.getUserDetails();
+    }
+
     render() {
+        let {user,currentPage} = this.state;
         let menuStatus = this.state.isOpen ? 'isopen' : '';
 
         return (
             <div ref="root">
                 <nav className="navbar">
                     <div className="navbar-top">
+                        {!currentPage && <div onClick={ this._menuToggle } id="hambmenu"
+                             className={"d-block d-sm-block d-md-none d-lg-none d-xl-none " + menuStatus }>
+                            <i className="fas fa-bars"/>
+                        </div>}
                         <Link className="logo" to="/">
                             <img src="http://ccsbi.info/usersresource/images/logo.png" alt="logo"/>
                         </Link>
-                        <div className="d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                        {user === '' ? <div className="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                             <Link to="/login" className="custom-btn">Login</Link>
-                        </div>
-                        <div onClick={ this._menuToggle } id="hambmenu"
-                             className={"d-block d-sm-block d-md-none d-lg-none d-xl-none " + menuStatus }>
-                            <i className="fas fa-bars"/>
-                        </div>
+                        </div> : <div>{user[0].firstName} {user[0].lastName}</div>
+                        }
+
                         {/*<div className="important-links">*/}
                         {/*<ul>*/}
                         {/*<li><a href="#">Important information</a></li>*/}
@@ -116,7 +154,7 @@ export default class Header extends Component {
 
                     </div>
                 </nav>
-                <MenuLinks menuStatus={ menuStatus }/>
+                <MenuLinks menuStatus={ menuStatus } login={this.login} logout={this.logout}/>
             </div>
         )
     }

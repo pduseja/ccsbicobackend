@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../../Styles/Login.css'
 import {Link} from "react-router-dom";
+import WebApi from "../../Utils/WebApi";
 
 export default class Login extends Component {
     constructor(props) {
@@ -29,7 +30,12 @@ export default class Login extends Component {
     };
 
     handleClick = () => {
-        console.log("login successful")
+        let { email, pass } = this.state;
+        WebApi.getLoginUser(email, pass).then(response => response.json()
+        ).then(response => {
+            localStorage.setItem('user', JSON.stringify(response));
+            this.props.history.push('/')
+        });
     };
 
     validateField(fieldName, value) {
@@ -37,7 +43,7 @@ export default class Login extends Component {
         let {emailValid, passValid} = this.state;
         switch (fieldName) {
             case 'email':
-                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+                emailValid = value.length !== 0;
                 fieldValidationErrors.email = emailValid ? '' : 'Email is invalid';
                 break;
 

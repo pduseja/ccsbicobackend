@@ -15,7 +15,6 @@
 .navbar .navbar-top {
     display: flex;
     height: 96px;
-    justify-content: space-between;
     align-items: center;
     padding: 0 15px;
 }
@@ -171,6 +170,8 @@
 #hambmenu {
     font-size: 20px;
     cursor: pointer;
+    margin-right: 15px;
+    color:#c24d78;
 }
 
 #hambmenu span:nth-child(1) {
@@ -210,7 +211,7 @@
 }
 
 #menu.isopen + div{
-    left:211px;
+    right:211px;
 }
 
 #menu + div{
@@ -221,12 +222,12 @@
     position: fixed;
     top: 87px;
     /* height: calc(100vh - 60px); */
-    right: 0;
+    left: 0;
     width: 240px;
     z-index: 100;
     background-color: white;
     -webkit-transform: translateX(-100%);
-    transform: translateX(118%);
+    transform: translateX(-100%);
     transition: -webkit-transform 300ms;
     transition: transform 300ms, -webkit-transform 300ms;
 }
@@ -277,6 +278,7 @@
     padding: 0 25px;
     line-height: 35px;
     margin: 10px;
+    cursor: pointer;
 }
 #menu li .icon{
     color: #179ace;

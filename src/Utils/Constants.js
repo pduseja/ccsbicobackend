@@ -110,10 +110,6 @@ const constants = {
             },{
                 text: 'Contact us',
                 name: 'contactus',
-            },{
-                text: 'Login',
-                name: 'login',
-                link: '/login'
             }
             ]
         }

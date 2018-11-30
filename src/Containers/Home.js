@@ -12,6 +12,7 @@ import image2 from '../Images/image2.jpg'
 
 export default class Home extends Component {
     render() {
+        window.scrollTo(0, 0)
         return (
             <div className="home">
                 <section className="main-features">
