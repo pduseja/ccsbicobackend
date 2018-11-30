@@ -23,3 +23,14 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+# dependencies
+node_modules
+npm
+
+# production
+build
+
+# misc
+.DS_Store
+npm-debug.log
