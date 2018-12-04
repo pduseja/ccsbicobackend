@@ -16,11 +16,11 @@ public class UserNameGeneratorService {
 		char firstN = firstName.charAt(0);
 		char lastN = lastName.charAt(0);
 		String prefix = new StringBuilder().append(firstN).append(lastN).toString();
-		int prefixNum = userNameRepo.findLatestNumber(prefix);
+		int prefixNum = userNameRepo.findLatestNumber(prefix.toLowerCase());
 		
 		if(prefixNum != 0) {
 			@SuppressWarnings("unused")
-			int updatePrefixNum = userNameRepo.updateSequenceNumber(prefixNum+1,prefix);
+			int updatePrefixNum = userNameRepo.updateSequenceNumber(prefixNum+1,prefix.toLowerCase());
 		}
 		String userName = prefix+prefixNum;
 		

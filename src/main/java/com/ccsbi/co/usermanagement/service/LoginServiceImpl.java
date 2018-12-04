@@ -61,8 +61,9 @@ public class LoginServiceImpl implements ILoginService {
 		if(usersLoginRecord.getUserId()>0) {
 			users = convertUsers(usersRepo.getUsers(usersLoginRecord.getUserId()));
 			if (!StringUtils.isEmpty(users.getFirstName())){
+				users.setUsersLoginRecord(usersLoginRecord);
 				list.add(users);
-				list.add(usersLoginRecord);
+				
 			}
 		}
 		return list;

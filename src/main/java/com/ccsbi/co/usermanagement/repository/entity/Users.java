@@ -48,13 +48,13 @@ public class Users implements Serializable {
 	private String permAId;
 	
 	@Column(name = "tempaid")
-	private String TempAId;
+	private String tempAId;
 	
 	@Column(name = "workaid")
-	private String WorkAId;
+	private String workAId;
 	
 	@Column(name = "billaid")
-	private String BillAId;
+	private String billAId;
 	
 	@Column(name = "dob")
 	private Date dateofbirth;
@@ -117,42 +117,42 @@ public class Users implements Serializable {
 	 * @return the tempAId
 	 */
 	public String getTempAId() {
-		return TempAId;
+		return tempAId;
 	}
 
 	/**
 	 * @param tempAId the tempAId to set
 	 */
 	public void setTempAId(String tempAId) {
-		TempAId = tempAId;
+		this.tempAId = tempAId;
 	}
 
 	/**
 	 * @return the workAId
 	 */
 	public String getWorkAId() {
-		return WorkAId;
+		return workAId;
 	}
 
 	/**
 	 * @param workAId the workAId to set
 	 */
 	public void setWorkAId(String workAId) {
-		WorkAId = workAId;
+		this.workAId = workAId;
 	}
 
 	/**
 	 * @return the billAId
 	 */
 	public String getBillAId() {
-		return BillAId;
+		return billAId;
 	}
 
 	/**
 	 * @param billAId the billAId to set
 	 */
 	public void setBillAId(String billAId) {
-		BillAId = billAId;
+		this.billAId = billAId;
 	}
 
 	/**

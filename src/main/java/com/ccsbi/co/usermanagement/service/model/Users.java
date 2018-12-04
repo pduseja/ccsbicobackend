@@ -28,11 +28,11 @@ public class Users implements Serializable {
 
 	private String permAId;
 
-	private String TempAId;
+	private String tempAId;
 
-	private String WorkAId;
+	private String workAId;
 
-	private String BillAId;
+	private String billAId;
 
 	private Date dateofbirth;
 
@@ -43,6 +43,28 @@ public class Users implements Serializable {
 	private String motherId;
 
 	private String secDetId;
+	
+	private UsersDetails usersDetails;
+	
+	private UsersPhoto usersPhoto;
+	
+	private AddressDetails addressDetails;
+	
+	private UsersLoginRecord usersLoginRecord;
+
+	/**
+	 * @return the usersLoginRecord
+	 */
+	public UsersLoginRecord getUsersLoginRecord() {
+		return usersLoginRecord;
+	}
+
+	/**
+	 * @param usersLoginRecord the usersLoginRecord to set
+	 */
+	public void setUsersLoginRecord(UsersLoginRecord usersLoginRecord) {
+		this.usersLoginRecord = usersLoginRecord;
+	}
 
 	/**
 	 * @return the userId
@@ -202,42 +224,56 @@ public class Users implements Serializable {
 	 * @return the tempAId
 	 */
 	public String getTempAId() {
-		return TempAId;
+		return tempAId;
 	}
 
 	/**
 	 * @param tempAId the tempAId to set
 	 */
 	public void setTempAId(String tempAId) {
-		TempAId = tempAId;
+		this.tempAId = tempAId;
 	}
 
 	/**
 	 * @return the workAId
 	 */
 	public String getWorkAId() {
-		return WorkAId;
+		return workAId;
 	}
 
 	/**
 	 * @param workAId the workAId to set
 	 */
 	public void setWorkAId(String workAId) {
-		WorkAId = workAId;
+		this.workAId = workAId;
 	}
 
 	/**
 	 * @return the billAId
 	 */
 	public String getBillAId() {
-		return BillAId;
+		return billAId;
+	}
+
+	/**
+	 * @return the usersDetails
+	 */
+	public UsersDetails getUsersDetails() {
+		return usersDetails;
+	}
+
+	/**
+	 * @param usersDetails the usersDetails to set
+	 */
+	public void setUsersDetails(UsersDetails usersDetails) {
+		this.usersDetails = usersDetails;
 	}
 
 	/**
 	 * @param billAId the billAId to set
 	 */
 	public void setBillAId(String billAId) {
-		BillAId = billAId;
+		this.billAId = billAId;
 	}
 
 	/**
@@ -245,6 +281,35 @@ public class Users implements Serializable {
 	 */
 	public Date getDateofbirth() {
 		return dateofbirth;
+	}
+
+
+	/**
+	 * @return the usersPhoto
+	 */
+	public UsersPhoto getUsersPhoto() {
+		return usersPhoto;
+	}
+
+	/**
+	 * @param usersPhoto the usersPhoto to set
+	 */
+	public void setUsersPhoto(UsersPhoto usersPhoto) {
+		this.usersPhoto = usersPhoto;
+	}
+
+	/**
+	 * @return the addressDetails
+	 */
+	public AddressDetails getAddressDetails() {
+		return addressDetails;
+	}
+
+	/**
+	 * @param addressDetails the addressDetails to set
+	 */
+	public void setAddressDetails(AddressDetails addressDetails) {
+		this.addressDetails = addressDetails;
 	}
 
 	/**

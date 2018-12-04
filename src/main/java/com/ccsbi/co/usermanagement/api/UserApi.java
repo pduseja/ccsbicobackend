@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccsbi.co.usermanagement.client.entity.Users;
 import com.ccsbi.co.usermanagement.client.entity.UsersLoginRecord;
 import com.ccsbi.co.usermanagement.service.ILoginService;
+import com.ccsbi.co.usermanagement.service.IUsersService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,41 +41,73 @@ public class UserApi {
 	@Autowired
 	ILoginService loginService;
 
+	
+	@Autowired
+	IUsersService usersService;
+
 	/**
-	 * Method Description: This method is used to create a record in Orders
-	 * Table for an order placed on site.
+	 * Method Description: 
 	 * 
-	 * @param order
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "User Login", notes = "User Login", nickname = "login")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@PostMapping(path = "/login", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public List<Object> login(@ApiParam(value = "", required = true) @RequestBody UsersLoginRecord login) {
+	@PostMapping(path = "/login", produces = { MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_ATOM_XML_VALUE })
+	public Users login(@ApiParam(value = "", required = true) @RequestBody UsersLoginRecord login) {
 		LOGGER.info("Inside {}.login()", getClass().getSimpleName());
-		List<Object> list = new ArrayList<>();
-		Users user;
+		
+		Users user =  new Users();
 
 		if (StringUtils.isEmpty(login.getCookie())) {
 			user = convertUser(loginService.login(convertLogin(login)));
 			if (!StringUtils.isEmpty(user.getUserName())) {
-				list.add(user);
-				return list;
+				
+				return user;
 			} else {
 				return null;
 			}
 		} else {
-			list = loginService.getUserName(convertLogin(login));
-			user = convertUser((com.ccsbi.co.usermanagement.service.model.Users)list.get(0));
-			login = convertLoginClient((com.ccsbi.co.usermanagement.service.model.UsersLoginRecord)list.get(1));
-			list.remove(0);
-			list.remove(0);
-			list.add(user);
-			list.add(login);
+			List<Object> list1 = new ArrayList<>();
+			list1 = loginService.getUserName(convertLogin(login));
+			user = convertUser((com.ccsbi.co.usermanagement.service.model.Users)list1.get(0));
+			
+			
 		}
 
-		return list;
+		return user;
+	}
+
+	/**
+	 * @param user
+	 * @return
+	 * @throws Exception 
+	 */
+	@ApiOperation(value = "User registration", notes = "User registration", nickname = "registration")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@PostMapping(path = "/registration", produces = { MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_ATOM_XML_VALUE })
+	public String registration(@ApiParam(value = "", required = true) @RequestBody Users user) throws Exception {
+		
+		String userName = null; 
+		user = convertUsers(usersService.save(convert(user)));
+		if(!StringUtils.isEmpty(user.getUserName())) {
+			userName = user.getUserName();
+		}
+		
+		return "You are registered with us and your UserName is : "+userName+ " Admin will verify your details and will contact you via email";
+	}
+	
+	private Users convertUsers(com.ccsbi.co.usermanagement.service.model.Users user) {
+		
+		return dozerMapper.map(user, Users.class);
+	}
+
+
+	private com.ccsbi.co.usermanagement.service.model.Users convert(Users user) {
+		
+		return dozerMapper.map(user, com.ccsbi.co.usermanagement.service.model.Users.class);
 	}
 
 	

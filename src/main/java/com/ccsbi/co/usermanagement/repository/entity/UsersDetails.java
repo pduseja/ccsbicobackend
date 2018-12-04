@@ -54,20 +54,6 @@ public class UsersDetails implements Serializable {
 	private Users users;
 
 	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return Id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		Id = id;
-	}
-
-	/**
 	 * @return the userId
 	 */
 	public int getUserId() {
@@ -79,6 +65,20 @@ public class UsersDetails implements Serializable {
 	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return Id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		Id = id;
 	}
 
 	/**

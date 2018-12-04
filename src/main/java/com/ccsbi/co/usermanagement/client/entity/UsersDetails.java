@@ -35,15 +35,15 @@ public class UsersDetails implements Serializable {
 	@JacksonXmlProperty(localName = "securityQuestionId2")
 	private int securityQuestionId2;
 	
-	@ApiModelProperty(name = "SecurityAnswer1", value = "SecurityAnswer1")
-	@JsonProperty("SecurityAnswer1")
-	@JacksonXmlProperty(localName = "SecurityAnswer1")
-	private String SecurityAnswer1;
+	@ApiModelProperty(name = "securityAnswer1", value = "securityAnswer1")
+	@JsonProperty("securityAnswer1")
+	@JacksonXmlProperty(localName = "securityAnswer1")
+	private String securityAnswer1;
 	
-	@ApiModelProperty(name = "SecurityAnswer2", value = "SecurityAnswer2")
-	@JsonProperty("SecurityAnswer2")
-	@JacksonXmlProperty(localName = "SecurityAnswer2") 
-	private String SecurityAnswer2;
+	@ApiModelProperty(name = "securityAnswer2", value = "securityAnswer2")
+	@JsonProperty("securityAnswer2")
+	@JacksonXmlProperty(localName = "securityAnswer2") 
+	private String securityAnswer2;
 	
 	@ApiModelProperty(name = "password", value = "password")
 	@JsonProperty("password")
@@ -125,28 +125,28 @@ public class UsersDetails implements Serializable {
 	 * @return the securityAnswer1
 	 */
 	public String getSecurityAnswer1() {
-		return SecurityAnswer1;
+		return securityAnswer1;
 	}
 
 	/**
 	 * @param securityAnswer1 the securityAnswer1 to set
 	 */
 	public void setSecurityAnswer1(String securityAnswer1) {
-		SecurityAnswer1 = securityAnswer1;
+		this.securityAnswer1 = securityAnswer1;
 	}
 
 	/**
 	 * @return the securityAnswer2
 	 */
 	public String getSecurityAnswer2() {
-		return SecurityAnswer2;
+		return securityAnswer2;
 	}
 
 	/**
 	 * @param securityAnswer2 the securityAnswer2 to set
 	 */
 	public void setSecurityAnswer2(String securityAnswer2) {
-		SecurityAnswer2 = securityAnswer2;
+		this.securityAnswer2 = securityAnswer2;
 	}
 
 	/**

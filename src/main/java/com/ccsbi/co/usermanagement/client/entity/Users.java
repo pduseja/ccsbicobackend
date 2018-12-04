@@ -1,6 +1,7 @@
 package com.ccsbi.co.usermanagement.client.entity;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,10 +26,10 @@ public class Users implements Serializable{
 	@JacksonXmlProperty(localName = "userName")
 	private String userName;
 	
-	@ApiModelProperty(name = "usersDetails", value = "usersDetails")
-	@JsonProperty("usersDetails")
-	@JacksonXmlProperty(localName = "usersDetails")
-	private Object usersDetails;
+	@ApiModelProperty(name = "UsersDetails", value = "UsersDetails")
+	@JsonProperty("UsersDetails")
+	@JacksonXmlProperty(localName = "UsersDetails")
+	private UsersDetails usersDetails;
 
 	@ApiModelProperty(name = "title", value = "title")
 	@JsonProperty("title")
@@ -115,6 +116,35 @@ public class Users implements Serializable{
 	@JacksonXmlProperty(localName = "secDetId")
 	private String secDetId;
 
+	@ApiModelProperty(name = "UsersPhoto", value = "UsersPhoto")
+	@JsonProperty("UsersPhoto")
+	@JacksonXmlProperty(localName = "UsersPhoto")
+	private UsersPhoto usersPhoto;
+	
+	@ApiModelProperty(name = "AddressDetails", value = "AddressDetails")
+	@JsonProperty("AddressDetails")
+	@JacksonXmlProperty(localName = "AddressDetails")
+	private AddressDetails addressDetails;
+	
+	@ApiModelProperty(name = "UsersLoginRecord", value = "UsersLoginRecord")
+	@JsonProperty("UsersLoginRecord")
+	@JacksonXmlProperty(localName = "UsersLoginRecord")
+	private UsersLoginRecord usersLoginRecord;
+	
+	/**
+	 * @return the usersLoginRecord
+	 */
+	public UsersLoginRecord getUsersLoginRecord() {
+		return usersLoginRecord;
+	}
+
+	/**
+	 * @param usersLoginRecord the usersLoginRecord to set
+	 */
+	public void setUsersLoginRecord(UsersLoginRecord usersLoginRecord) {
+		this.usersLoginRecord = usersLoginRecord;
+	}
+
 	/**
 	 * @return the userId
 	 */
@@ -183,6 +213,20 @@ public class Users implements Serializable{
 	 */
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
+	}
+
+	/**
+	 * @return the usersDetails
+	 */
+	public UsersDetails getUsersDetails() {
+		return usersDetails;
+	}
+
+	/**
+	 * @param usersDetails the usersDetails to set
+	 */
+	public void setUsersDetails(UsersDetails usersDetails) {
+		this.usersDetails = usersDetails;
 	}
 
 	/**
@@ -316,6 +360,34 @@ public class Users implements Serializable{
 	 */
 	public Date getDateofbirth() {
 		return dateofbirth;
+	}
+
+	/**
+	 * @return the usersPhoto
+	 */
+	public UsersPhoto getUsersPhoto() {
+		return usersPhoto;
+	}
+
+	/**
+	 * @param usersPhoto the usersPhoto to set
+	 */
+	public void setUsersPhoto(UsersPhoto usersPhoto) {
+		this.usersPhoto = usersPhoto;
+	}
+
+	/**
+	 * @return the addressDetails
+	 */
+	public AddressDetails getAddressDetails() {
+		return addressDetails;
+	}
+
+	/**
+	 * @param addressDetails the addressDetails to set
+	 */
+	public void setAddressDetails(AddressDetails addressDetails) {
+		this.addressDetails = addressDetails;
 	}
 
 	/**
