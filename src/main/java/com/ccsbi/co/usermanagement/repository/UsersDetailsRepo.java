@@ -12,4 +12,7 @@ public interface UsersDetailsRepo extends JpaRepository<UsersDetails, Long> {
 
 	@Query("SELECT ud.password FROM usersdetails ud WHERE ud.userId=:userId")
 	String loginUser(@Param("userId") int userId);
+	
+	@Query("Select ud from usersdetails ud where ud.userId=:userId")
+	UsersDetails getUsersDetails(@Param("userId") int userId);
 }

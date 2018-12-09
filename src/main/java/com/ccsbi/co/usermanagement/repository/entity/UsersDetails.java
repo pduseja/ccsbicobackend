@@ -55,7 +55,7 @@ public class UsersDetails implements Serializable {
 	
 	@Column(name = "loginattempts")
 	private int loginAttempts;
-	
+
 	/**
 	 * @return the userId
 	 */
