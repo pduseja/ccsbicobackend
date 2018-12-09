@@ -1,46 +1,61 @@
 package com.ccsbi.co.usermanagement.service.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-@SuppressWarnings("serial")
-public class AddressDetails implements Serializable {
+public class AddressDetails {
 
 	private int id;
-	
+
 	private int userId;
-	
+
 	private String flatNo;
-	
+
 	private String houseName;
-	
+
 	private String addressLine1;
-	
+
 	private String addressLine2;
-	
+
 	private String addressLine3;
-	
+
 	private String cityTown;
-	
+
 	private String stateProvince;
-	
+
 	private String country;
-	
+
 	private String pinPostCode;
-	
+
 	private String type;
-	
+
 	private String active;
-	
+
 	private Date sysDate;
-	
+
 	private Date modDate;
-	
+
 	private String mobile;
-	
+
 	private String landline;
-	
+
 	private String email;
+
+	private Users users;
+
+	/**
+	 * @return the users
+	 */
+	public Users getUsers() {
+		return users;
+	}
+
+	/**
+	 * @param users
+	 *            the users to set
+	 */
+	public void setUsers(Users users) {
+		this.users = users;
+	}
 
 	/**
 	 * @return the userId
@@ -50,7 +65,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param userId the userId to set
+	 * @param userId
+	 *            the userId to set
 	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
@@ -64,7 +80,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param flatNo the flatNo to set
+	 * @param flatNo
+	 *            the flatNo to set
 	 */
 	public void setFlatNo(String flatNo) {
 		this.flatNo = flatNo;
@@ -78,7 +95,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param houseName the houseName to set
+	 * @param houseName
+	 *            the houseName to set
 	 */
 	public void setHouseName(String houseName) {
 		this.houseName = houseName;
@@ -92,7 +110,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param addressLine1 the addressLine1 to set
+	 * @param addressLine1
+	 *            the addressLine1 to set
 	 */
 	public void setAddressLine1(String addressLine1) {
 		this.addressLine1 = addressLine1;
@@ -106,7 +125,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param addressLine2 the addressLine2 to set
+	 * @param addressLine2
+	 *            the addressLine2 to set
 	 */
 	public void setAddressLine2(String addressLine2) {
 		this.addressLine2 = addressLine2;
@@ -120,7 +140,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param addressLine3 the addressLine3 to set
+	 * @param addressLine3
+	 *            the addressLine3 to set
 	 */
 	public void setAddressLine3(String addressLine3) {
 		this.addressLine3 = addressLine3;
@@ -134,7 +155,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param cityTown the cityTown to set
+	 * @param cityTown
+	 *            the cityTown to set
 	 */
 	public void setCityTown(String cityTown) {
 		this.cityTown = cityTown;
@@ -155,14 +177,16 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * @param stateProvince the stateProvince to set
+	 * @param stateProvince
+	 *            the stateProvince to set
 	 */
 	public void setStateProvince(String stateProvince) {
 		this.stateProvince = stateProvince;
@@ -176,7 +200,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param country the country to set
+	 * @param country
+	 *            the country to set
 	 */
 	public void setCountry(String country) {
 		this.country = country;
@@ -190,7 +215,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param pinPostCode the pinPostCode to set
+	 * @param pinPostCode
+	 *            the pinPostCode to set
 	 */
 	public void setPinPostCode(String pinPostCode) {
 		this.pinPostCode = pinPostCode;
@@ -204,7 +230,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -218,7 +245,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param active the active to set
+	 * @param active
+	 *            the active to set
 	 */
 	public void setActive(String active) {
 		this.active = active;
@@ -232,7 +260,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param sysDate the sysDate to set
+	 * @param sysDate
+	 *            the sysDate to set
 	 */
 	public void setSysDate(Date sysDate) {
 		this.sysDate = sysDate;
@@ -246,7 +275,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param modDate the modDate to set
+	 * @param modDate
+	 *            the modDate to set
 	 */
 	public void setModDate(Date modDate) {
 		this.modDate = modDate;
@@ -260,7 +290,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param mobile the mobile to set
+	 * @param mobile
+	 *            the mobile to set
 	 */
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
@@ -274,7 +305,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param landline the landline to set
+	 * @param landline
+	 *            the landline to set
 	 */
 	public void setLandline(String landline) {
 		this.landline = landline;
@@ -288,7 +320,8 @@ public class AddressDetails implements Serializable {
 	}
 
 	/**
-	 * @param email the email to set
+	 * @param email
+	 *            the email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;

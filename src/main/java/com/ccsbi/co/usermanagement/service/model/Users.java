@@ -2,6 +2,7 @@ package com.ccsbi.co.usermanagement.service.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Users implements Serializable {
@@ -26,14 +27,6 @@ public class Users implements Serializable {
 
 	private String countryOfBirth;
 
-	private String permAId;
-
-	private String tempAId;
-
-	private String workAId;
-
-	private String billAId;
-
 	private Date dateofbirth;
 
 	private String nationality;
@@ -41,16 +34,28 @@ public class Users implements Serializable {
 	private String fatherId;
 
 	private String motherId;
-
-	private String secDetId;
 	
 	private UsersDetails usersDetails;
 	
 	private UsersPhoto usersPhoto;
 	
-	private AddressDetails addressDetails;
+	private List<AddressDetails> addressDetailsList;
 	
 	private UsersLoginRecord usersLoginRecord;
+
+	/**
+	 * @return the addressDetailsList
+	 */
+	public List<AddressDetails> getAddressDetailsList() {
+		return addressDetailsList;
+	}
+
+	/**
+	 * @param addressDetailsList the addressDetailsList to set
+	 */
+	public void setAddressDetailsList(List<AddressDetails> addressDetailsList) {
+		this.addressDetailsList = addressDetailsList;
+	}
 
 	/**
 	 * @return the usersLoginRecord
@@ -207,55 +212,6 @@ public class Users implements Serializable {
 	}
 
 	/**
-	 * @return the permAId
-	 */
-	public String getPermAId() {
-		return permAId;
-	}
-
-	/**
-	 * @param permAId the permAId to set
-	 */
-	public void setPermAId(String permAId) {
-		this.permAId = permAId;
-	}
-
-	/**
-	 * @return the tempAId
-	 */
-	public String getTempAId() {
-		return tempAId;
-	}
-
-	/**
-	 * @param tempAId the tempAId to set
-	 */
-	public void setTempAId(String tempAId) {
-		this.tempAId = tempAId;
-	}
-
-	/**
-	 * @return the workAId
-	 */
-	public String getWorkAId() {
-		return workAId;
-	}
-
-	/**
-	 * @param workAId the workAId to set
-	 */
-	public void setWorkAId(String workAId) {
-		this.workAId = workAId;
-	}
-
-	/**
-	 * @return the billAId
-	 */
-	public String getBillAId() {
-		return billAId;
-	}
-
-	/**
 	 * @return the usersDetails
 	 */
 	public UsersDetails getUsersDetails() {
@@ -267,13 +223,6 @@ public class Users implements Serializable {
 	 */
 	public void setUsersDetails(UsersDetails usersDetails) {
 		this.usersDetails = usersDetails;
-	}
-
-	/**
-	 * @param billAId the billAId to set
-	 */
-	public void setBillAId(String billAId) {
-		this.billAId = billAId;
 	}
 
 	/**
@@ -296,20 +245,6 @@ public class Users implements Serializable {
 	 */
 	public void setUsersPhoto(UsersPhoto usersPhoto) {
 		this.usersPhoto = usersPhoto;
-	}
-
-	/**
-	 * @return the addressDetails
-	 */
-	public AddressDetails getAddressDetails() {
-		return addressDetails;
-	}
-
-	/**
-	 * @param addressDetails the addressDetails to set
-	 */
-	public void setAddressDetails(AddressDetails addressDetails) {
-		this.addressDetails = addressDetails;
 	}
 
 	/**
@@ -359,20 +294,6 @@ public class Users implements Serializable {
 	 */
 	public void setMotherId(String motherId) {
 		this.motherId = motherId;
-	}
-
-	/**
-	 * @return the secDetId
-	 */
-	public String getSecDetId() {
-		return secDetId;
-	}
-
-	/**
-	 * @param secDetId the secDetId to set
-	 */
-	public void setSecDetId(String secDetId) {
-		this.secDetId = secDetId;
 	}
 
 }

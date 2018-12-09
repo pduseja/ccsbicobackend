@@ -1,0 +1,69 @@
+package com.ccsbi.co.usermanagement.service;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.ccsbi.co.usermanagement.repository.UsersPhotoRepo;
+import com.ccsbi.co.usermanagement.service.model.UsersPhoto;
+
+@Service
+public class UsersPhotoServiceImpl implements IUsersPhotoService {
+
+	@Autowired
+	private Mapper dozerMapper;
+
+	@Autowired
+	private UsersPhotoRepo usersPhotoRepo;
+
+	// Linux: /home/{user}/ccsbi
+	// Windows: C:/Users/{user}/ccsbi
+	private static String UPLOAD_DIR = System.getProperty("user.home") + "/ccsbi/";
+
+	@Override
+	public UsersPhoto save(UsersPhoto usersPhoto, MultipartFile photo) throws Exception {
+		// Make sure directory exists!
+		File uploadDir = new File(UPLOAD_DIR);
+		uploadDir.mkdirs();
+
+		// Normalize file name
+		String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
+
+		byte[] bytes = photo.getBytes();
+		Path path = Paths.get(fileName);
+		Files.write(path, bytes);
+
+		try {
+			// Check if the file's name contains invalid characters
+			if (fileName.contains("..")) {
+				throw new Exception("Sorry! Filename contains invalid path sequence " + fileName);
+			}
+
+		} catch (IOException ex) {
+			throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
+		}
+
+		usersPhoto.setPhoto(UPLOAD_DIR+fileName);
+		
+		return convertUsersPhoto(usersPhotoRepo.save(convertUsersP(usersPhoto)));
+	}
+
+	private UsersPhoto convertUsersPhoto(com.ccsbi.co.usermanagement.repository.entity.UsersPhoto usersPhoto) {
+
+		return dozerMapper.map(usersPhoto, UsersPhoto.class);
+	}
+
+	private com.ccsbi.co.usermanagement.repository.entity.UsersPhoto convertUsersP(UsersPhoto usersPhoto) {
+
+		return dozerMapper.map(usersPhoto, com.ccsbi.co.usermanagement.repository.entity.UsersPhoto.class);
+	}
+
+}

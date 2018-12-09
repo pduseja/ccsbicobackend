@@ -1,12 +1,15 @@
 package com.ccsbi.co.usermanagement.repository.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 
 @SuppressWarnings("serial")
 @Entity(name ="securityquestions")
@@ -116,4 +119,10 @@ public class SecurityQuestions implements Serializable {
 		this.updatedDate = updatedDate;
 	}
 
+	@PrePersist
+	private void prePersist() {
+		Date rightNow = new Date(Calendar.getInstance().getTime().getTime());
+		this.creationDate = Optional.ofNullable(this.getCreationDate()).orElse(rightNow);
+		this.updatedDate = Optional.ofNullable(this.getUpdatedDate()).orElse(rightNow);
+	}
 }

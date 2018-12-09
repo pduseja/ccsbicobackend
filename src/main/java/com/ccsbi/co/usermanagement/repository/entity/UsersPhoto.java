@@ -1,47 +1,40 @@
-package com.ccsbi.co.usermanagement.client.entity;
+package com.ccsbi.co.usermanagement.repository.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.PrePersist;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
-@ApiModel(description = "UsersPhoto")
-@JacksonXmlRootElement(localName = "UsersPhoto")
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("serial")
+@Entity(name = "usersphoto")
 public class UsersPhoto implements Serializable {
 
+	@Id
+	@GeneratedValue
+	@Column(name = "photoid")
 	private int photoId;
 	
-	@ApiModelProperty(name = "photo", value = "photo")
-	@JsonProperty("photo")
-	@JacksonXmlProperty(localName = "photo")
+	@Column(name = "photo")
 	private String photo;
 	
-	@ApiModelProperty(name = "photoContent", value = "photoContent")
-	@JsonProperty("photoContent")
-	@JacksonXmlProperty(localName = "photoContent")
+	@Lob 
+	@Column(name = "PhotoContent" , columnDefinition="BINARY(500000)")
 	private byte[] photoContent;
 	
-	@ApiModelProperty(name = "fileType", value = "fileType")
-	@JsonProperty("fileType")
-	@JacksonXmlProperty(localName = "fileType")
+	@Column(name = "fileType")
 	private String fileType;
 	
-	@ApiModelProperty(name = "active", value = "active")
-	@JsonProperty("active")
-	@JacksonXmlProperty(localName = "active")
+	@Column(name = "active")
 	private String active;
 	
-	@ApiModelProperty(name = "sysDate", value = "sysDate")
-	@JsonProperty("sysDate")
-	@JacksonXmlProperty(localName = "sysDate")
+	@Column(name = "sysdate")
 	private Date sysDate;
 
 	/**
@@ -128,4 +121,11 @@ public class UsersPhoto implements Serializable {
 	public void setPhotoId(int photoId) {
 		this.photoId = photoId;
 	}
+	
+	@PrePersist
+	private void prePersist() {
+		Date rightNow = new Date(Calendar.getInstance().getTime().getTime());
+		this.sysDate = Optional.ofNullable(this.getSysDate()).orElse(rightNow);
+	}
+
 }

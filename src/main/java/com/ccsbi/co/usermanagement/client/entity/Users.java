@@ -1,9 +1,12 @@
 package com.ccsbi.co.usermanagement.client.entity;
 
 import java.io.Serializable;
-
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -13,6 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "Users")
 @JacksonXmlRootElement(localName = "Users")
+@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("serial")
 public class Users implements Serializable{
 
@@ -121,16 +125,33 @@ public class Users implements Serializable{
 	@JacksonXmlProperty(localName = "UsersPhoto")
 	private UsersPhoto usersPhoto;
 	
-	@ApiModelProperty(name = "AddressDetails", value = "AddressDetails")
-	@JsonProperty("AddressDetails")
-	@JacksonXmlProperty(localName = "AddressDetails")
-	private AddressDetails addressDetails;
+	@ApiModelProperty(name = "AddressDetailsList", value = "AddressDetailsList")
+	@JsonProperty("AddressDetailsList")
+	@JacksonXmlProperty(localName = "AddressDetailsList")
+	private List<AddressDetails> addressDetailsList;
 	
 	@ApiModelProperty(name = "UsersLoginRecord", value = "UsersLoginRecord")
 	@JsonProperty("UsersLoginRecord")
 	@JacksonXmlProperty(localName = "UsersLoginRecord")
 	private UsersLoginRecord usersLoginRecord;
 	
+	public Users() {
+		super();
+	}
+	/**
+	 * @return the addressDetailsList
+	 */
+	public List<AddressDetails> getAddressDetailsList() {
+		return addressDetailsList;
+	}
+
+	/**
+	 * @param addressDetailsList the addressDetailsList to set
+	 */
+	public void setAddressDetailsList(List<AddressDetails> addressDetailsList) {
+		this.addressDetailsList = addressDetailsList;
+	}
+
 	/**
 	 * @return the usersLoginRecord
 	 */
@@ -377,20 +398,6 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @return the addressDetails
-	 */
-	public AddressDetails getAddressDetails() {
-		return addressDetails;
-	}
-
-	/**
-	 * @param addressDetails the addressDetails to set
-	 */
-	public void setAddressDetails(AddressDetails addressDetails) {
-		this.addressDetails = addressDetails;
-	}
-
-	/**
 	 * @param dateofbirth the dateofbirth to set
 	 */
 	public void setDateofbirth(Date dateofbirth) {
@@ -453,4 +460,8 @@ public class Users implements Serializable{
 		this.secDetId = secDetId;
 	}
 
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 }

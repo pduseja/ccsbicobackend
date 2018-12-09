@@ -3,11 +3,6 @@ package com.ccsbi.co.usermanagement.service.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
-import io.swagger.annotations.ApiModelProperty;
-
 @SuppressWarnings("serial")
 public class UsersDetails implements Serializable {
 	
@@ -30,8 +25,28 @@ public class UsersDetails implements Serializable {
 	private Date inserted;
 	
 	private Date modDate;
+	
+	private int userId;
+
+	private String accountLocked;
+	
+	private int loginAttempts;
+	
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
 
 	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+		/**
 	 * @return the id
 	 */
 	public int getId() {
@@ -169,5 +184,33 @@ public class UsersDetails implements Serializable {
 	 */
 	public void setModDate(Date modDate) {
 		this.modDate = modDate;
+	}
+
+	/**
+	 * @return the accountLocked
+	 */
+	public String getAccountLocked() {
+		return accountLocked;
+	}
+
+	/**
+	 * @param accountLocked the accountLocked to set
+	 */
+	public void setAccountLocked(String accountLocked) {
+		this.accountLocked = accountLocked;
+	}
+
+	/**
+	 * @return the loginAttempts
+	 */
+	public int getLoginAttempts() {
+		return loginAttempts;
+	}
+
+	/**
+	 * @param loginAttempts the loginAttempts to set
+	 */
+	public void setLoginAttempts(int loginAttempts) {
+		this.loginAttempts = loginAttempts;
 	}
 }

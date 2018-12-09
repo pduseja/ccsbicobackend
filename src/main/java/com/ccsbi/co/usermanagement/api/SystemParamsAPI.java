@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsbi.co.usermanagement.client.entity.SecurityQuestions;
 import com.ccsbi.co.usermanagement.client.entity.SystemParams;
 import com.ccsbi.co.usermanagement.service.ISystemParamsService;
 

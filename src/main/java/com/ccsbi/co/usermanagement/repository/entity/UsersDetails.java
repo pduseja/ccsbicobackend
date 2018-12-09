@@ -1,19 +1,20 @@
 package com.ccsbi.co.usermanagement.repository.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 
 @SuppressWarnings("serial")
 @Entity(name = "usersdetails")
 public class UsersDetails implements Serializable {
-	
+
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
@@ -21,38 +22,40 @@ public class UsersDetails implements Serializable {
 
 	@Column(name = "userid")
 	private int userId;
-	
-	@Column(name="istemppassword")
-	private char isTempPassword;
-	
-	@Column(name="securityquestionid1")
-	private int securityQuestionId1;
-	
-	@Column(name="securityquestionid2")
-	private int securityQuestionId2;
-	
-	@Column(name="securityanswer1")
-	private String SecurityAnswer1;
-	
-	@Column(name="securityanswer2")
-	private String SecurityAnswer2;
-	
-	@Column (name="password")
-	private String password;
-	
-	@Column(name="memorableword")
-	private String memorableWord;
-	
-	@Column(name="inserted")
-	private Date inserted;
-	
-	@Column(name="moddate")
-	private Date modDate;
-	
-	@OneToOne
-	@JoinColumn(name="userid", insertable =false, updatable =false)
-	private Users users;
 
+	@Column(name = "istemppassword")
+	private char isTempPassword;
+
+	@Column(name = "securityquestionid1")
+	private int securityQuestionId1;
+
+	@Column(name = "securityquestionid2")
+	private int securityQuestionId2;
+
+	@Column(name = "securityanswer1")
+	private String SecurityAnswer1;
+
+	@Column(name = "securityanswer2")
+	private String SecurityAnswer2;
+
+	@Column(name = "password")
+	private String password;
+
+	@Column(name = "memorableword")
+	private String memorableWord;
+
+	@Column(name = "inserted")
+	private Date inserted;
+
+	@Column(name = "moddate")
+	private Date modDate;
+
+	@Column(name = "accountlocked")
+	private String accountLocked;
+	
+	@Column(name = "loginattempts")
+	private int loginAttempts;
+	
 	/**
 	 * @return the userId
 	 */
@@ -61,7 +64,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param userId the userId to set
+	 * @param userId
+	 *            the userId to set
 	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
@@ -75,7 +79,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		Id = id;
@@ -89,7 +94,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param isTempPassword the isTempPassword to set
+	 * @param isTempPassword
+	 *            the isTempPassword to set
 	 */
 	public void setIsTempPassword(char isTempPassword) {
 		this.isTempPassword = isTempPassword;
@@ -103,7 +109,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param securityQuestionId1 the securityQuestionId1 to set
+	 * @param securityQuestionId1
+	 *            the securityQuestionId1 to set
 	 */
 	public void setSecurityQuestionId1(int securityQuestionId1) {
 		this.securityQuestionId1 = securityQuestionId1;
@@ -117,7 +124,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param securityQuestionId2 the securityQuestionId2 to set
+	 * @param securityQuestionId2
+	 *            the securityQuestionId2 to set
 	 */
 	public void setSecurityQuestionId2(int securityQuestionId2) {
 		this.securityQuestionId2 = securityQuestionId2;
@@ -131,7 +139,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param securityAnswer1 the securityAnswer1 to set
+	 * @param securityAnswer1
+	 *            the securityAnswer1 to set
 	 */
 	public void setSecurityAnswer1(String securityAnswer1) {
 		SecurityAnswer1 = securityAnswer1;
@@ -145,7 +154,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param securityAnswer2 the securityAnswer2 to set
+	 * @param securityAnswer2
+	 *            the securityAnswer2 to set
 	 */
 	public void setSecurityAnswer2(String securityAnswer2) {
 		SecurityAnswer2 = securityAnswer2;
@@ -159,7 +169,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param password the password to set
+	 * @param password
+	 *            the password to set
 	 */
 	public void setPassword(String password) {
 		this.password = password;
@@ -173,7 +184,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param memorableWord the memorableWord to set
+	 * @param memorableWord
+	 *            the memorableWord to set
 	 */
 	public void setMemorableWord(String memorableWord) {
 		this.memorableWord = memorableWord;
@@ -187,7 +199,8 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param inserted the inserted to set
+	 * @param inserted
+	 *            the inserted to set
 	 */
 	public void setInserted(Date inserted) {
 		this.inserted = inserted;
@@ -201,24 +214,46 @@ public class UsersDetails implements Serializable {
 	}
 
 	/**
-	 * @param modDate the modDate to set
+	 * @param modDate
+	 *            the modDate to set
 	 */
 	public void setModDate(Date modDate) {
 		this.modDate = modDate;
 	}
 
 	/**
-	 * @return the users
+	 * @return the accountLocked
 	 */
-	public Users getUsers() {
-		return users;
+	public String getAccountLocked() {
+		return accountLocked;
 	}
 
 	/**
-	 * @param users the users to set
+	 * @param accountLocked the accountLocked to set
 	 */
-	public void setUsers(Users users) {
-		this.users = users;
+	public void setAccountLocked(String accountLocked) {
+		this.accountLocked = accountLocked;
+	}
+
+	/**
+	 * @return the loginAttempts
+	 */
+	public int getLoginAttempts() {
+		return loginAttempts;
+	}
+
+	/**
+	 * @param loginAttempts the loginAttempts to set
+	 */
+	public void setLoginAttempts(int loginAttempts) {
+		this.loginAttempts = loginAttempts;
+	}
+
+	@PrePersist
+	private void prePersist() {
+		Date rightNow = new Date(Calendar.getInstance().getTime().getTime());
+		this.inserted = Optional.ofNullable(this.getInserted()).orElse(rightNow);
+		this.modDate = Optional.ofNullable(this.getModDate()).orElse(rightNow);
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.ccsbi.co.usermanagement.service;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,72 +38,57 @@ public class UsersServiceImpl implements IUsersService {
 	@Transactional
 	public Users save(Users users) throws Exception {
 
-		AddressDetails addressDetails;
-		UsersPhoto usersPhoto;
-		UsersDetails userDetails;
+		List<AddressDetails> addressDetailsList = users.getAddressDetailsList();
+		Iterator<AddressDetails> itr = addressDetailsList.iterator();
+
+		UsersDetails userDetails = users.getUsersDetails();
 
 		if (users != null) {
 
-			usersPhoto = users.getUsersPhoto();
-			// AddressDetails
-			addressDetails = users.getAddressDetails();
+			String userName = userNameGeneratorService.userNameGen(users.getFirstName(), users.getLastName());
+			users.setUserName(userName);
 
-			users.setPhotoId(1);
-			userDetails = users.getUsersDetails();
+			users = convertUsers(usersRepo.save(convertU(users)));
+
+			while (itr.hasNext()) {
+				AddressDetails addressDetails1 = (AddressDetails) itr.next();
+				AddressDetails addressDetails = new AddressDetails();
+				addressDetails = populateAddressDetails(addressDetails, addressDetails1);
+				addressDetails.setUsers(users);
+				addressDetailsService.save(addressDetails);
+			}
+
 			if (!StringUtils.isEmpty(userDetails.getMemorableWord())) {
+				userDetails.setUserId(users.getUserId());
 				userDetails = usersDetailsServiceImpl.save(userDetails);
-				users.setSecDetId(String.valueOf(userDetails.getId()));
-
-				String userName = userNameGeneratorService.userNameGen(users.getFirstName(), users.getLastName());
-				users.setUserName(userName);
-
-				users.setPermAId(String.valueOf(1));
-				users = convertUsers(usersRepo.save(convertU(users)));
 			}
 
-			
-			if (!StringUtils.isEmpty(addressDetails.getType())) {
-				if (addressDetails.getType().equals("PermA")) {
-					addressDetails.setUserId(users.getUserId());
-					addressDetails = addressDetailsService.save(addressDetails);
-
-					users.setPermAId(String.valueOf(addressDetails.getId()));
-				}
-
-				if (addressDetails.getType().equals("TempA")) {
-					addressDetails.setUserId(users.getUserId());
-					addressDetails = addressDetailsService.save(addressDetails);
-					users.setTempAId(String.valueOf(addressDetails.getId()));
-				}
-
-				if (addressDetails.getType().equals("WorkA")) {
-					addressDetails.setUserId(users.getUserId());
-					addressDetails = addressDetailsService.save(addressDetails);
-					users.setWorkAId(String.valueOf(addressDetails.getId()));
-				}
-
-				if (addressDetails.getType().equals("BillA")) {
-					addressDetails.setUserId(users.getUserId());
-					addressDetails = addressDetailsService.save(addressDetails);
-					users.setBillAId(String.valueOf(addressDetails.getId()));
-				}
-			} else {
-				throw new Exception("One Address is minimum required for registration");
-			}
-			String premAId = users.getPermAId();
-			//String tempAId = !(users.getTempAId().equals(null)) ? "0" : users.getTempAId();
-			//String workAId = !(users.getWorkAId().equals(null)) ? "0" : users.getWorkAId();
-			//String billAId = !(users.getBillAId().equals(null)) ? "0" : users.getBillAId();
-
-			int userNo = usersRepo.updateUsers(users.getUserId(), premAId, "0", "0", "0");
-			
-			if(userNo>0) {
-				return users;
-			} else {
-				return new Users();
-			}
 		}
+
 		return users;
+
+	}
+
+	private AddressDetails populateAddressDetails(AddressDetails addressDetails, AddressDetails addressDetails1) {
+
+		addressDetails.setActive(addressDetails1.getActive());
+		addressDetails.setAddressLine1(addressDetails1.getAddressLine1());
+		addressDetails.setAddressLine2(addressDetails1.getAddressLine2());
+		addressDetails.setAddressLine3(addressDetails1.getAddressLine3());
+		addressDetails.setCityTown(addressDetails1.getCityTown());
+		addressDetails.setCountry(addressDetails1.getCountry());
+		addressDetails.setEmail(addressDetails1.getEmail());
+		addressDetails.setFlatNo(addressDetails1.getFlatNo());
+		addressDetails.setHouseName(addressDetails1.getHouseName());
+		addressDetails.setLandline(addressDetails1.getLandline());
+		addressDetails.setMobile(addressDetails1.getMobile());
+		addressDetails.setModDate(addressDetails1.getModDate());
+		addressDetails.setPinPostCode(addressDetails1.getPinPostCode());
+		addressDetails.setStateProvince(addressDetails1.getStateProvince());
+		addressDetails.setSysDate(addressDetails1.getSysDate());
+		addressDetails.setType(addressDetails1.getType());
+
+		return addressDetails;
 	}
 
 	private Users convertUsers(com.ccsbi.co.usermanagement.repository.entity.Users users) {

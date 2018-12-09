@@ -1,24 +1,32 @@
 package com.ccsbi.co.usermanagement.repository.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @SuppressWarnings("serial")
 @Entity(name="addressdetails")
+@Embeddable
 public class AddressDetails implements Serializable {
 
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
 	private int id;
-	
-	@Column(name = "userid")
-	private int userId;
 	
 	@Column(name = "flatNo")
 	private String flatNo;
@@ -68,6 +76,25 @@ public class AddressDetails implements Serializable {
 	@Column(name = "email")
 	private String email;
 
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "userid", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Users users;
+	
+	/**
+	 * @return the users
+	 */
+	public Users getUsers() {
+		return users;
+	}
+
+	/**
+	 * @param users the users to set
+	 */
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
 	/**
 	 * @return the id
 	 */
@@ -80,20 +107,6 @@ public class AddressDetails implements Serializable {
 	 */
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	/**
-	 * @return the userId
-	 */
-	public int getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(int userId) {
-		this.userId = userId;
 	}
 
 	/**
@@ -318,5 +331,12 @@ public class AddressDetails implements Serializable {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	@PrePersist
+	private void prePersist() {
+		Date rightNow = new Date(Calendar.getInstance().getTime().getTime());
+		this.modDate = Optional.ofNullable(this.getModDate()).orElse(rightNow);
+		this.sysDate = Optional.ofNullable(this.getSysDate()).orElse(rightNow);
 	}
 }

@@ -2,6 +2,7 @@ package com.ccsbi.co.usermanagement.client.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "UsersLoginRecord")
 @JacksonXmlRootElement(localName = "UsersLoginRecord")
+@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("serial")
 public class UsersLoginRecord implements Serializable{
 

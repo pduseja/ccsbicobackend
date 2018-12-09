@@ -2,11 +2,13 @@ package com.ccsbi.co.usermanagement.repository.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 
 @SuppressWarnings("serial")
 @Entity(name = "usersloginrecord")
@@ -182,5 +184,11 @@ public class UsersLoginRecord implements Serializable{
 	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	
+	@PrePersist
+	private void prePersist() {		
+		this.lastLogouttime = Optional.ofNullable(this.getLastLogouttime()).orElse(new Timestamp(System.currentTimeMillis()));
+		this.lastUsed = Optional.ofNullable(this.getLastUsed()).orElse(new Timestamp(System.currentTimeMillis()));
 	}
 }
