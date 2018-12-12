@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import constants from '../Utils/Constants';
 import Helpers from "../Utils/Helpers";
-import {Link} from "react-router-dom";
 export default class MenuLinks extends Component {
     constructor(props) {
         super(props);
@@ -58,8 +57,8 @@ export default class MenuLinks extends Component {
             <div className={this.props.menuStatus} id='menu'>
                 <ul>
                     { links }
-                    {user ? <li><a onClick={this.props.logout}>Logout</a></li> :
-                        <li><a onClick={this.props.login}>Login</a></li>}
+                    {user ? <li><span onClick={this.props.logout}>Logout</span></li> :
+                        <li><span onClick={this.props.login}>Login</span></li>}
                 </ul>
             </div>
         )

@@ -166,6 +166,11 @@
 
 /*------------------------------------------------------------------
 [ Focus ]*/
+
+.block-error{
+    color:red;
+    text-align: center;
+}
 .login-form .focus-input {
     display: block;
     position: absolute;

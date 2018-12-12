@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
 import {StateMachine} from './StateMachine.js';
-import {Security} from "./Security";
-import {PersonalDetails} from "./PersonalDetails";
+import Security from "./Security";
+import PersonalDetails from "./PersonalDetails";
 import {Address} from "./Address";
+import connect from "react-redux/es/connect/connect";
+import {addData} from "../../Actions/Actions";
 
 class App extends Component {
     constructor(props) {
@@ -14,9 +16,11 @@ class App extends Component {
         this.stateMachine = new StateMachine();
     }
 
-    _next = (desiredState) => {
+    _next = (desiredState, data) => {
         let currentState = this.state.currentState;
         let nextState = this.stateMachine.transitionTo(currentState, desiredState);
+        this.props.dispatch(addData(data));
+
         this.setState({
             currentState: nextState
         });
@@ -60,4 +64,5 @@ class App extends Component {
     }
 }
 
-export default App;
+
+export default connect()(App);

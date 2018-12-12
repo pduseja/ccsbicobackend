@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
 import constants from '../../Utils/Constants';
+import {addPhoto, storePersonalDataState} from "../../Actions/Actions";
+import connect from "react-redux/es/connect/connect";
 
 let countries = require('country-list')();
+
 export class PersonalDetails extends Component {
     constructor(props) {
         super(props);
@@ -10,31 +13,60 @@ export class PersonalDetails extends Component {
         this.state = {
             file: '',
             imagePreviewUrl: '',
-            title: 'mr',
-            fname: '',
-            sname: '',
-            mname: '',
-            gender: 'Male',
-            dob: '',
-            tob: '',
-            nationality: '',
-            cob: '',
-            formErrors: {fname: '', sname: '', tob: '', dob: '', nationality: '', cob: ''},
-            fnameValid: false,
+            formData: {
+                userName: '',
+                title: 'Mr.',
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                photoId: 1,
+                gender: 'Male',
+                townOfBirth: '',
+                countryOfBirth: '',
+                dateofbirth: '',
+                nationality: '',
+                fatherId: '',
+                motherId: '',
+                UsersPhoto: {
+                    photo: "",
+                    photoContent: "",
+                    fileType: "",
+                    active: "",
+                }
+            },
+            formErrors: {
+                firstName: '',
+                lastName: '',
+                townOfBirth: '',
+                dateofbirth: '',
+                nationality: '',
+                countryOfBirth: ''
+            },
+            valid:{fnameValid: false,
             snameValid: false,
             dobValid: false,
             tobValid: false,
             nationalityValid: false,
             cobValid: false,
-            formValid: false
+            formValid: false}
 
         }
+    }
+
+    componentDidMount() {
+        console.log(this.props,"state")
+        console.log(this.state.formData,"formddata")
+        console.log(this.state,"stateActual")
+        console.log({...this.state.formData, ...this.props.data},"merging")
+        this.setState({
+            formData: {...this.state.formData, ...this.props.data}
+        })
     }
 
     handleUserInput = (e) => {
         const name = e.target.name;
         const value = e.target.type === 'radio' ? e.target.value : e.target.value;
-        this.setState({[name]: value},
+        this.setState({formData: {...this.state.formData, [name]: value}},
             () => {
                 this.validateField(name, value)
             });
@@ -42,27 +74,27 @@ export class PersonalDetails extends Component {
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let {fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid} = this.state;
+        let {fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid} = this.state.valid;
 
         switch (fieldName) {
-            case 'fname':
+            case 'firstName':
                 fnameValid = value.length !== 0;
-                fieldValidationErrors.fname = fnameValid ? '' : 'Your name is required';
+                fieldValidationErrors.firstName = fnameValid ? '' : 'Your name is required';
                 break;
 
-            case 'sname':
+            case 'lastName':
                 snameValid = value.length !== 0;
-                fieldValidationErrors.sname = snameValid ? '' : 'Your last name is required';
+                fieldValidationErrors.lastName = snameValid ? '' : 'Your last name is required';
                 break;
 
-            case 'dob':
+            case 'dateofbirth':
                 dobValid = value.length !== 0;
-                fieldValidationErrors.dob = dobValid ? '' : 'Your date of birth is required';
+                fieldValidationErrors.dateofbirth = dobValid ? '' : 'Your date of birth is required';
                 break;
 
-            case 'tob':
+            case 'townOfBirth':
                 tobValid = value.length !== 0;
-                fieldValidationErrors.tob = tobValid ? '' : 'Your town of birth is required';
+                fieldValidationErrors.townOfBirth = tobValid ? '' : 'Your town of birth is required';
                 break;
 
             case 'nationality':
@@ -70,15 +102,15 @@ export class PersonalDetails extends Component {
                 fieldValidationErrors.nationality = nationalityValid ? '' : 'Your nationality is required';
                 break;
 
-            case 'cob':
+            case 'countryOfBirth':
                 cobValid = value !== "Select your country of birth";
-                fieldValidationErrors.cob = cobValid ? '' : 'Your country of birth is required';
+                fieldValidationErrors.countryOfBirth = cobValid ? '' : 'Your country of birth is required';
                 break;
 
             default:
                 break;
         }
-        this.setState({
+        this.setState({valid:{
             formErrors: fieldValidationErrors,
             fnameValid: fnameValid,
             snameValid: snameValid,
@@ -86,7 +118,7 @@ export class PersonalDetails extends Component {
             tobValid: tobValid,
             nationalityValid: nationalityValid,
             cobValid: cobValid
-        }, this.validateForm);
+        }}, this.validateForm);
 
 
     };
@@ -96,12 +128,18 @@ export class PersonalDetails extends Component {
 
         let reader = new FileReader();
         let file = e.target.files[0];
-
+        let fileToStore =  window.URL.createObjectURL(file);
         reader.onloadend = () => {
             this.setState({
                 file: file,
-                imagePreviewUrl: reader.result
-            });
+                imagePreviewUrl: reader.result,
+                formData:{...this.state.formData,UsersPhoto:{...this.state.formData.UsersPhoto,
+                        photo: fileToStore,
+                        fileType: file.type,
+                        active: "Y"
+                    }
+                }
+            }, () => this.props.dispatch(addPhoto( fileToStore )));
         };
 
         reader.readAsDataURL(file)
@@ -111,15 +149,19 @@ export class PersonalDetails extends Component {
     validateForm() {
         this.setState({
             formValid: this.state.fnameValid && this.state.snameValid &&
-            this.state.tobValid && this.state.dobValid && this.state.nationalityValid &&
-            this.state.cobValid
+                this.state.tobValid && this.state.dobValid && this.state.nationalityValid &&
+                this.state.cobValid
+        },()=>{
+            this.props.dispatch(storePersonalDataState());
         });
 
     };
 
     render() {
-        let { fname, sname, tob, nationality, cob } = this.state.formErrors;
-        let { imagePreviewUrl } = this.state;
+        let {firstName, lastName, townOfBirth, nationality, countryOfBirth} = this.state.formErrors;
+
+        let {imagePreviewUrl} = this.state;
+        let data = this.state.formData;
         let $imagePreview = null;
         if (imagePreviewUrl) {
             $imagePreview = (<img className="file-upload-img" alt="user" src={imagePreviewUrl}/>);
@@ -139,23 +181,23 @@ export class PersonalDetails extends Component {
                     </div>
                     <div className="col-sm-5 form-group">
                         <label>*Name</label>
-                        <input className="input" type="text" name="fname" placeholder="First name"
-                               onChange={this.handleUserInput} value={this.state.fname}/>
-                        <p className="error-message">{fname}</p>
+                        <input className="input" type="text" name="firstName" placeholder="First name"
+                               onChange={this.handleUserInput} value={this.state.formData.firstName}/>
+                        <p className="error-message">{firstName}</p>
                     </div>
 
                     <div className="col-sm-5 form-group">
                         <label>*Last Name</label>
-                        <input className="input" type="text" name="sname" placeholder="Last name"
-                               onChange={this.handleUserInput} value={this.state.sname}/>
-                        <p className="error-message">{sname}</p>
+                        <input className="input" type="text" name="lastName" placeholder="Last name"
+                               onChange={this.handleUserInput} value={this.state.formData.lastName}/>
+                        <p className="error-message">{lastName}</p>
                     </div>
                 </div>
                 <div className="wrap-input">
                     <div className="col-sm-6 form-group">
                         <label>Middle Name</label>
-                        <input className="input" type="text" name="mname" placeholder="Middle name"
-                               onChange={this.handleUserInput} value={this.state.mname}/>
+                        <input className="input" type="text" name="middleName" placeholder="Middle name"
+                               onChange={this.handleUserInput} value={this.state.formData.middleName}/>
                     </div>
 
                 </div>
@@ -193,12 +235,12 @@ export class PersonalDetails extends Component {
                 <div className="wrap-input">
                     <div className="col-sm-4 form-group">
                         <label>*Date of birth</label>
-                        <input type="date" className="input" name="dob" onChange={this.handleUserInput}/></div>
+                        <input type="date" className="input" name="dateofbirth" onChange={this.handleUserInput}/></div>
                     <div className="col-sm-4 form-group">
                         <label>*Place of birth</label>
-                        <input className="input" name="tob" placeholder="Birth place"
-                               onChange={this.handleUserInput} value={this.state.tob}/>
-                        <p className="error-message">{tob}</p>
+                        <input className="input" name="townOfBirth" placeholder="Birth place"
+                               onChange={this.handleUserInput} value={this.state.formData.townOfBirth}/>
+                        <p className="error-message">{townOfBirth}</p>
                     </div>
                 </div>
                 <div className="wrap-input">
@@ -212,31 +254,31 @@ export class PersonalDetails extends Component {
                     </div>
                     <div className="col-sm-5 form-group">
                         <label>*Country of birth</label>
-                        <select className="input" name="cob" onChange={this.handleUserInput}>
+                        <select className="input" name="countryOfBirth" onChange={this.handleUserInput}>
                             <option>Select your country of birth</option>
                             {countries.getNames().map(a => <option
                                 key={a} value={a}>{a}</option>)}</select>
-                        <p className="error-message">{cob}</p>
+                        <p className="error-message">{countryOfBirth}</p>
                     </div>
                 </div>
 
                 <div className="wrap-input">
                     <div className="col-sm-4 form-group">
                         <label>Father Id</label>
-                        <input className="input" type="text" name="fid" placeholder="Father id"
-                               onChange={this.handleUserInput} value={this.state.fid}/>
+                        <input className="input" type="text" name="fatherId" placeholder="Father id"
+                               onChange={this.handleUserInput} value={this.state.fatherId}/>
                     </div>
                     <div className="col-sm-4 form-group">
                         <label>Mother Id</label>
                         <input className="input" type="text" name="mid" placeholder="Mother id"
-                               onChange={this.handleUserInput} value={this.state.mid}/>
+                               onChange={this.handleUserInput} value={this.state.motherId}/>
                     </div>
 
                 </div>
 
 
                 <div className="container-login-form-btn">
-                    <button className="login-form-btn" onClick={() => this.props.next(states.ADDRESS)}
+                    <button className="login-form-btn" onClick={() => this.props.next(states.ADDRESS, data)}
                             disabled={!this.state.formValid}>Next
                     </button>
                 </div>
@@ -245,3 +287,9 @@ export class PersonalDetails extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    data: state.data
+});
+
+export default connect(mapStateToProps)(PersonalDetails);

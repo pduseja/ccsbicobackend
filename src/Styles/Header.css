@@ -3,20 +3,33 @@
 .navbar {
     width: 100%;
     display: block;
+    height: 154px;
     z-index: 9;
     transition: .25s ease-in-out;
     background-size: auto 5px;
     background: url(../Images/rainbow-bar.png) top repeat-x #fff;
     position:fixed;
-    box-shadow: 0px 3px 15px 0px #c9cdd3;
-    padding: 0;
+    box-shadow: 0 3px 15px 0 #c9cdd3;
+    padding: 0 15px;
 }
 
 .navbar .navbar-top {
     display: flex;
-    height: 96px;
+    height: 70px;
     align-items: center;
-    padding: 0 15px;
+    justify-content: space-between;
+}
+
+.navbar .navbar-top span{
+    display: inline-block;
+    padding: 0 10px 0 0;
+    color:#585c5f;
+    font-weight: 600;
+}
+
+.navbar .navbar-top i{
+    cursor: pointer;
+    color:#c04f78;
 }
 
 .navbar .navbar-bottom {
@@ -30,6 +43,11 @@
     float: left;
 }
 
+.navbar .logo-container{
+    display:flex;
+    align-items: center;
+}
+
 .navbar .hamburger-menu {
     float: right;
     margin-left: 10px;
@@ -41,6 +59,7 @@
     background: #c04f78;
     color: #fff;
     line-height: 35px;
+    height: 35px;
     padding: 0 25px;
     border-radius: 40px;
     border: none;
@@ -54,12 +73,10 @@
 }
 
 .navbar .navbar-nav {
-    height: 45px;
-    line-height: 52px;
     display: inline-block;
     position: relative;
     z-index: 2;
-    padding-right: 5px;
+    line-height: 35px;
 }
 
 .navbar .navbar-nav .nav-item {
@@ -73,7 +90,7 @@
     padding: 0;
     position: absolute;
     left: 10px;
-    top: calc(100% + -1px);
+    top: calc(100% + 15px);
     background: #fff;
     text-align: left;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
@@ -144,27 +161,29 @@
     display: block;
 }
 
-.navbar .important-links ul {
-    display: inline-block;
-    margin: 20px 0;
+.important-links{
     padding: 0;
+    display:flex;
+    margin: 12px 0 0 0;
+    justify-content: flex-end;
 }
 
-.navbar .important-links ul li {
+.important-links li {
     float: left;
-    padding: 0 15px;
+    padding: 0 10px;
     list-style: none;
     border-right: 1px solid #c4c6c7
 }
 
-.navbar .important-links ul li a {
+.important-links li a {
     color: #585c5f;
     font-size: 12px;
     font-weight: 600;
 }
 
-.navbar .important-links ul li:last-child {
+.important-links li:last-child {
     border-right: 0;
+    padding-right: 0;
 }
 
 #hambmenu {
@@ -208,6 +227,14 @@
     width: 0%;
     left: 50%;
     opacity: 0;
+}
+
+.is-right-open{
+    top: 90px;
+    right: 10px;
+    z-index: 999;
+    border: 1px solid #ccc;
+    position:absolute;
 }
 
 #menu.isopen + div{
@@ -312,7 +339,10 @@
 }
 
 @media only screen and (max-width: 767px), only screen and (max-device-width: 767px) {
+    #menu{
+        top:131px;
+    }
     .navbar {
-        height: 86px !important;
+        height: 130px !important;
     }
 }

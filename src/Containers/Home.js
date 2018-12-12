@@ -88,28 +88,28 @@ export default class Home extends Component {
                 <section className="footer-bar">
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-3 col-md-6">
+                            <div className="col-lg-3 col-md-6 col-sm-6">
                                 <figure><img src={contact1} alt="E-MAILS"/></figure>
                                 <h4>E-MAILS</h4>
                                 <address>
                                     info@ccsbi.com
                                 </address>
                             </div>
-                            <div className="col-lg-3 col-md-6">
+                            <div className="col-lg-3 col-md-6 col-sm-6">
                                 <figure><img src={contact2} alt="PHONES"/></figure>
                                 <h4>PHONES</h4>
                                 <address>
                                     +380 (98) 294 80 86
                                 </address>
                             </div>
-                            <div className="col-lg-3 col-md-6">
+                            <div className="col-lg-3 col-md-6 col-sm-6">
                                 <figure><img src={contact3} alt="SUPPORT"/></figure>
                                 <h4>SUPPORT</h4>
                                 <address>
                                     Mon to Fri 09:00h to 18:00h
                                 </address>
                             </div>
-                            <div className="col-lg-3 col-md-6">
+                            <div className="col-lg-3 col-md-6 col-sm-6">
                                 <figure><img src={contact4} alt="LOCATION"/></figure>
                                 <h4>LOCATION</h4>
                                 <address>
@@ -118,6 +118,12 @@ export default class Home extends Component {
                             </div>
                         </div>
                     </div>
+                    <ul className="important-links d-flex d-sm-flex d-md-none d-lg-none d-xl-none">
+                        <li><a href="/">Important information</a></li>
+                        <li><a href="/">Privacy policy</a></li>
+                        <li><a href="/">Terms of use</a></li>
+                        <li><a href="/">Cookies</a></li>
+                    </ul>
                 </section>
 
                 <footer className="footer">

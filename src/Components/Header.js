@@ -3,12 +3,14 @@ import MenuLinks from "./MenuLinks";
 import {Link} from "react-router-dom";
 import '../Styles/Header.css'
 import Helpers from "../Utils/Helpers";
+import UserOptions from "./UserOptions";
 
 export default class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isOpen: false,
+            isRightOpen: false,
             user: '',
             currentPage: ''
         };
@@ -27,9 +29,17 @@ export default class Header extends Component {
     _handleDocumentClick = (e) => {
         if (!this.refs.root.contains(e.target) && this.state.isOpen === true) {
             this.setState({
-                isOpen: false
+                isOpen: false,
+                isRightOpen: false
             });
         }
+    };
+
+    _menuRightToggle = (e) => {
+        e.stopPropagation();
+        this.setState({
+            isRightOpen: !this.state.isRightOpen
+        });
     };
 
     _menuToggle = (e) => {
@@ -39,7 +49,8 @@ export default class Header extends Component {
         });
     };
 
-    getUserDetails = () =>{
+    getUserDetails = () => {
+        this.setState({'currentPage': this.props.history.location.pathname === '/login'});
         let authData = Helpers.authenticateUser();
         if (authData) {
             this.setState({
@@ -55,55 +66,60 @@ export default class Header extends Component {
 
     login = () => {
       this.props.history.push('/login');
-      this.setState({'isOpen': false})
+      this.setState({'isOpen': false, 'isRightOpen': false})
     };
 
     logout = () => {
         localStorage.removeItem('user');
         this.props.history.push('/');
-        this.setState({'isOpen': false})
+        this.setState({'isOpen': false, 'isRightOpen': false})
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
-        let login = nextProps.location.pathname === '/login'
-        this.setState({currentPage: login});
         this.getUserDetails();
     }
 
     render() {
         let {user,currentPage} = this.state;
         let menuStatus = this.state.isOpen ? 'isopen' : '';
+        let rightMenuStatus = this.state.isRightOpen ? 'is-right-open' : '';
 
         return (
             <div ref="root">
                 <nav className="navbar">
+                    <ul className="important-links">
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><a href="/">Important
+                            information</a></li>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><a href="/">Privacy policy</a>
+                        </li>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><a href="/">Terms of use</a>
+                        </li>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><a href="/">Cookies</a></li>
+                        <li><a href="/">Languages</a></li>
+                        <li><a href="/"><i className="fab fa-facebook-f"/></a></li>
+                        <li><a href="/"><i className="fab fa-twitter"/></a></li>
+                        <li><a href="/"><i className="fab fa-linkedin-in"/></a></li>
+                        <li><a href="/"><i className="fab fa-youtube"/></a></li>
+                    </ul>
+
                     <div className="navbar-top">
-                        {!currentPage && <div onClick={ this._menuToggle } id="hambmenu"
-                             className={"d-block d-sm-block d-md-none d-lg-none d-xl-none " + menuStatus }>
+                        <div className="logo-container">{!currentPage && <div onClick={this._menuToggle} id="hambmenu"
+                                                                              className={"d-inline-block d-sm-inline-block d-md-none d-lg-none" +
+                                                                              " d-xl-none " + menuStatus}>
                             <i className="fas fa-bars"/>
                         </div>}
-                        <Link className="logo" to="/">
-                            <img src="http://ccsbi.info/usersresource/images/logo.png" alt="logo"/>
-                        </Link>
-                        {user === '' ? <div className="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                            <Link to="/login" className="custom-btn">Login</Link>
-                        </div> : <div>{user[0].firstName} {user[0].lastName}</div>
-                        }
-
-                        {/*<div className="important-links">*/}
-                        {/*<ul>*/}
-                        {/*<li><a href="#">Important information</a></li>*/}
-                        {/*<li><a href="#">Privacy policy</a></li>*/}
-                        {/*<li><a  href="#">Terms of use</a></li>*/}
-                        {/*<li><a href="#">Cookies</a></li>*/}
-                        {/*<li><a href="#"><i className="fab fa-facebook-f"/></a></li>*/}
-                        {/*<li><a href="#"><i className="fab fa-twitter"/></a></li>*/}
-                        {/*<li><a href="#"><i className="fab fa-linkedin-in"/></a></li>*/}
-                        {/*<li><a href="#"><i className="fab fa-youtube"/></a></li>*/}
-                        {/*</ul>*/}
-                        {/*</div>*/}
+                            <Link className="logo" to="/">
+                                <img src="http://ccsbi.info/usersresource/images/logo.png" alt="logo"/>
+                            </Link></div>
+                        {!currentPage && (user !== '' &&
+                            <div className="user-info">
+                                <span>{user.firstName} {user.lastName}</span><i id="ellipsis" onClick={this._menuRightToggle} className="fa fa-ellipsis-v"/>
+                            </div>
+                            )}
                     </div>
-                    <div className="navbar-bottom  d-none d-sm-none d-md-block d-lg-block d-xl-block">
+
+
+                    {!currentPage && <div className="navbar-bottom  d-none d-sm-none d-md-block d-lg-block d-xl-block">
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <Link to="/" className="nav-link">Home</Link>
@@ -150,11 +166,16 @@ export default class Header extends Component {
                             <li className="nav-item">
                                 <Link to="/" className="nav-link">Contact us</Link>
                             </li>
+                            {!currentPage && <li className="nav-item d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                                {user === '' ? <Link to="/login" className="custom-btn">Login</Link> :
+                                    <Link to="/" className="custom-btn"
+                                          onClick={() => this.logout()}>Logout</Link>}</li>}
                         </ul>
 
-                    </div>
+                    </div>}
                 </nav>
-                <MenuLinks menuStatus={ menuStatus } login={this.login} logout={this.logout}/>
+                <MenuLinks menuStatus={menuStatus} login={this.login} logout={this.logout}/>
+                <UserOptions rightMenuStatus={rightMenuStatus}/>
             </div>
         )
     }

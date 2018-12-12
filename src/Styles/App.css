@@ -1,4 +1,3 @@
-
 /* GHOST BUTTON */
 .ghost-btn {
     position: relative;
@@ -97,7 +96,7 @@
 .main-features {
     width: 100%;
     display: flex;
-    padding: 450px 0 100px 0;
+    padding: 190px 0 100px 0;
     background: #99a4be;
 }
 
@@ -427,7 +426,7 @@
     width: 100%;
     float: left;
     background: #99a4be;
-    padding: 50px 0;
+    padding: 15px 0;
     color: #fff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -457,13 +456,24 @@
     margin: 0;
 }
 
+.footer-bar .important-links{
+    justify-content: center;
+}
+
+.footer-bar .important-links li{
+    border-color:#fff;
+}
+.footer-bar .important-links li a{
+    color:#fff;
+}
+
 /* FOOTER */
 .footer {
     width: 100%;
     float: left;
     background: #99a4be;
     color: #fff;
-    padding: 50px 0;
+    padding: 15px 0;
     text-align: center;
 }
 
@@ -496,7 +506,6 @@
 
 /* RESPONSIVE TABLET FIXES */
 @media only screen and (max-width: 991px), only screen and (max-device-width: 991px) {
-
     .main-features .feature-box {
         padding: 50px 40px;
         margin-bottom: 30px;
@@ -542,9 +551,11 @@
     .titles h3 {
         font-size: 42px;
     }
-    .navbar{
-        height:91px!important;
+
+    .navbar {
+        height: 91px !important;
     }
+
     .header .inner {
         width: 100%;
         padding: 0 30px;
@@ -591,9 +602,6 @@
         display: none;
     }
 
-    .footer {
-        padding-top: 60px;
-    }
 }
 
 @media screen and (max-width: 420px) {

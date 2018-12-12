@@ -1,22 +1,37 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
 import constants from '../../Utils/Constants';
+import {connect} from "react-redux";
+import WebApi from "../../Utils/WebApi";
 
 export class Security extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            password: '',
-            confirm_password: '',
-            security_question: '',
-            security_answer: '',
-            memorable_word: '',
-            formErrors: {password: '', confirm_password: '', security_question: '', security_answer: '', memorable_word: ''},
+            confirmPassword: '',
+            formData: {UsersDetails:{
+                password: '',
+                securityQuestionId1: '',
+                securityQuestionId2: '',
+                securityAnswer1: '',
+                securityAnswer2: '',
+                memorableWord: ''
+            }},
+            formErrors: {
+                password: '',
+                securityQuestionId1: '',
+                securityQuestionId2: '',
+                securityAnswer1: '',
+                securityAnswer2: '',
+                memorableWord: ''
+            },
             passwordValid: false,
-            confirm_passwordValid: false,
-            security_questionValid: false,
-            security_answerValid:false,
-            memorable_wordValid: false,
+            confirmPasswordValid: false,
+            securityQuestionId1Valid: false,
+            securityQuestionId2Valid: false,
+            securityAnswer1Valid: false,
+            securityAnswer2Valid: false,
+            memorableWordValid: false,
             formValid: false
         };
     }
@@ -26,40 +41,45 @@ export class Security extends Component {
         this.props.back(states.ADDRESS);
     };
 
-    _validate = (e) => {
-        e.preventDefault();
-
-        this.props.next(this.props.nextState);
-    };
-
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let {passwordValid, confirm_passwordValid, security_questionValid, security_answerValid, memorable_wordValid} = this.state;
+        let {passwordValid, confirmPasswordValid, securityQuestionId1Valid, securityQuestionId2Valid, securityAnswer1Valid, securityAnswer2Valid, memorableWordValid} = this.state;
         switch (fieldName) {
-
             case 'password':
                 passwordValid = value.length !== 0;
                 fieldValidationErrors.password = passwordValid ? '' : 'Your password is required';
-            break;
+                break;
 
-            case 'confirm_password':
-                confirm_passwordValid = value.length !== 0;
-                fieldValidationErrors.confirm_password = confirm_passwordValid ? '' : 'Please confirm you password';
-            break;
+            case 'confirmPassword':
+                confirmPasswordValid = value.length !== 0 && value === this.state.formData.UsersDetails.password;
+                fieldValidationErrors.confirmPassword = confirmPasswordValid ? '' : 'Please confirm your password';
+                break;
 
-            case 'security_question':
-                security_questionValid = value !== 'Select a security question';
-                fieldValidationErrors.security_question = security_questionValid ? '' : 'Please choose a security question';
-            break;
+            case 'securityQuestionId1':
+                securityQuestionId1Valid = value !== 'Select 1st security question';
+                fieldValidationErrors.securityQuestionId1 = securityQuestionId1Valid ? '' : 'Please choose a' +
+                    ' security question';
+                break;
 
-            case 'security_answer':
-                security_answerValid = value.length !== 0;
-                fieldValidationErrors.security_answer = security_answerValid ? '' : 'A security answer is required';
-            break;
+            case 'securityQuestionId2':
+                securityQuestionId2Valid = value !== 'Select 2nd security question';
+                fieldValidationErrors.securityQuestionId2 = securityQuestionId2Valid ? '' : 'Please choose' +
+                    ' a security question';
+                break;
 
-            case 'memorable_word':
-                memorable_wordValid = value.length !== 0;
-                fieldValidationErrors.memorable_word = memorable_wordValid? '' : 'Your memorable word is required';
+            case 'securityAnswer1':
+                securityAnswer1Valid = value.length !== 0;
+                fieldValidationErrors.securityAnswer1 = securityAnswer1Valid ? '' : 'A security answer is required';
+                break;
+
+            case 'securityAnswer2':
+                securityAnswer2Valid = value.length !== 0;
+                fieldValidationErrors.securityAnswer2 = securityAnswer2Valid ? '' : 'A security answer is required';
+                break;
+
+            case 'memorableWord':
+                memorableWordValid = value.length !== 0;
+                fieldValidationErrors.memorableWord = memorableWordValid ? '' : 'Your memorable word is required';
                 break;
 
             default:
@@ -68,36 +88,48 @@ export class Security extends Component {
         this.setState({
             formErrors: fieldValidationErrors,
             passwordValid: passwordValid,
-            confirm_passwordValid: confirm_passwordValid,
-            security_questionValid: security_questionValid,
-            security_answerValid: security_answerValid,
-            memorable_wordValid: memorable_wordValid
+            confirmPasswordValid: confirmPasswordValid,
+            securityQuestionId1Valid: securityQuestionId1Valid,
+            securityQuestionId2Valid: securityQuestionId2Valid,
+            securityAnswer1Valid: securityAnswer1Valid,
+            securityAnswer2Valid: securityAnswer2Valid,
+            memorableWordValid: memorableWordValid
         }, this.validateForm);
     };
 
     validateForm() {
         this.setState({
-            formValid: this.state.passwordValid && this.state.confirm_passwordValid && this.state.security_questionValid
-            && this.state.security_answerValid && this.state.memorable_wordValid
+            formValid: this.state.passwordValid &&
+                this.state.confirmPasswordValid &&
+                this.state.securityQuestionId1Valid &&
+                this.state.securityAnswer1Valid &&
+                this.state.securityQuestionId2Valid &&
+                this.state.securityAnswer2Valid &&
+                this.state.memorableWordValid
         });
 
+    };
+
+    componentDidUpdate = (prevProps) => {
+        if(prevProps.data !== this.props.data)
+            WebApi.registerUser(this.props.data,this.props.photo);
     };
 
     handleUserInput = (e) => {
         const name = e.target.name;
         const value = e.target.type === 'radio' ? e.target.value : e.target.value;
-        this.setState({[name]: value},
+        this.setState({formData:{UsersDetails:{...this.state.formData.UsersDetails,[name]: value}}},
             () => {
                 this.validateField(name, value)
             });
     };
 
     submit = () => {
-        console.log("Registered")
+        this.props.onAdd(this.state.formData);
     };
 
     render() {
-        let { password, confirm_password, security_question, security_answer, memorable_word  } = this.state.formErrors;
+        let {password, confirmPassword, securityQuestionId1, securityQuestionId2, securityAnswer1, securityAnswer2, memorableWord} = this.state.formErrors;
         return (
             <div className="registration-form-step2">
                 <div className="col-sm-12 form security">
@@ -105,42 +137,70 @@ export class Security extends Component {
                         <label>*Password</label>
                         <input className="input" type="password" name="password" onChange={this.handleUserInput}/>
                         <p className="error-message">{password}</p>
-                    </div >
+                    </div>
                     <div className="col-sm-6 form-group">
                         <label>*Confirm Password</label>
-                        <input className="input" type="password" name="confirm_password"
+                        <input className="input" type="password" name="confirmPassword"
                                onChange={this.handleUserInput}/>
-                        <p className="error-message">{confirm_password}</p>
+                        <p className="error-message">{confirmPassword}</p>
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*Security Question</label>
-                        <select className="input" name="security_question"
-                                onChange={this.handleUserInput}><option>Select a security question</option>
+                        <select className="input" name="securityQuestionId1"
+                                onChange={this.handleUserInput}>
+                            <option>Select a security question</option>
                             {constants.question.map(a => <option
-                            value={a.value} key={a.value}>{a.label}</option>)}</select>
-                        <p className="error-message">{security_question}</p>
-                    </div>
+                                value={a.value} key={a.value}>{a.label}</option>)}</select>
+                        <p className="error-message">{securityQuestionId1}</p>
 
+                    </div>
                     <div className="col-sm-6 form-group">
                         <label>*Security Answer</label>
-                        <input className="input" type="text" name="security_answer" onChange={this.handleUserInput}/>
-                        <p className="error-message">{security_answer}</p>
+                        <input className="input" type="text" name="securityAnswer1" onChange={this.handleUserInput}/>
+                        <p className="error-message">{securityAnswer1}</p>
                     </div>
                     <div className="col-sm-6 form-group">
+                        <label>*Security Question</label>
+                        <select className="input" name="securityQuestionId2"
+                                onChange={this.handleUserInput}>
+                            <option>Select a security question</option>
+                            {constants.question.map(a => <option
+                                value={a.value} key={a.value}>{a.label}</option>)}</select>
+                        <p className="error-message">{securityQuestionId2}</p>
+                    </div>
+                    <div className="col-sm-6 form-group">
+                        <label>*Security Answer</label>
+                        <input className="input" type="text" name="securityAnswer2" onChange={this.handleUserInput}/>
+                        <p className="error-message">{securityAnswer2}</p>
+                    </div>
+
+
+                    <div className="col-sm-6 form-group">
                         <label>*Memorable word</label>
-                        <input className="input" type="text" name="memorable_word" onChange={this.handleUserInput}/>
-                        <p className="error-message">{memorable_word}</p>
+                        <input className="input" type="text" name="memorableWord" onChange={this.handleUserInput}/>
+                        <p className="error-message">{memorableWord}</p>
                     </div>
                 </div>
                 <div className="container-login-form-btn">
                     <button className="login-form-btn" onClick={this._back}>Back</button>
-                    <button className="login-form-btn" disabled={!this.state.formValid} onClick={() => this.submit()}>Submit</button>
+                    <button className="login-form-btn" disabled={!this.state.formValid}
+                            onClick={() => this.submit()}>Submit
+                    </button>
                 </div>
 
             </div>
         );
     }
 }
+
+const mapStateToProps = state => ({
+    data: state.data,
+    photo: state.photo
+});
+const mapDispatchToProps = (dispatch) => ({
+    onAdd: (data) => dispatch({ type: 'ADD_DATA', text: data })
+});
+export default connect(mapStateToProps,mapDispatchToProps)(Security);
 
 
 

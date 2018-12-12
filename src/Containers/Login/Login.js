@@ -12,7 +12,8 @@ export default class Login extends Component {
             formErrors: {email: '', pass: ''},
             emailValid: false,
             passValid: false,
-            formValid: false
+            formValid: false,
+            error: ''
         }
     }
 
@@ -35,6 +36,9 @@ export default class Login extends Component {
         ).then(response => {
             localStorage.setItem('user', JSON.stringify(response));
             this.props.history.push('/')
+            this.setState({error: ''})
+        }).catch(() => {
+            this.setState({error: "User does not exist"})
         });
     };
 
@@ -72,7 +76,7 @@ export default class Login extends Component {
 					<span className="title">
 						Member Login
 					</span>
-
+                        <div className="block-error">{this.state.error}</div>
                         <div className="wrap-input">
                             <input className="input" type="text" name="email" placeholder="Email"
                                    onChange={this.handleUserInput} value={this.state.email}/>
