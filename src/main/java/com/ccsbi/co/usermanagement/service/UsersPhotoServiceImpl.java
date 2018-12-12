@@ -24,9 +24,9 @@ public class UsersPhotoServiceImpl implements IUsersPhotoService {
 	@Autowired
 	private UsersPhotoRepo usersPhotoRepo;
 
-	// Linux: /home/{user}/ccsbi
-	// Windows: C:/Users/{user}/ccsbi
-	private static String UPLOAD_DIR = System.getProperty("user.home") + "/ccsbi/";
+	// Linux: tmp directory in tomcat server
+	// Windows: Tmp dir in tomcat server
+	private static String UPLOAD_DIR = System.getProperty("java.io.tmpdir") + "/ccsbi/";
 
 	@Override
 	public UsersPhoto save(UsersPhoto usersPhoto, MultipartFile photo) throws Exception {
@@ -38,7 +38,7 @@ public class UsersPhotoServiceImpl implements IUsersPhotoService {
 		String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
 
 		byte[] bytes = photo.getBytes();
-		Path path = Paths.get(fileName);
+		Path path = Paths.get(UPLOAD_DIR+fileName);
 		Files.write(path, bytes);
 
 		try {

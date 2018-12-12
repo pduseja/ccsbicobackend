@@ -31,7 +31,17 @@ public class UsersDetails implements Serializable {
 	@JsonProperty("securityQuestionId1")
 	@JacksonXmlProperty(localName = "securityQuestionId1")
 	private int securityQuestionId1;
+	
+	@ApiModelProperty(name = "securityQuestionIdStr1", value = "securityQuestionIdStr1")
+	@JsonProperty("securityQuestionIdStr1")
+	@JacksonXmlProperty(localName = "securityQuestionIdStr1")
+	private String securityQuestionIdStr1;
 
+	@ApiModelProperty(name = "securityQuestionIdStr2", value = "securityQuestionIdStr2")
+	@JsonProperty("securityQuestionIdStr2")
+	@JacksonXmlProperty(localName = "securityQuestionIdStr2")
+	private String securityQuestionIdStr2;
+	
 	@ApiModelProperty(name = "securityQuestionId2", value = "securityQuestionId2")
 	@JsonProperty("securityQuestionId2")
 	@JacksonXmlProperty(localName = "securityQuestionId2")
@@ -256,6 +266,34 @@ public class UsersDetails implements Serializable {
 	 */
 	public void setModDate(Date modDate) {
 		this.modDate = modDate;
+	}
+
+	/**
+	 * @return the securityQuestionIdStr1
+	 */
+	public String getSecurityQuestionIdStr1() {
+		return securityQuestionIdStr1;
+	}
+
+	/**
+	 * @param securityQuestionIdStr1 the securityQuestionIdStr1 to set
+	 */
+	public void setSecurityQuestionIdStr1(String securityQuestionIdStr1) {
+		this.securityQuestionIdStr1 = securityQuestionIdStr1;
+	}
+
+	/**
+	 * @return the securityQuestionIdStr2
+	 */
+	public String getSecurityQuestionIdStr2() {
+		return securityQuestionIdStr2;
+	}
+
+	/**
+	 * @param securityQuestionIdStr2 the securityQuestionIdStr2 to set
+	 */
+	public void setSecurityQuestionIdStr2(String securityQuestionIdStr2) {
+		this.securityQuestionIdStr2 = securityQuestionIdStr2;
 	}
 
 }

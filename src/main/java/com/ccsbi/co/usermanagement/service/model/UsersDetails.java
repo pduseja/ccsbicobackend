@@ -32,6 +32,38 @@ public class UsersDetails implements Serializable {
 	
 	private int loginAttempts;
 	
+	private String securityQuestionIdStr2;
+	
+	private String securityQuestionIdStr1;
+	
+	/**
+	 * @return the securityQuestionIdStr2
+	 */
+	public String getSecurityQuestionIdStr2() {
+		return securityQuestionIdStr2;
+	}
+
+	/**
+	 * @param securityQuestionIdStr2 the securityQuestionIdStr2 to set
+	 */
+	public void setSecurityQuestionIdStr2(String securityQuestionIdStr2) {
+		this.securityQuestionIdStr2 = securityQuestionIdStr2;
+	}
+
+	/**
+	 * @return the securityQuestionIdStr1
+	 */
+	public String getSecurityQuestionIdStr1() {
+		return securityQuestionIdStr1;
+	}
+
+	/**
+	 * @param securityQuestionIdStr1 the securityQuestionIdStr1 to set
+	 */
+	public void setSecurityQuestionIdStr1(String securityQuestionIdStr1) {
+		this.securityQuestionIdStr1 = securityQuestionIdStr1;
+	}
+
 	/**
 	 * @return the userId
 	 */
