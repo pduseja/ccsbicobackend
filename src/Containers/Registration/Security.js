@@ -32,7 +32,7 @@ export class Security extends Component {
             securityAnswer1Valid: false,
             securityAnswer2Valid: false,
             memorableWordValid: false,
-            formValid: false
+            formValid: true
         };
     }
 

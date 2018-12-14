@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
 import constants from '../../Utils/Constants';
-import {addPhoto, storePersonalDataState} from "../../Actions/Actions";
+import {addPhoto} from "../../Actions/Actions";
 import connect from "react-redux/es/connect/connect";
 
 let countries = require('country-list')();
@@ -42,22 +42,18 @@ export class PersonalDetails extends Component {
                 nationality: '',
                 countryOfBirth: ''
             },
-            valid:{fnameValid: false,
+            fnameValid: false,
             snameValid: false,
             dobValid: false,
             tobValid: false,
             nationalityValid: false,
             cobValid: false,
-            formValid: false}
+            formValid: false
 
         }
     }
 
     componentDidMount() {
-        console.log(this.props,"state")
-        console.log(this.state.formData,"formddata")
-        console.log(this.state,"stateActual")
-        console.log({...this.state.formData, ...this.props.data},"merging")
         this.setState({
             formData: {...this.state.formData, ...this.props.data}
         })
@@ -74,7 +70,7 @@ export class PersonalDetails extends Component {
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let {fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid} = this.state.valid;
+        let {fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid} = this.state;
 
         switch (fieldName) {
             case 'firstName':
@@ -110,7 +106,7 @@ export class PersonalDetails extends Component {
             default:
                 break;
         }
-        this.setState({valid:{
+        this.setState({
             formErrors: fieldValidationErrors,
             fnameValid: fnameValid,
             snameValid: snameValid,
@@ -118,7 +114,7 @@ export class PersonalDetails extends Component {
             tobValid: tobValid,
             nationalityValid: nationalityValid,
             cobValid: cobValid
-        }}, this.validateForm);
+        }, this.validateForm);
 
 
     };
@@ -128,6 +124,7 @@ export class PersonalDetails extends Component {
 
         let reader = new FileReader();
         let file = e.target.files[0];
+        console.log(file,"file")
         let fileToStore =  window.URL.createObjectURL(file);
         reader.onloadend = () => {
             this.setState({
@@ -151,8 +148,6 @@ export class PersonalDetails extends Component {
             formValid: this.state.fnameValid && this.state.snameValid &&
                 this.state.tobValid && this.state.dobValid && this.state.nationalityValid &&
                 this.state.cobValid
-        },()=>{
-            this.props.dispatch(storePersonalDataState());
         });
 
     };

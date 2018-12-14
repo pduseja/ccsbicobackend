@@ -98,7 +98,7 @@ export class Address extends Component {
                 <div className="container-login-form-btn">
                     <button className="login-form-btn" onClick={this.back}>Back
                     </button>
-                    <button className="login-form-btn" onClick={() => this.next(this.enableNext())} disabled={false}>Next
+                    <button className="login-form-btn" onClick={() => this.next()} disabled={this.enableNext()}>Next
                     </button>
                 </div>
             </div>
