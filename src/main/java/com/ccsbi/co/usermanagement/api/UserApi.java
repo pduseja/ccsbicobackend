@@ -1,8 +1,6 @@
 package com.ccsbi.co.usermanagement.api;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -168,7 +166,7 @@ public class UserApi {
 	@PostMapping(path = "/passwordReset", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
 					MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-	public String resetDone(@ApiParam(value = "", required = true) @RequestBody Users users) throws Exception {
+	public ResponseEntity<String> resetDone(@ApiParam(value = "", required = true) @RequestBody Users users) throws Exception {
 
 		
 		int update = 0;
@@ -177,14 +175,14 @@ public class UserApi {
 
 			update = usersService.changePassword(users.getUserName(), users.getUsersDetails().getPassword());
 			if (update > 0) {
-				return "You Password is changed : " + users.getUserName() + " Please click here to login";
-
+				return ResponseEntity.ok().build();
+						
 			} else {
-				new String();
+				return ResponseEntity.badRequest().build();
 			}
 		}
 
-		return "You Password is changed : " + users.getUserName() + " Please click here to login";
+		return ResponseEntity.badRequest().build();
 	}
 
 	@ApiOperation(value = "Reset Password", notes = "Reset Password", nickname = "Reset Password")
