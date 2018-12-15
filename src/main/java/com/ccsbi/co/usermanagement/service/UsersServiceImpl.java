@@ -10,11 +10,11 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.AddressDetails;
 import com.ccsbi.co.usermanagement.service.model.Users;
 import com.ccsbi.co.usermanagement.service.model.UsersDetails;
-import com.ccsbi.co.usermanagement.service.model.UsersPhoto;
 
 @Service
 public class UsersServiceImpl implements IUsersService {
@@ -30,6 +30,9 @@ public class UsersServiceImpl implements IUsersService {
 
 	@Autowired
 	UsersRepo usersRepo;
+	
+	@Autowired
+	UsersDetailsRepo usersDetailsRepo;
 
 	@Autowired
 	UserNameGeneratorService userNameGeneratorService;
@@ -99,6 +102,24 @@ public class UsersServiceImpl implements IUsersService {
 	private com.ccsbi.co.usermanagement.repository.entity.Users convertU(Users users) {
 
 		return dozerMapper.map(users, com.ccsbi.co.usermanagement.repository.entity.Users.class);
+	}
+
+	@Override
+	public int changePassword(String userName, String password) {
+		Users users = new Users();
+		int update = 0;
+
+		if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
+			users = convertUsers(usersRepo.loginUser(userName));
+			update = usersDetailsRepo.updateusersDetails(users.getUserId(),password);
+			if(update==0) {
+				return 0;
+			}
+			else {
+				return update;
+			}
+		} 
+		return update;
 	}
 
 }
