@@ -16,6 +16,7 @@ import com.ccsbi.co.usermanagement.service.model.AddressDetails;
 import com.ccsbi.co.usermanagement.service.model.Users;
 import com.ccsbi.co.usermanagement.service.model.UsersDetails;
 
+@Transactional
 @Service
 public class UsersServiceImpl implements IUsersService {
 
@@ -30,7 +31,7 @@ public class UsersServiceImpl implements IUsersService {
 
 	@Autowired
 	UsersRepo usersRepo;
-	
+
 	@Autowired
 	UsersDetailsRepo usersDetailsRepo;
 
@@ -111,15 +112,22 @@ public class UsersServiceImpl implements IUsersService {
 
 		if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
 			users = convertUsers(usersRepo.loginUser(userName));
-			update = usersDetailsRepo.updateusersDetails(users.getUserId(),password);
-			if(update==0) {
+			
+			com.ccsbi.co.usermanagement.repository.entity.UsersDetails usersDetails = usersDetailsRepo.getUsersDetails(users.getUserId());
+			System.out.println("Hello");
+			if (usersDetails!=null) {
+				update = usersDetailsRepo.updateusersDetails(users.getUserId(), password);
+				if (update == 0) {
+					return 0;
+				} else {
+					return update;
+				}
+			} else {
 				return 0;
 			}
-			else {
-				return update;
-			}
-		} 
+		}
 		return update;
 	}
+
 
 }
