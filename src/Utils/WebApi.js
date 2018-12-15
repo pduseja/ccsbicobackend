@@ -17,14 +17,18 @@ let WebApi = {
             },
         })
     },
-    registerUser(data, photo){
-        console.log(data, photo)
+    registerUser(data, photo, done){
         let request = new XMLHttpRequest();
         request.open('POST', 'http://localhost:9090/CCSBI/api/registration');
         let formData = new FormData();
         formData.append('photo', photo || {})
         formData.append('users', JSON.stringify(data));
-
+        request.onload = function () {
+            done(null, request.response);
+        };
+        request.onerror = function () {
+            done(request.response);
+        };
         request.send(formData);
     }
 };

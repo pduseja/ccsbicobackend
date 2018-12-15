@@ -10,18 +10,20 @@ import ForgotPassword from "./ForgotPassword/ForgotPassword";
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Reducers from "../Reducers/Reducers";
+import UserCreated from "../Components/UserCreated";
 
-const store = createStore(Reducers)
+const store = createStore(Reducers);
 class App extends Component {
     render() {
         return (
             <Provider store={store}>
-            <BrowserRouter>
+            <BrowserRouter basename={'/CCSBI'}>
                 <div>
                     <Route path="/" component={Header}/>
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/registration" component={Registration}/>
                     <Route exact path="/forgotPassword" component={ForgotPassword}/>
+                    <Route exact path="/UserCreated" component={UserCreated} />
                     <Route exact path="/" component={Home}/>
                 </div>
             </BrowserRouter>

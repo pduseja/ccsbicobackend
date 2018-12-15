@@ -297,12 +297,13 @@
 #menu > ul > li:last-child:hover {
     font-weight: 700;
 }
-#menu > ul > li:last-child a{
+#menu > ul > li:last-child span{
     color: #fff;
     text-transform: uppercase;
     background: #c24d78;
     border-radius: 40px;
     padding: 0 25px;
+    display:inline-block;
     line-height: 35px;
     margin: 10px;
     cursor: pointer;

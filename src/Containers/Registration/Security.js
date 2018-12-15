@@ -3,6 +3,7 @@ import {states} from './States.js';
 import constants from '../../Utils/Constants';
 import {connect} from "react-redux";
 import WebApi from "../../Utils/WebApi";
+import {withRouter} from "react-router-dom";
 
 export class Security extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ export class Security extends Component {
             securityAnswer1Valid: false,
             securityAnswer2Valid: false,
             memorableWordValid: false,
-            formValid: true
+            formValid: false
         };
     }
 
@@ -112,7 +113,10 @@ export class Security extends Component {
 
     componentDidUpdate = (prevProps) => {
         if(prevProps.data !== this.props.data)
-            WebApi.registerUser(this.props.data,this.props.photo);
+            WebApi.registerUser(this.props.data,this.props.photo, (err, response)=>{
+                if(err){ throw err}
+                this.props.history.push({pathname:"/UserCreated",data: response})
+            })
     };
 
     handleUserInput = (e) => {
@@ -200,7 +204,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
     onAdd: (data) => dispatch({ type: 'ADD_DATA', text: data })
 });
-export default connect(mapStateToProps,mapDispatchToProps)(Security);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Security));
 
 
 
