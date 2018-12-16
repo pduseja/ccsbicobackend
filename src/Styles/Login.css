@@ -99,7 +99,7 @@
     text-align: center;
     width: 100%;
     display: block;
-    padding-bottom: 50px;
+    padding-bottom: 15px;
 }
 
 .login-form .wrap-input, .registration-form .wrap-input {
@@ -292,6 +292,13 @@
 .file-upload-img {
     width: 200px;
     height: auto;
+}
+
+.forgot-password .error-msg{
+    text-align: center;
+    margin: 0 auto;
+    display: inherit;
+    color: red;
 }
 
 /*------------------------------------------------------------------

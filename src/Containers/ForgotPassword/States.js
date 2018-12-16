@@ -1,6 +1,5 @@
 import keyMirror from 'keymirror';
 
 export const states = keyMirror({
-  DETAILS: true, RETRIEVE: true,
-    CHANGEPASSWORD: true
+  USERID: true, MEMORABLEWORD: true, SECURITYQUESTION: true, SETPASSWORD: true
 });

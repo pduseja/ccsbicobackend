@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
 
-export class Retrieve extends Component {
+export class MemorableWord extends Component {
     constructor(props) {
         super(props);
         console.log("retrieve", props)
@@ -11,16 +11,12 @@ export class Retrieve extends Component {
             memorable_char2: '',
             randomNumber1: Math.floor(Math.random() * lengthOfWord),
             randomNumber2: Math.floor(Math.random() * lengthOfWord),
-            formErrors: {memorable_char1: '',memorable_char2: ''},
+            formErrors: {memorable_char1: '', memorable_char2: ''},
             memorable_char1Valid: false,
             memorable_char2Valid: false,
             formValid: false
         };
     }
-
-    _next = () => {
-        this.props.next(states.RETRIEVE);
-    };
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
@@ -69,9 +65,8 @@ export class Retrieve extends Component {
             this.setState({error: 'Please verify your answers'});
         }
         else{
-            console.log("set password")
             this.setState({error: ''})
-            //this.props.next(states.RETRIEVE)
+            this.props.next(states.SETPASSWORD,this.props.data,this.props.userId)
         }
     };
 
@@ -115,7 +110,7 @@ export class Retrieve extends Component {
 
                 <div className="container-login-form-btn">
                     <button className="login-form-btn" onClick={() => this.checkMemorableWordCharacter(randomNumber1,randomNumber2)}
-                            disabled={!this.state.formValid}>Submit
+                            disabled={!this.state.formValid}>Next
                     </button>
                 </div>
 

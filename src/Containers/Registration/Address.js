@@ -29,10 +29,6 @@ export class Address extends Component {
         this.props.back(states.PERSONAL_DETAILS)
     };
 
-    handleSelect = (key) => {
-        this.setState({key});
-    };
-
     isFormValid = (data, key, object) => {
         let formStatus = this.state.formValid;
         let address = this.state.formData.AddressDetailsList;

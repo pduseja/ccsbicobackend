@@ -1,42 +1,42 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
 import {StateMachine} from './StateMachine.js';
-import {Details} from "./Details";
-import {Retrieve} from "./Retrieve";
+import {UserID} from "./UserID";
+import {MemorableWord} from "./MemorableWord";
+import {SecurityQuestion} from "./SecurityQuestion";
+import {SetPassword} from "./SetPassword";
 
 class ForgotPassword extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentState: states.DETAILS
+            currentState: states.USERID
         };
         this.stateMachine = new StateMachine();
     }
 
-    _next = (desiredState) => {
+    _next = (desiredState, data, userId) => {
         let currentState = this.state.currentState;
-        console.log(currentState, desiredState)
         let nextState = this.stateMachine.transitionTo(currentState, desiredState);
         this.setState({
-            currentState: nextState
-        });
-    };
-
-    _back = (desiredState) => {
-        let currentState = this.state.currentState;
-        this.setState({
-            currentState: this.stateMachine.transitionFrom(currentState, desiredState)
+            currentState: nextState,
+            data: data,
+            userId: userId
         });
     };
 
     _currentStep = () => {
         switch (this.state.currentState) {
-            case states.PERSONAL_DETAILS:
-                return (<Details next={this._next}/>);
-            case states.RETRIEVE:
-                return (<Retrieve next={this._next} back={this._back}/>);
+            case states.USERID:
+                return (<UserID next={this._next} />);
+            case states.SECURITYQUESTION:
+                return (<SecurityQuestion next={this._next} data={this.state.data} userId={this.state.userId}/>);
+            case states.MEMORABLEWORD:
+                return (<MemorableWord next={this._next} data={this.state.data} userId={this.state.userId}/>);
+            case states.SETPASSWORD:
+                return (<SetPassword data={this.state.data}  userId={this.state.userId}/>)
             default:
-                return (<Details next={this._next}/>);
+                return (<UserID next={this._next}/>);
         }
     };
 

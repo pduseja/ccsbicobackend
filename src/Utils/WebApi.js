@@ -30,6 +30,29 @@ let WebApi = {
             done(request.response);
         };
         request.send(formData);
+    },
+    getDataFromUserId(id){
+        return fetch(`http://localhost:9090/CCSBI/api/reset/`+id,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+    },
+    changeUserPassword(userId, password){
+        let data = {
+            "userName": userId,
+            "UsersDetails": {
+                "password": password
+            }
+        }
+        return fetch('http://localhost:9090/CCSBI/api/passwordReset',{
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
     }
 };
 

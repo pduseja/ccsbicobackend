@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
+import WebApi from "../../Utils/WebApi";
 
-export class Details extends Component {
+export class UserID extends Component {
     constructor(props) {
         super(props);
 
@@ -9,8 +10,8 @@ export class Details extends Component {
             userId: '',
             formErrors: {userId: ''},
             userIdValid: false,
-            formValid: false
-
+            formValid: false,
+            error: ''
         }
     }
 
@@ -40,7 +41,6 @@ export class Details extends Component {
             userIdValid: userIdValid,
         }, this.validateForm);
 
-
     };
 
     validateForm() {
@@ -50,14 +50,27 @@ export class Details extends Component {
 
     };
 
+    checkUserExists = () =>{
+        WebApi.getDataFromUserId(this.state.userId).then(response => response.json()
+        ).then(response => {
+            this.setState({error: ''},()=>{
+                this.props.next(states.SECURITYQUESTION,response,this.state.userId)
+            })
+        }).catch(() => {
+            this.setState({error: "User does not exist"})
+        });
+
+    };
+
     render() {
         let {userId} = this.state.formErrors;
         return (
 
-            <div className="registration-form">
+            <div className="registration-form forgot-password">
                 <span className="title">
 						Forgot password
 					</span>
+                <span className="error-msg error-message">{this.state.error}</span>
                     <div className="col-sm-5 form-group">
                         <label>*User Id</label>
                         <input className="input" type="text" name="userId" placeholder="User id"
@@ -65,7 +78,7 @@ export class Details extends Component {
                         <p className="error-message">{userId}</p>
                     </div>
                 <div className="container-login-form-btn">
-                    <button className="login-form-btn" onClick={() => this.props.next(states.SECURITYQUESTION)}
+                    <button className="login-form-btn" onClick={() => this.checkUserExists()}
                             disabled={!this.state.formValid}>Next
                     </button>
                 </div>

@@ -1,8 +1,6 @@
 package com.ccsbi.co.usermanagement.api;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -59,7 +57,7 @@ public class UserApi {
 
 	@Autowired
 	IUsersPhotoService usersPhotoService;
-	
+
 	@Autowired
 	IUsersDetailsService usersDetailsService;
 
@@ -79,20 +77,27 @@ public class UserApi {
 		LOGGER.info("Inside {}.login()", getClass().getSimpleName());
 
 		Users user = new Users();
+		int loginAttempts = 0;
+		if (!(login.getRememberMe())) {
+			if (StringUtils.isEmpty(login.getCookie())) {
+				user = convertUser(loginService.login(convertLogin(login)));
+				if (!StringUtils.isEmpty(user.getUserName())) {
+					// Add creation of cookie logic
 
-		if (StringUtils.isEmpty(login.getCookie())) {
-			user = convertUser(loginService.login(convertLogin(login)));
-			if (!StringUtils.isEmpty(user.getUserName())) {
-
-				return user;
+					return user;
+				} else {
+					return null;
+				}
 			} else {
-				return null;
-			}
-		} else {
-			List<Object> list1 = new ArrayList<>();
-			list1 = loginService.getUserName(convertLogin(login));
-			user = convertUser((com.ccsbi.co.usermanagement.service.model.Users) list1.get(0));
+				user = convertUser(loginService.getUserName(convertLogin(login)));
+				loginAttempts = loginService.loginAttempts(convertLogin(login));
+				if (loginAttempts < 3) {
+					return user;
+				} else {
+					return new Users();
+				}
 
+			}
 		}
 
 		return user;
@@ -115,7 +120,7 @@ public class UserApi {
 		String userName = null;
 		UsersPhoto userPhoto = new UsersPhoto();
 		JSONObject jsonObj = new JSONObject(users);
-		String jsonStr = jsonObj.toString();
+
 		ObjectMapper mapper = new ObjectMapper();
 		Users user = mapper.readValue(jsonObj.toString(), Users.class);
 
@@ -138,8 +143,8 @@ public class UserApi {
 			userPhoto.setPhotoContent(photoContent);
 			userPhoto = convertPClient(usersPhotoService.save(convertPModel(userPhoto), photo));
 			user.setPhotoId(userPhoto.getPhotoId());
-		} 
-		
+		}
+
 		user = convertUsers(usersService.save(convert(user)));
 
 		if (!StringUtils.isEmpty(user.getUserName())) {
@@ -150,26 +155,57 @@ public class UserApi {
 				+ " Admin will verify your details and will contact you via email";
 	}
 
+	/**
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	@ApiOperation(value = "User registration", notes = "User registration", nickname = "registration")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@PostMapping(path = "/passwordReset", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<String> resetDone(@ApiParam(value = "", required = true) @RequestBody Users users) throws Exception {
+
+		
+		int update = 0;
+		if (!StringUtils.isEmpty(users.getUserName())) {
+			
+
+			update = usersService.changePassword(users.getUserName(), users.getUsersDetails().getPassword());
+			if (update > 0) {
+				return ResponseEntity.ok().build();
+						
+			} else {
+				return ResponseEntity.badRequest().build();
+			}
+		}
+
+		return ResponseEntity.badRequest().build();
+	}
+
 	@ApiOperation(value = "Reset Password", notes = "Reset Password", nickname = "Reset Password")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@GetMapping(path = "/reset/{userName}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<UsersDetails> paramList(@ApiParam(value = "", required = true) @PathVariable String userName) {
-		
+	@GetMapping(path = "/reset/{userName}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<UsersDetails> paramList(
+			@ApiParam(value = "", required = true) @PathVariable String userName) {
+
 		UsersDetails usersDetails = new UsersDetails();
-		
+
 		usersDetails = convertUsersDetails(usersDetailsService.getUsersDetails(userName));
-		if(!StringUtils.isEmpty(usersDetails.getMemorableWord())) {
+		if (!StringUtils.isEmpty(usersDetails.getMemorableWord())) {
 			return ResponseEntity.ok().body(usersDetails);
 		} else {
 			return ResponseEntity.badRequest().build();
 		}
-		
-	
+
 	}
-	
+
 	private UsersDetails convertUsersDetails(com.ccsbi.co.usermanagement.service.model.UsersDetails usersDetails) {
-		
+
 		return dozerMapper.map(usersDetails, UsersDetails.class);
 	}
 

@@ -47,3 +47,10 @@ button:disabled{
     color: #666666 !important;
     cursor: default !important;
 }
+
+.info{
+    text-align: center;
+    margin: 0 auto;
+    display: inherit;
+}
+
