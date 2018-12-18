@@ -9,11 +9,13 @@ public interface ILoginService {
 	
 	public Users getUserName(UsersLoginRecord login);
 	
-	
+
 	/**
 	 * Description : This method is check the Login attempts of the user
+	 * 
 	 * @param login
+	 * @param userId
 	 * @return
 	 */
-	public int loginAttempts(UsersLoginRecord login);	
+	public int loginAttempts(UsersLoginRecord login, int userId);	
 }

@@ -15,6 +15,7 @@ import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.AddressDetails;
 import com.ccsbi.co.usermanagement.service.model.Users;
 import com.ccsbi.co.usermanagement.service.model.UsersDetails;
+import com.ccsbi.co.usermanagement.util.ReallyStrongSecuredPassword;
 
 @Transactional
 @Service
@@ -37,6 +38,9 @@ public class UsersServiceImpl implements IUsersService {
 
 	@Autowired
 	UserNameGeneratorService userNameGeneratorService;
+	
+	@Autowired
+	ReallyStrongSecuredPassword reallyStrongSecuredPassword;
 
 	@Override
 	@Transactional
@@ -64,6 +68,10 @@ public class UsersServiceImpl implements IUsersService {
 
 			if (!StringUtils.isEmpty(userDetails.getMemorableWord())) {
 				userDetails.setUserId(users.getUserId());
+				String encryptPassword = reallyStrongSecuredPassword.encrypt(userDetails.getPassword());
+				userDetails.setPassword(encryptPassword);
+				userDetails.setIsTempPassword('N');
+				userDetails.setAccountLocked("N");
 				userDetails = usersDetailsServiceImpl.save(userDetails);
 			}
 

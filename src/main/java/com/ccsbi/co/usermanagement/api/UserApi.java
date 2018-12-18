@@ -77,27 +77,18 @@ public class UserApi {
 		LOGGER.info("Inside {}.login()", getClass().getSimpleName());
 
 		Users user = new Users();
-		int loginAttempts = 0;
+		
 		if (!(login.getRememberMe())) {
-			if (StringUtils.isEmpty(login.getCookie())) {
-				user = convertUser(loginService.login(convertLogin(login)));
-				if (!StringUtils.isEmpty(user.getUserName())) {
-					// Add creation of cookie logic
-
-					return user;
-				} else {
-					return null;
+			user = convertUser(loginService.login(convertLogin(login)));
+			if (!StringUtils.isEmpty(user.getUserName())) {
+				if (user.getUserId() != 0) {
+					user = loginAttemptsConditioncheck(login, user);
 				}
-			} else {
-				user = convertUser(loginService.getUserName(convertLogin(login)));
-				loginAttempts = loginService.loginAttempts(convertLogin(login));
-				if (loginAttempts < 3) {
-					return user;
-				} else {
-					return new Users();
-				}
-
+			
 			}
+		}else {
+			user = convertUser(loginService.getUserName(convertLogin(login)));
+			user = loginAttemptsConditioncheck(login, user);
 		}
 
 		return user;
@@ -166,17 +157,16 @@ public class UserApi {
 	@PostMapping(path = "/passwordReset", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
 					MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<String> resetDone(@ApiParam(value = "", required = true) @RequestBody Users users) throws Exception {
+	public ResponseEntity<String> resetDone(@ApiParam(value = "", required = true) @RequestBody Users users)
+			throws Exception {
 
-		
 		int update = 0;
 		if (!StringUtils.isEmpty(users.getUserName())) {
-			
 
 			update = usersService.changePassword(users.getUserName(), users.getUsersDetails().getPassword());
 			if (update > 0) {
 				return ResponseEntity.ok().build();
-						
+
 			} else {
 				return ResponseEntity.badRequest().build();
 			}
@@ -202,6 +192,21 @@ public class UserApi {
 			return ResponseEntity.badRequest().build();
 		}
 
+	}
+
+	private Users loginAttemptsConditioncheck(UsersLoginRecord login, Users user) {
+		int loginAttempts = 0;
+		if (user.getUserId() != 0) {
+			loginAttempts = loginService.loginAttempts(convertLogin(login), user.getUserId());
+			if (loginAttempts < 3 || loginAttempts == 0) {
+				user.setUsersDetails(null);
+				user.setUserId(0);
+				return user;
+			} else {
+				return new Users();
+			}
+		}
+		return user;
 	}
 
 	private UsersDetails convertUsersDetails(com.ccsbi.co.usermanagement.service.model.UsersDetails usersDetails) {
