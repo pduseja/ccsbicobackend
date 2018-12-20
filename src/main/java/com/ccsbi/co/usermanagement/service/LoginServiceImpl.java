@@ -46,16 +46,48 @@ public class LoginServiceImpl implements ILoginService {
 			encryptPassword = reallyStrongSecuredPassword.encrypt(login.getPassword());
 			UsersDetails usersD = convertDetails(usersDetailsRepo.getUsersDetails(user.getUserId()));
 			user.setUsersDetails(usersD);
-			String decodePassword = reallyStrongSecuredPassword.decrypt(usersD.getPassword());
-			System.out.println("Value : " + decodePassword);
-
+			UsersLoginRecord usersLoginRecord = new UsersLoginRecord();
 			if (user.getUserId() > 0) {
 
 				password = usersDetailsRepo.loginUser(user.getUserId());
 			}
 			if (password.equals(encryptPassword)) {
+				// Trace user login
+				com.ccsbi.co.usermanagement.repository.entity.UsersLoginRecord usersLoginRecordEnt = usersLoginRecordRepo
+						.getRecord(user.getUserId());
+				
+				if (usersLoginRecordEnt!=null) {
+					usersLoginRecord = convertULR(usersLoginRecordEnt);
+					if (usersLoginRecord.getUserId() == user.getUserId()) {
+						if (login.getRememberMe()) {
+							usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, user);
+						} else {
+							usersLoginRecord.setRememberMe(false);
+							usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, user);
+						}
+					} else {
+						if (login.getRememberMe()) {
+							usersLoginRecord = saveUsersLoginRecord(login, user);
+						} else {
+							usersLoginRecord.setRememberMe(false);
+							usersLoginRecord = updateUsersLoginRecord(login, user);
+						}
 
-				return user;
+					}
+					user.setUsersLoginRecord(usersLoginRecord);
+					return user;
+				} else {
+					// Add Login code
+					if (!login.getRememberMe()) {
+						usersLoginRecord.setRememberMe(false);
+						usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
+					} else {						
+						usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
+					}
+					user.setUsersLoginRecord(usersLoginRecord);
+					return user;
+					
+				}
 			} else {
 				return new Users();
 			}
@@ -78,8 +110,6 @@ public class LoginServiceImpl implements ILoginService {
 			if (usersLoginRecord.getUserId() > 0) {
 				users = convertUsers(usersRepo.getUsers(usersLoginRecord.getUserId()));
 				if (!StringUtils.isEmpty(users.getFirstName())) {
-					// Add Generation of New Cookie logic
-
 					usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, users);
 					users.setUsersLoginRecord(usersLoginRecord);
 					return users;
@@ -92,8 +122,8 @@ public class LoginServiceImpl implements ILoginService {
 			if (!StringUtils.isEmpty(users.getUserName())) {
 				usersLoginRecord.setPassword(login.getPassword());
 				usersLoginRecord = convertULR(usersLoginRecordRepo.getRecord(users.getUserId()));
-				if(usersLoginRecord.getUserId()==users.getUserId()) {
-					usersLoginRecord= updateUsersLoginRecord(usersLoginRecord, users);
+				if (usersLoginRecord.getUserId() == users.getUserId()) {
+					usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, users);
 				} else {
 					usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, users);
 				}
@@ -133,14 +163,26 @@ public class LoginServiceImpl implements ILoginService {
 	}
 
 	private UsersLoginRecord saveUsersLoginRecord(UsersLoginRecord usersLoginRecord, Users users) {
+		long currTime = System.currentTimeMillis();
 		String cookieStr = generateCookieToken(users.getUserName(), usersLoginRecord.getPassword(),
-				users.getFirstName());
-		String tokenStr = generateCookieToken(users.getUserName(), "", "");
-		usersLoginRecord.setCookie(cookieStr);
-		// 1 day = 24 x 60 x 60
-		usersLoginRecord.setCookieExpirytime(86400);
+				String.valueOf(currTime));
+		
+		
+		String tokenStr = generateCookieToken(users.getUserName(), "", String.valueOf(currTime));
+
 		usersLoginRecord.setUserId(users.getUserId());
-		usersLoginRecord.setToken(tokenStr);
+		usersLoginRecord.setRememberMe(usersLoginRecord.getRememberMe());
+		if (!usersLoginRecord.getRememberMe()) {
+			usersLoginRecord.setCookie("");
+			usersLoginRecord.setToken("");
+			usersLoginRecord.setCookieExpirytime(0);
+		} else {
+			usersLoginRecord.setToken(tokenStr);
+			usersLoginRecord.setCookie(cookieStr);
+			// 1 day = 24 x 60 x 60
+			usersLoginRecord.setCookieExpirytime(86400);
+		}
+		
 		usersLoginRecord.setPassword(users.getUsersDetails().getPassword());
 		usersLoginRecord.setUserName(users.getUserName());
 		usersLoginRecord.setRememberMe(true);
@@ -150,14 +192,23 @@ public class LoginServiceImpl implements ILoginService {
 	}
 
 	private UsersLoginRecord updateUsersLoginRecord(UsersLoginRecord usersLoginRecord, Users users) {
+		long currTime = System.currentTimeMillis();
+		
 		String cookieStr = generateCookieToken(users.getUserName(), usersLoginRecord.getPassword(),
-				users.getFirstName());
-		String tokenStr = generateCookieToken(users.getUserName(), "", "");
-		usersLoginRecord.setCookie(cookieStr);
+				String.valueOf(currTime));
+		String tokenStr = generateCookieToken(users.getUserName(), "", String.valueOf(currTime));
 		// 1 day = 24 x 60 x 60
-		usersLoginRecord.setCookieExpirytime(86400);
-
-		usersLoginRecord.setToken(tokenStr);
+		
+		usersLoginRecord.setRememberMe(usersLoginRecord.getRememberMe());
+		if (!usersLoginRecord.getRememberMe()) {
+			usersLoginRecord.setCookie("");
+			usersLoginRecord.setToken("");
+			usersLoginRecord.setCookieExpirytime(0);
+		} else {
+			usersLoginRecord.setToken(tokenStr);
+			usersLoginRecord.setCookie(cookieStr);
+			usersLoginRecord.setCookieExpirytime(86400);
+		}
 		int login = usersLoginRecordRepo.updateCookieToken(users.getUserId(), cookieStr, tokenStr);
 		if (login != 0) {
 			return usersLoginRecord;
