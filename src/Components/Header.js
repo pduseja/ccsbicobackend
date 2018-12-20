@@ -88,14 +88,14 @@ export default class Header extends Component {
             <div ref="root">
                 <nav className="navbar">
                     <ul className="important-links">
-                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><a href="/">Important
-                            information</a></li>
-                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><a href="/">Privacy policy</a>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/ImportantLinks">Important
+                            information</Link></li>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/PrivacyPolicy">Privacy policy</Link>
                         </li>
-                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><a href="/">Terms of use</a>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/TermsOfUse">Terms of use</Link>
                         </li>
-                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><a href="/">Cookies</a></li>
-                        <li><a href="/">Languages</a></li>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/Cookies">Cookies</Link></li>
+                        <li><Link to="/Language">Languages</Link></li>
                         <li><a href="/"><i className="fab fa-facebook-f"/></a></li>
                         <li><a href="/"><i className="fab fa-twitter"/></a></li>
                         <li><a href="/"><i className="fab fa-linkedin-in"/></a></li>
@@ -126,45 +126,45 @@ export default class Header extends Component {
                             </li>
                             <li className="nav-item"><Link to="/" className="nav-link">About us</Link>
                                 <ul>
-                                    <li><Link to="/">About us</Link></li>
-                                    <li><Link to="/">What we do</Link></li>
-                                    <li><Link to="/">Team</Link></li>
-                                    <li><Link to="/">Pricing</Link></li>
-                                    <li><Link to="/">FAQ's</Link></li>
+                                    <li><Link to="/AboutUs">About us</Link></li>
+                                    <li><Link to="/WhatWeDo">What we do</Link></li>
+                                    <li><Link to="/Team">Team</Link></li>
+                                    <li><Link to="/Pricing">Pricing</Link></li>
+                                    <li><Link to="/FAQ">FAQ's</Link></li>
                                 </ul>
                             </li>
                             <li className="nav-item"><Link to="/" className="nav-link">Services</Link>
                                 <ul>
-                                    <li><Link to="/">Educational Support Services</Link></li>
-                                    <li><Link to="/">Care Support Services</Link></li>
-                                    <li><Link to="/">Business Support Services</Link></li>
-                                    <li><Link to="/">Operations Management</Link></li>
-                                    <li><Link to="/">Information Tech Services</Link></li>
+                                    <li><Link to="/EducationSupport">Educational Support Services</Link></li>
+                                    <li><Link to="/CareSupport">Care Support Services</Link></li>
+                                    <li><Link to="/BusinessSupport">Business Support Services</Link></li>
+                                    <li><Link to="/OperationManagement">Operations Management</Link></li>
+                                    <li><Link to="/InformationTech">Information Tech Services</Link></li>
                                 </ul>
                             </li>
                             <li className="nav-item"><Link to="/" className="nav-link">Our partners</Link>
                                 <ul>
-                                    <li><Link to="/">Citizens</Link></li>
-                                    <li><Link to="/">Small businesses</Link></li>
-                                    <li><Link to="/">CCSBI Families</Link></li>
-                                    <li><Link to="/">Franchises</Link></li>
-                                    <li><Link to="/">Other stakeholders</Link></li>
+                                    <li><Link to="/Citizen">Citizens</Link></li>
+                                    <li><Link to="/SmallBusiness">Small businesses</Link></li>
+                                    <li><Link to="/CCSBIFamilies">CCSBI Families</Link></li>
+                                    <li><Link to="/Franchises">Franchises</Link></li>
+                                    <li><Link to="/Stakeholders">Other stakeholders</Link></li>
                                 </ul>
                             </li>
                             <li className="nav-item"><Link to="/" className="nav-link">Search S&P</Link>
                                 <ul>
-                                    <li><Link to="/">Service & Prod Search</Link></li>
-                                    <li><Link to="/">Our approach</Link></li>
-                                    <li><Link to="/">Help: How it Works</Link></li>
-                                    <li><Link to="/">Write your need</Link></li>
-                                    <li><Link to="/">Additional information</Link></li>
+                                    <li><Link to="/ServicesProdSearch">Service & Prod Search</Link></li>
+                                    <li><Link to="/OurApproach">Our approach</Link></li>
+                                    <li><Link to="/Help">Help: How it Works</Link></li>
+                                    <li><Link to="/WriteToUs">Write your need</Link></li>
+                                    <li><Link to="/AdditionalInfo">Additional information</Link></li>
                                 </ul>
                             </li>
                             <li className="nav-item">
-                                <Link to="/" className="nav-link">Opinion polls</Link>
+                                <Link to="/OpinionPolls" className="nav-link">Opinion polls</Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/" className="nav-link">Contact us</Link>
+                                <Link to="/ContactUs" className="nav-link">Contact us</Link>
                             </li>
                             {!currentPage && <li className="nav-item d-none d-sm-none d-md-block d-lg-block d-xl-block">
                                 {user === '' ? <Link to="/login" className="custom-btn">Login</Link> :
