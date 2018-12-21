@@ -69,7 +69,13 @@ public class UsersServiceImpl implements IUsersService {
 			if (!StringUtils.isEmpty(userDetails.getMemorableWord())) {
 				userDetails.setUserId(users.getUserId());
 				String encryptPassword = reallyStrongSecuredPassword.encrypt(userDetails.getPassword());
+				String encryptMemorableWord = reallyStrongSecuredPassword.encrypt(userDetails.getMemorableWord());
+				String encryptSecurityAnswer1 = reallyStrongSecuredPassword.encrypt(userDetails.getSecurityAnswer1());
+				String encryptSecurityAnswer2 = reallyStrongSecuredPassword.encrypt(userDetails.getSecurityAnswer2());
 				userDetails.setPassword(encryptPassword);
+				userDetails.setMemorableWord(encryptMemorableWord);
+				userDetails.setSecurityAnswer1(encryptSecurityAnswer1);
+				userDetails.setSecurityAnswer2(encryptSecurityAnswer2);
 				userDetails.setIsTempPassword('N');
 				userDetails.setAccountLocked("N");
 				userDetails = usersDetailsServiceImpl.save(userDetails);

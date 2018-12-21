@@ -9,6 +9,7 @@ import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.Users;
 import com.ccsbi.co.usermanagement.service.model.UsersDetails;
+import com.ccsbi.co.usermanagement.util.ReallyStrongSecuredPassword;
 
 @Service
 public class UsersDetailsServiceImpl implements IUsersDetailsService {
@@ -24,6 +25,10 @@ public class UsersDetailsServiceImpl implements IUsersDetailsService {
 
 	@Autowired
 	private SecurityQuestionsRepo securityQuestionsRepo;
+	
+	@Autowired
+	ReallyStrongSecuredPassword reallyStrongSecuredPassword;
+
 
 	@Override
 	public UsersDetails save(UsersDetails userDetails) {
@@ -62,6 +67,12 @@ public class UsersDetailsServiceImpl implements IUsersDetailsService {
 		String securityQuestions2 = securityQuestionsRepo.hintQuestion(securityQuestion2);
 		usersDetails.setSecurityQuestionIdStr1(securityQuestions1);
 		usersDetails.setSecurityQuestionIdStr2(securityQuestions2);
+		String decryptMemorableWord = reallyStrongSecuredPassword.decrypt(usersDetails.getMemorableWord());
+		String decryptSecurityAnswer1 = reallyStrongSecuredPassword.decrypt(usersDetails.getSecurityAnswer1());
+		String decryptSecurityAnswer2 = reallyStrongSecuredPassword.decrypt(usersDetails.getSecurityAnswer2());
+		usersDetails.setMemorableWord(decryptMemorableWord);
+		usersDetails.setSecurityAnswer1(decryptSecurityAnswer1);
+		usersDetails.setSecurityAnswer2(decryptSecurityAnswer2);
 
 		return usersDetails;
 
