@@ -41,52 +41,57 @@ public class LoginServiceImpl implements ILoginService {
 		String password = null;
 		String encryptPassword = null;
 		if (!StringUtils.isEmpty(login.getUserName())) {
-			Users user = convertUsers(usersRepo.loginUser(userName));
+			com.ccsbi.co.usermanagement.repository.entity.Users userEnt = usersRepo.loginUser(userName);
+			if (userEnt != null) {
+				Users user = convertUsers(userEnt);
 
-			encryptPassword = reallyStrongSecuredPassword.encrypt(login.getPassword());
-			UsersDetails usersD = convertDetails(usersDetailsRepo.getUsersDetails(user.getUserId()));
-			user.setUsersDetails(usersD);
-			UsersLoginRecord usersLoginRecord = new UsersLoginRecord();
-			if (user.getUserId() > 0) {
+				encryptPassword = reallyStrongSecuredPassword.encrypt(login.getPassword());
+				UsersDetails usersD = convertDetails(usersDetailsRepo.getUsersDetails(user.getUserId()));
+				user.setUsersDetails(usersD);
+				UsersLoginRecord usersLoginRecord = new UsersLoginRecord();
+				if (user.getUserId() > 0) {
 
-				password = usersDetailsRepo.loginUser(user.getUserId());
-			}
-			if (password.equals(encryptPassword)) {
-				// Trace user login
-				com.ccsbi.co.usermanagement.repository.entity.UsersLoginRecord usersLoginRecordEnt = usersLoginRecordRepo
-						.getRecord(user.getUserId());
-				
-				if (usersLoginRecordEnt!=null) {
-					usersLoginRecord = convertULR(usersLoginRecordEnt);
-					if (usersLoginRecord.getUserId() == user.getUserId()) {
-						if (login.getRememberMe()) {
-							usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, user);
+					password = usersDetailsRepo.loginUser(user.getUserId());
+				}
+				if (password.equals(encryptPassword)) {
+					// Trace user login
+					com.ccsbi.co.usermanagement.repository.entity.UsersLoginRecord usersLoginRecordEnt = usersLoginRecordRepo
+							.getRecord(user.getUserId());
+
+					if (usersLoginRecordEnt != null) {
+						usersLoginRecord = convertULR(usersLoginRecordEnt);
+						if (usersLoginRecord.getUserId() == user.getUserId()) {
+							if (login.getRememberMe()) {
+								usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, user);
+							} else {
+								usersLoginRecord.setRememberMe(false);
+								usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, user);
+							}
 						} else {
-							usersLoginRecord.setRememberMe(false);
-							usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, user);
+							if (login.getRememberMe()) {
+								usersLoginRecord = saveUsersLoginRecord(login, user);
+							} else {
+								usersLoginRecord.setRememberMe(false);
+								usersLoginRecord = updateUsersLoginRecord(login, user);
+							}
+
 						}
+						user.setUsersLoginRecord(usersLoginRecord);
+						return user;
 					} else {
-						if (login.getRememberMe()) {
-							usersLoginRecord = saveUsersLoginRecord(login, user);
-						} else {
+						// Add Login code
+						if (!login.getRememberMe()) {
 							usersLoginRecord.setRememberMe(false);
-							usersLoginRecord = updateUsersLoginRecord(login, user);
+							usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
+						} else {
+							usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
 						}
+						user.setUsersLoginRecord(usersLoginRecord);
+						return user;
 
 					}
-					user.setUsersLoginRecord(usersLoginRecord);
-					return user;
 				} else {
-					// Add Login code
-					if (!login.getRememberMe()) {
-						usersLoginRecord.setRememberMe(false);
-						usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
-					} else {						
-						usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
-					}
-					user.setUsersLoginRecord(usersLoginRecord);
-					return user;
-					
+					return new Users();
 				}
 			} else {
 				return new Users();
@@ -105,15 +110,22 @@ public class LoginServiceImpl implements ILoginService {
 		Users users = new Users();
 		UsersLoginRecord usersLoginRecord = new UsersLoginRecord();
 		if (!StringUtils.isEmpty(cookie) && !StringUtils.isEmpty(token)) {
-			usersLoginRecord = convertULR(usersLoginRecordRepo.verifyUser(cookie, token));
+			com.ccsbi.co.usermanagement.repository.entity.UsersLoginRecord usersLoginRecordEnt = usersLoginRecordRepo
+					.verifyUser(cookie, token);
 
-			if (usersLoginRecord.getUserId() > 0) {
-				users = convertUsers(usersRepo.getUsers(usersLoginRecord.getUserId()));
-				if (!StringUtils.isEmpty(users.getFirstName())) {
-					usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, users);
-					users.setUsersLoginRecord(usersLoginRecord);
-					return users;
+			if (usersLoginRecordEnt != null) {
+				usersLoginRecord = convertULR(usersLoginRecordEnt);
+
+				if (usersLoginRecord.getUserId() > 0) {
+					users = convertUsers(usersRepo.getUsers(usersLoginRecord.getUserId()));
+					if (!StringUtils.isEmpty(users.getFirstName())) {
+						usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, users);
+						users.setUsersLoginRecord(usersLoginRecord);
+						return users;
+					}
 				}
+			} else {
+				return users;
 			}
 
 		} else {
@@ -166,8 +178,7 @@ public class LoginServiceImpl implements ILoginService {
 		long currTime = System.currentTimeMillis();
 		String cookieStr = generateCookieToken(users.getUserName(), usersLoginRecord.getPassword(),
 				String.valueOf(currTime));
-		
-		
+
 		String tokenStr = generateCookieToken(users.getUserName(), "", String.valueOf(currTime));
 
 		usersLoginRecord.setUserId(users.getUserId());
@@ -182,7 +193,7 @@ public class LoginServiceImpl implements ILoginService {
 			// 1 day = 24 x 60 x 60
 			usersLoginRecord.setCookieExpirytime(86400);
 		}
-		
+
 		usersLoginRecord.setPassword(users.getUsersDetails().getPassword());
 		usersLoginRecord.setUserName(users.getUserName());
 		usersLoginRecord.setRememberMe(true);
@@ -193,12 +204,12 @@ public class LoginServiceImpl implements ILoginService {
 
 	private UsersLoginRecord updateUsersLoginRecord(UsersLoginRecord usersLoginRecord, Users users) {
 		long currTime = System.currentTimeMillis();
-		
+
 		String cookieStr = generateCookieToken(users.getUserName(), usersLoginRecord.getPassword(),
 				String.valueOf(currTime));
 		String tokenStr = generateCookieToken(users.getUserName(), "", String.valueOf(currTime));
 		// 1 day = 24 x 60 x 60
-		
+
 		usersLoginRecord.setRememberMe(usersLoginRecord.getRememberMe());
 		if (!usersLoginRecord.getRememberMe()) {
 			usersLoginRecord.setCookie("");
