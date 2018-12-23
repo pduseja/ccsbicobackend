@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -73,25 +74,40 @@ public class UserApi {
 	@PostMapping(path = "/login", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
 					MediaType.APPLICATION_ATOM_XML_VALUE })
-	public Users login(@ApiParam(value = "", required = true) @RequestBody UsersLoginRecord login) {
+	public ResponseEntity<Users> login(@ApiParam(value = "", required = true) @RequestBody UsersLoginRecord login) {
 		LOGGER.info("Inside {}.login()", getClass().getSimpleName());
 
 		Users user = new Users();
-		
-		if (!(login.getRememberMe())) {
-			user = convertUser(loginService.login(convertLogin(login)));
-			if (!StringUtils.isEmpty(user.getUserName())) {
+
+		if (login.getRememberMe() != null) {
+			if (!(login.getRememberMe())) {
+				user = convertUser(loginService.login(convertLogin(login)));
 				if (user.getUserId() != 0) {
 					user = loginAttemptsConditioncheck(login, user);
+					return new ResponseEntity<>(user,HttpStatus.OK);
+				} else {
+					return ResponseEntity.badRequest().build();
 				}
-			
+			} else {
+				user = convertUser(loginService.getUserName(convertLogin(login)));
+				if(user.getUserId()!=0) {
+				user = loginAttemptsConditioncheck(login, user);
+				return new ResponseEntity<>(user,HttpStatus.OK);
+				} else { 
+					return ResponseEntity.badRequest().build();
+				}
 			}
-		}else {
-			user = convertUser(loginService.getUserName(convertLogin(login)));
-			user = loginAttemptsConditioncheck(login, user);
+		} else {
+			boolean rememberMe = false;
+			login.setRememberMe(rememberMe);
+			user = convertUser(loginService.login(convertLogin(login)));
+			if (user.getUserId() != 0) {
+				user = loginAttemptsConditioncheck(login, user);
+				return new ResponseEntity<>(user,HttpStatus.OK);
+			} else {
+				return ResponseEntity.badRequest().build();
+			}
 		}
-
-		return user;
 	}
 
 	/**
