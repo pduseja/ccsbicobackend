@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import '../../Styles/Login.css'
 import {Link} from "react-router-dom";
 import WebApi from "../../Utils/WebApi";
+import {connect} from "react-redux";
+import {addUserName} from "../../Actions/Actions";
 
-export default class Login extends Component {
+export class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,12 +35,24 @@ export default class Login extends Component {
     };
 
     handleClick = () => {
-        let { email, pass, rememberMe } = this.state;
+        let {email, pass, rememberMe} = this.state;
         WebApi.getLoginUser(email, pass, rememberMe).then(response => response.json()
         ).then(response => {
-            localStorage.setItem('user', JSON.stringify(response));
-            this.props.history.push('/')
+            if (response.UsersLoginRecord.rememberMe === true) {
+                document.cookie = `token=${response.UsersLoginRecord.token}; expires=${response.cookieExpirytime}`;
+                document.cookie = `cookie=${response.UsersLoginRecord.cookie}; expires=${response.cookieExpirytime}`;
+            }
+            else{
+                let res = document.cookie;
+                let multiple = res.split(";");
+                for(let i = 0; i < multiple.length; i++) {
+                    let key = multiple[i].split("=");
+                    document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+                }
+            }
+            this.props.history.push('/');
             this.setState({error: ''})
+            this.props.dispatch(addUserName(response.firstName))
         }).catch(() => {
             this.setState({error: "User does not exist"})
         });
@@ -50,7 +64,7 @@ export default class Login extends Component {
         switch (fieldName) {
             case 'email':
                 emailValid = value.length !== 0;
-                fieldValidationErrors.email = emailValid ? '' : 'Email is invalid';
+                fieldValidationErrors.email = emailValid ? '' : 'Username is invalid';
                 break;
 
             case 'pass':
@@ -69,7 +83,7 @@ export default class Login extends Component {
     };
 
     render() {
-        let {email, pass } = this.state.formErrors;
+        let {email, pass} = this.state.formErrors;
         return (
             <div className="form-container">
                 <div className="wrapper">
@@ -99,10 +113,12 @@ export default class Login extends Component {
                         </div>
                         <p className="error-message">{pass}</p>
                         <div className="wrap-input remember-me">
-                            <label><input onChange={this.handleUserInput} value={this.state.rememberMe} type="checkbox" name="rememberMe" />Remember me</label>
+                            <label><input onChange={this.handleUserInput} value={this.state.rememberMe} type="checkbox"
+                                          name="rememberMe"/>Remember me</label>
                         </div>
                         <div className="container-login-form-btn">
-                            <button className="login-form-btn" disabled={!this.state.formValid} onClick={() => this.handleClick()}>
+                            <button className="login-form-btn" disabled={!this.state.formValid}
+                                    onClick={() => this.handleClick()}>
                                 Login
                             </button>
                         </div>
@@ -125,3 +141,5 @@ export default class Login extends Component {
         )
     }
 }
+
+export default connect()(Login);

@@ -47,8 +47,12 @@ export class Security extends Component {
         let {passwordValid, confirmPasswordValid, securityQuestionId1Valid, securityQuestionId2Valid, securityAnswer1Valid, securityAnswer2Valid, memorableWordValid} = this.state;
         switch (fieldName) {
             case 'password':
-                passwordValid = value.length !== 0;
-                fieldValidationErrors.password = passwordValid ? '' : 'Your password is required';
+                passwordValid = value.length !== 0 && /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(value);
+                fieldValidationErrors.password = passwordValid ? '' : 'Password should be have at least 8 characters' +
+                    ' 1' +
+                    ' alphabet' +
+                    ' and 1' +
+                    ' special character';
                 break;
 
             case 'confirmPassword':

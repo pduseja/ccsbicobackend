@@ -124,7 +124,6 @@ export class PersonalDetails extends Component {
 
         let reader = new FileReader();
         let file = e.target.files[0];
-        console.log(file, "file")
         let fileToStore = window.URL.createObjectURL(file);
         reader.onloadend = () => {
             this.setState({

@@ -2,18 +2,18 @@ import React, {Component} from 'react';
 import MenuLinks from "./MenuLinks";
 import {Link} from "react-router-dom";
 import '../Styles/Header.css'
-import Helpers from "../Utils/Helpers";
 import UserOptions from "./UserOptions";
 import WebApi from "../Utils/WebApi";
+import {connect} from "react-redux";
+import {addUserName} from "../Actions/Actions";
 
-export default class Header extends Component {
+export class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isOpen: false,
             isRightOpen: false,
             user: '',
-            currentPage: '',
             systemParams: {}
         };
     }
@@ -26,6 +26,11 @@ export default class Header extends Component {
                 systemParams: response
             })
         })
+    }
+
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        if(nextProps.location.pathname === '/login')
+            this.props.dispatch(addUserName(''))
     }
 
     componentWillUnmount() {
@@ -55,48 +60,72 @@ export default class Header extends Component {
         });
     };
 
-    getUserDetails = () => {
-        this.setState({'currentPage': this.props.history.location.pathname === '/login'});
-        let authData = Helpers.authenticateUser();
-        if (authData) {
-            this.setState({
-                user: authData
-            })
-        }
-        else{
-            this.setState({
-                user: ''
-            })
-        }
+    getCookie = (name) => {
+        const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return v ? v[2] : null;
     };
 
     login = () => {
-      this.props.history.push('/login');
-      this.setState({'isOpen': false, 'isRightOpen': false})
-    };
-
-    logout = () => {
-        localStorage.removeItem('user');
-        this.props.history.push('/');
+        this.props.history.push('/login');
         this.setState({'isOpen': false, 'isRightOpen': false})
     };
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        this.getUserDetails();
+    getUserDetails = () => {
+        const cookie = this.getCookie('cookie');
+        const token = this.getCookie('token');
+        if(cookie && token){
+        WebApi.getLoggedInUser(cookie, token)
+            .then(response => response.json())
+            .then(response => {
+                this.props.dispatch(addUserName(response.firstName))
+                if (response.UsersLoginRecord.rememberMe === true) {
+                    document.cookie = `token=${response.UsersLoginRecord.token}; expires=${response.cookieExpirytime}`;
+                    document.cookie = `cookie=${response.UsersLoginRecord.cookie}; expires=${response.cookieExpirytime}`;
+                }
+                else{
+                    let res = document.cookie;
+                    let multiple = res.split(";");
+                    for(let i = 0; i < multiple.length; i++) {
+                        console.log("called")
+                        let key = multiple[i].split("=");
+                        document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+                    }
+
+                }
+            }).catch(err =>{
+            this.props.dispatch(addUserName(''))
+        });
+        }
+        else{
+            this.props.dispatch(addUserName(''))
+        }
+    };
+
+    logout = () => {
+        let res = document.cookie;
+        let multiple = res.split(";");
+        for(let i = 0; i < multiple.length; i++) {
+            let key = multiple[i].split("=");
+            document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+        }
+        this.props.history.push('/');
+        this.props.dispatch(addUserName(''))
+        this.setState({'isOpen': false, 'isRightOpen': false})
     };
 
     getPath = (param) => {
-        return Object.values(this.state.systemParams).filter( (p) =>
+        return Object.values(this.state.systemParams).filter((p) =>
             p.keyVal1 === param
         );
     };
 
     render() {
-        let {user, currentPage} = this.state;
+        let {currentPage} = this.state;
+        let {user} = this.props;
         let facebookLink, twitterLink, linkedInLink, youtubeLink;
         let menuStatus = this.state.isOpen ? 'isopen' : '';
         let rightMenuStatus = this.state.isRightOpen ? 'is-right-open' : '';
-        if(this.state.systemParams.length){
+        if (this.state.systemParams.length) {
             facebookLink = this.getPath("Facebook")[0].param1;
             twitterLink = this.getPath("Twiter")[0].param1;
             linkedInLink = this.getPath("Linkedin")[0].param1;
@@ -108,36 +137,41 @@ export default class Header extends Component {
                     <ul className="important-links">
                         <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/ImportantLinks">Important
                             information</Link></li>
-                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/PrivacyPolicy">Privacy policy</Link>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/PrivacyPolicy">Privacy
+                            policy</Link>
                         </li>
-                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/TermsOfUse">Terms of use</Link>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/TermsOfUse">Terms
+                            of use</Link>
                         </li>
-                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/Cookies">Cookies</Link></li>
+                        <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link
+                            to="/Cookies">Cookies</Link></li>
                         <li><Link to="/Language">Languages</Link></li>
-                        <li><a href={facebookLink} target="_blank"><i className="fab fa-facebook-f"/></a></li>
-                        <li><a href={twitterLink} target="_blank"><i className="fab fa-twitter"/></a></li>
-                        <li><a href={linkedInLink} target="_blank"><i className="fab fa-linkedin-in"/></a></li>
-                        <li><a href={youtubeLink}><i className="fab fa-youtube"/></a></li>
+                        <li><a href={facebookLink} rel="noopener noreferrer" target="_blank"><i className="fab fa-facebook-f"/></a></li>
+                        <li><a href={twitterLink} rel="noopener noreferrer" target="_blank"><i className="fab fa-twitter"/></a></li>
+                        <li><a href={linkedInLink} rel="noopener noreferrer" target="_blank"><i className="fab fa-linkedin-in"/></a></li>
+                        <li><a href={youtubeLink} rel="noopener noreferrer"><i className="fab fa-youtube"/></a></li>
                     </ul>
 
                     <div className="navbar-top">
-                        <div className="logo-container">{!currentPage && <div onClick={this._menuToggle} id="hambmenu"
+                        <div className="logo-container"><div onClick={this._menuToggle} id="hambmenu"
                                                                               className={"d-inline-block d-sm-inline-block d-md-none d-lg-none" +
                                                                               " d-xl-none " + menuStatus}>
                             <i className="fas fa-bars"/>
-                        </div>}
+                        </div>
                             <Link className="logo" to="/">
                                 <img src="http://ccsbi.info/usersresource/images/logo.png" alt="logo"/>
                             </Link></div>
-                        {!currentPage && (user !== '' &&
-                            <div className="user-info">
-                                <span>{user.firstName} {user.lastName}</span><i id="ellipsis" onClick={this._menuRightToggle} className="fa fa-ellipsis-v"/>
-                            </div>
-                            )}
+                        {user !== '' &&
+                        <div className="user-info">
+                            <span>{user}</span><i id="ellipsis"
+                                                  onClick={this._menuRightToggle}
+                                                  className="fa fa-ellipsis-v"/>
+                        </div>
+                        }
                     </div>
 
 
-                    {!currentPage && <div className="navbar-bottom  d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                    <div className="navbar-bottom  d-none d-sm-none d-md-block d-lg-block d-xl-block">
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <Link to="/" className="nav-link">Home</Link>
@@ -178,7 +212,8 @@ export default class Header extends Component {
                                     <li><Link to="/AdditionalInfo">Additional information</Link></li>
                                 </ul>
                             </li>
-                            <li className="nav-item"><Link to="/CharityOptions"  className="nav-link">Charity Options</Link></li>
+                            <li className="nav-item"><Link to="/CharityOptions" className="nav-link">Charity
+                                Options</Link></li>
                             <li className="nav-item">
                                 <Link to="/OpinionPolls" className="nav-link">Opinion polls</Link>
                             </li>
@@ -191,7 +226,7 @@ export default class Header extends Component {
                                           onClick={() => this.logout()}>Logout</Link>}</li>}
                         </ul>
 
-                    </div>}
+                    </div>
                 </nav>
                 <MenuLinks menuStatus={menuStatus} login={this.login} logout={this.logout}/>
                 <UserOptions rightMenuStatus={rightMenuStatus}/>
@@ -199,3 +234,9 @@ export default class Header extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(Header);

@@ -13,6 +13,20 @@ let WebApi = {
             },
         })
     },
+    getLoggedInUser(cookie, token){
+        const data = {
+            "cookie": cookie,
+            "token": token,
+            "rememberMe": true
+        };
+        return fetch("http://localhost:9090/CCSBI/api/login",{
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+    },
     registerUser(data, photo, done){
         let request = new XMLHttpRequest();
         request.open('POST', 'http://localhost:9090/CCSBI/api/registration');
