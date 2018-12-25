@@ -9,6 +9,7 @@ export default class Login extends Component {
         this.state = {
             email: '',
             pass: '',
+            rememberMe: false,
             formErrors: {email: '', pass: ''},
             emailValid: false,
             passValid: false,
@@ -17,9 +18,10 @@ export default class Login extends Component {
         }
     }
 
-    handleUserInput = (e) => {
-        const name = e.target.name;
-        const value = e.target.value;
+    handleUserInput = (event) => {
+        const name = event.target.name;
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
         this.setState({[name]: value},
             () => {
                 this.validateField(name, value)
@@ -31,8 +33,8 @@ export default class Login extends Component {
     };
 
     handleClick = () => {
-        let { email, pass } = this.state;
-        WebApi.getLoginUser(email, pass).then(response => response.json()
+        let { email, pass, rememberMe } = this.state;
+        WebApi.getLoginUser(email, pass, rememberMe).then(response => response.json()
         ).then(response => {
             localStorage.setItem('user', JSON.stringify(response));
             this.props.history.push('/')
@@ -67,7 +69,7 @@ export default class Login extends Component {
     };
 
     render() {
-        let {email, pass} = this.state.formErrors;
+        let {email, pass } = this.state.formErrors;
         return (
             <div className="form-container">
                 <div className="wrapper">
@@ -78,7 +80,7 @@ export default class Login extends Component {
 					</span>
                         <div className="block-error">{this.state.error}</div>
                         <div className="wrap-input">
-                            <input className="input" type="text" name="email" placeholder="Email"
+                            <input className="input" type="text" name="email" placeholder="User id"
                                    onChange={this.handleUserInput} value={this.state.email}/>
                             <span className="focus-input"/>
                             <span className="symbol-input">
@@ -97,7 +99,7 @@ export default class Login extends Component {
                         </div>
                         <p className="error-message">{pass}</p>
                         <div className="wrap-input remember-me">
-                            <label><input type="checkbox" name="rememberMe" />Remember me</label>
+                            <label><input onChange={this.handleUserInput} value={this.state.rememberMe} type="checkbox" name="rememberMe" />Remember me</label>
                         </div>
                         <div className="container-login-form-btn">
                             <button className="login-form-btn" disabled={!this.state.formValid} onClick={() => this.handleClick()}>
@@ -106,11 +108,8 @@ export default class Login extends Component {
                         </div>
 
                         <div className="text-center space-top-10">
-						<span className="gray-text space-right-10">
-							Forgot
-						</span>
                             <Link to="/forgotPassword" className="black-text">
-                                Username / Password?
+                                Forgot Password
                             </Link>
                         </div>
 

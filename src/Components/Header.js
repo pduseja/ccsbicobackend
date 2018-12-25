@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import '../Styles/Header.css'
 import Helpers from "../Utils/Helpers";
 import UserOptions from "./UserOptions";
+import WebApi from "../Utils/WebApi";
 
 export default class Header extends Component {
     constructor(props) {
@@ -12,14 +13,19 @@ export default class Header extends Component {
             isOpen: false,
             isRightOpen: false,
             user: '',
-            currentPage: ''
+            currentPage: '',
+            systemParams: {}
         };
     }
 
     componentDidMount() {
         this.getUserDetails();
         document.addEventListener('click', this._handleDocumentClick, false);
-
+        WebApi.getSystemParams().then(response => response.json()).then(response => {
+            this.setState({
+                systemParams: response
+            })
+        })
     }
 
     componentWillUnmount() {
@@ -77,13 +83,25 @@ export default class Header extends Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         this.getUserDetails();
-    }
+    };
+
+    getPath = (param) => {
+        return Object.values(this.state.systemParams).filter( (p) =>
+            p.keyVal1 === param
+        );
+    };
 
     render() {
-        let {user,currentPage} = this.state;
+        let {user, currentPage} = this.state;
+        let facebookLink, twitterLink, linkedInLink, youtubeLink;
         let menuStatus = this.state.isOpen ? 'isopen' : '';
         let rightMenuStatus = this.state.isRightOpen ? 'is-right-open' : '';
-
+        if(this.state.systemParams.length){
+            facebookLink = this.getPath("Facebook")[0].param1;
+            twitterLink = this.getPath("Twiter")[0].param1;
+            linkedInLink = this.getPath("Linkedin")[0].param1;
+            youtubeLink = this.getPath("Youtube")[0].param1;
+        }
         return (
             <div ref="root">
                 <nav className="navbar">
@@ -96,10 +114,10 @@ export default class Header extends Component {
                         </li>
                         <li className="d-none d-sm-none d-md-block d-lg-block d-xl-block"><Link to="/Cookies">Cookies</Link></li>
                         <li><Link to="/Language">Languages</Link></li>
-                        <li><a href="/"><i className="fab fa-facebook-f"/></a></li>
-                        <li><a href="/"><i className="fab fa-twitter"/></a></li>
-                        <li><a href="/"><i className="fab fa-linkedin-in"/></a></li>
-                        <li><a href="/"><i className="fab fa-youtube"/></a></li>
+                        <li><a href={facebookLink} target="_blank"><i className="fab fa-facebook-f"/></a></li>
+                        <li><a href={twitterLink} target="_blank"><i className="fab fa-twitter"/></a></li>
+                        <li><a href={linkedInLink} target="_blank"><i className="fab fa-linkedin-in"/></a></li>
+                        <li><a href={youtubeLink}><i className="fab fa-youtube"/></a></li>
                     </ul>
 
                     <div className="navbar-top">
@@ -151,15 +169,16 @@ export default class Header extends Component {
                                     <li><Link to="/Stakeholders">Other stakeholders</Link></li>
                                 </ul>
                             </li>
-                            <li className="nav-item"><Link to="/" className="nav-link">Search S&P</Link>
+                            <li className="nav-item"><Link to="/" className="nav-link">Service & Product Search</Link>
                                 <ul>
-                                    <li><Link to="/ServicesProdSearch">Service & Prod Search</Link></li>
+                                    <li><Link to="/ServicesProdSearch">Service & Product Search</Link></li>
                                     <li><Link to="/OurApproach">Our approach</Link></li>
                                     <li><Link to="/Help">Help: How it Works</Link></li>
                                     <li><Link to="/WriteToUs">Write your need</Link></li>
                                     <li><Link to="/AdditionalInfo">Additional information</Link></li>
                                 </ul>
                             </li>
+                            <li className="nav-item"><Link to="/CharityOptions"  className="nav-link">Charity Options</Link></li>
                             <li className="nav-item">
                                 <Link to="/OpinionPolls" className="nav-link">Opinion polls</Link>
                             </li>

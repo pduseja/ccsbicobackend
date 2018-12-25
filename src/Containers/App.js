@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import Reducers from "../Reducers/Reducers";
 import UserCreated from "../Components/UserCreated";
 import UnderConstruction from "../Components/UnderConstruction";
+import Footer from "../Components/Footer";
 
 const store = createStore(Reducers);
 class App extends Component {
@@ -52,8 +53,10 @@ class App extends Component {
                     <Route exact path="/Help" component={UnderConstruction}/>
                     <Route exact path="/WriteToUs" component={UnderConstruction}/>
                     <Route exact path="/AdditionalInfo" component={UnderConstruction}/>
+                    <Route exact path="/CharityOptions" component={UnderConstruction}/>
                     <Route exact path="/OpinionPolls" component={UnderConstruction}/>
                     <Route exact path="/ContactUs" component={UnderConstruction}/>
+                    <Route path="/" component={Footer} />
                 </div>
             </BrowserRouter>
             </Provider>

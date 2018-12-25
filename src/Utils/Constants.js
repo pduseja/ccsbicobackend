@@ -91,10 +91,10 @@ const constants = {
                     text: 'Other stakeholders'
                 }]
             }, {
-                text: 'Search S&P',
+                text: 'Service & Product Search',
                 name: 'search',
                 submenu: [{
-                    text: 'Service & Prod Search'
+                    text: 'Service & Product Search'
                 }, {
                     text: 'Our approach'
                 }, {
@@ -104,6 +104,9 @@ const constants = {
                 }, {
                     text: 'Additional information'
                 }]
+            },{
+                text: 'Charity Options',
+                name: 'charityoptions'
             }, {
                 text: 'Opinion polls',
                 name: 'opinionpolls'

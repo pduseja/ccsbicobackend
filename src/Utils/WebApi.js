@@ -1,13 +1,9 @@
 let WebApi = {
-    getLoginUser(username, password){
+    getLoginUser(username, password, rememberMe){
         const data = {
             "userName":username,
             "password": password,
-            "rememberMe": "True",
-            "token": "",
-            "name": [],
-            "cookie": "",
-            "cookieExpirytime": "12"
+            "rememberMe": rememberMe
         };
         return fetch("http://localhost:9090/CCSBI/api/login", {
             method: "POST",
@@ -45,7 +41,7 @@ let WebApi = {
             "UsersDetails": {
                 "password": password
             }
-        }
+        };
         return fetch('http://localhost:9090/CCSBI/api/passwordReset',{
             method: "POST",
             body: JSON.stringify(data),
@@ -53,6 +49,14 @@ let WebApi = {
                 "Content-Type": "application/json"
             },
         })
+    },
+    getSystemParams(){
+        return fetch('http://localhost:9090/CCSBI/api/params/a',{
+            method: "GET",
+            headers: {
+            "Content-Type": "application/json"
+        },
+    })
     }
 };
 

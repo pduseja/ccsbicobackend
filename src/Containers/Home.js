@@ -3,10 +3,6 @@ import icon1 from '../Images/icon01.png'
 import icon2 from '../Images/icon02.png'
 import icon3 from '../Images/icon03.png'
 import icon4 from '../Images/icon04.png'
-import contact1 from '../Images/contact-icon01.png'
-import contact2 from '../Images/contact-icon02.png'
-import contact3 from '../Images/contact-icon03.png'
-import contact4 from '../Images/contact-icon04.png'
 import image1 from '../Images/image1.jpg'
 import image2 from '../Images/image2.jpg'
 
@@ -84,57 +80,6 @@ export default class Home extends Component {
                         </div>
                     </div>
                 </section>
-
-                <section className="footer-bar">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-3 col-md-6 col-sm-6">
-                                <figure><img src={contact1} alt="E-MAILS"/></figure>
-                                <h4>E-MAILS</h4>
-                                <address>
-                                    info@ccsbi.com
-                                </address>
-                            </div>
-                            <div className="col-lg-3 col-md-6 col-sm-6">
-                                <figure><img src={contact2} alt="PHONES"/></figure>
-                                <h4>PHONES</h4>
-                                <address>
-                                    +380 (98) 294 80 86
-                                </address>
-                            </div>
-                            <div className="col-lg-3 col-md-6 col-sm-6">
-                                <figure><img src={contact3} alt="SUPPORT"/></figure>
-                                <h4>SUPPORT</h4>
-                                <address>
-                                    Mon to Fri 09:00h to 18:00h
-                                </address>
-                            </div>
-                            <div className="col-lg-3 col-md-6 col-sm-6">
-                                <figure><img src={contact4} alt="LOCATION"/></figure>
-                                <h4>LOCATION</h4>
-                                <address>
-                                    UK
-                                </address>
-                            </div>
-                        </div>
-                    </div>
-                    <ul className="important-links d-flex d-sm-flex d-md-none d-lg-none d-xl-none">
-                        <li><a href="/">Important information</a></li>
-                        <li><a href="/">Privacy policy</a></li>
-                        <li><a href="/">Terms of use</a></li>
-                        <li><a href="/">Cookies</a></li>
-                    </ul>
-                </section>
-
-                <footer className="footer">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-12 col-sm-12 col-md-12">
-                                <small>© 2018 ccsbi.com | All Rights Reserved.</small>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
             </div>
         )
     }

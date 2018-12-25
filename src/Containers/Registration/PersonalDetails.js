@@ -124,19 +124,21 @@ export class PersonalDetails extends Component {
 
         let reader = new FileReader();
         let file = e.target.files[0];
-        console.log(file,"file")
-        let fileToStore =  window.URL.createObjectURL(file);
+        console.log(file, "file")
+        let fileToStore = window.URL.createObjectURL(file);
         reader.onloadend = () => {
             this.setState({
                 file: file,
                 imagePreviewUrl: reader.result,
-                formData:{...this.state.formData,UsersPhoto:{...this.state.formData.UsersPhoto,
+                formData: {
+                    ...this.state.formData, UsersPhoto: {
+                        ...this.state.formData.UsersPhoto,
                         photo: fileToStore,
                         fileType: file.type,
                         active: "Y"
                     }
                 }
-            }, () => this.props.dispatch(addPhoto( fileToStore )));
+            }, () => this.props.dispatch(addPhoto(fileToStore)));
         };
 
         reader.readAsDataURL(file)
@@ -197,20 +199,6 @@ export class PersonalDetails extends Component {
 
                 </div>
                 <div className="wrap-input">
-                    <div className="col-sm-3 form-group">
-                        <label>Upload your picture</label>
-
-                        {$imagePreview}
-                    </div>
-                    <div id="upload_button">
-                        <label>
-                            <input type="file" id="upload-photo" onChange={this.handleImageChange}/>
-                            <i className="fa fa-upload"/>
-                        </label>
-
-                    </div>
-                </div>
-                <div className="wrap-input">
                     <div className="col-sm-3">
                         <label htmlFor="male"><input type="radio"
                                                      name="gender"
@@ -226,19 +214,23 @@ export class PersonalDetails extends Component {
                                                        id="female"
                                                        onChange={this.handleUserInput}
                                                        value="Female"/>Female</label></div>
+                    <div className="col-sm-3 form-group">
+                        <label>Upload your picture<div id="upload_button">
+                            <label>
+                                <input type="file" id="upload-photo" onChange={this.handleImageChange}/>
+                                <i className="fa fa-upload"/>
+                            </label>
+
+                        </div></label>
+
+                        {$imagePreview}
+                    </div>
+
                 </div>
                 <div className="wrap-input">
                     <div className="col-sm-4 form-group">
                         <label>*Date of birth</label>
                         <input type="date" className="input" name="dateofbirth" onChange={this.handleUserInput}/></div>
-                    <div className="col-sm-4 form-group">
-                        <label>*Place of birth</label>
-                        <input className="input" name="townOfBirth" placeholder="Birth place"
-                               onChange={this.handleUserInput} value={this.state.formData.townOfBirth}/>
-                        <p className="error-message">{townOfBirth}</p>
-                    </div>
-                </div>
-                <div className="wrap-input">
                     <div className="col-sm-5 form-group">
                         <label>*Nationality</label>
                         <select className="input" name="nationality" onChange={this.handleUserInput}>
@@ -247,6 +239,8 @@ export class PersonalDetails extends Component {
                                 key={a} value={a}>{a}</option>)}</select>
                         <p className="error-message">{nationality}</p>
                     </div>
+                </div>
+                <div className="wrap-input">
                     <div className="col-sm-5 form-group">
                         <label>*Country of birth</label>
                         <select className="input" name="countryOfBirth" onChange={this.handleUserInput}>
@@ -254,6 +248,12 @@ export class PersonalDetails extends Component {
                             {countries.getNames().map(a => <option
                                 key={a} value={a}>{a}</option>)}</select>
                         <p className="error-message">{countryOfBirth}</p>
+                    </div>
+                    <div className="col-sm-4 form-group">
+                        <label>*Town of birth</label>
+                        <input className="input" name="townOfBirth" placeholder="Birth place"
+                               onChange={this.handleUserInput} value={this.state.formData.townOfBirth}/>
+                        <p className="error-message">{townOfBirth}</p>
                     </div>
                 </div>
 
