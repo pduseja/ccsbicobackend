@@ -40,16 +40,24 @@ public class LoginServiceImpl implements ILoginService {
 		String userName = login.getUserName();
 		String password = null;
 		String encryptPassword = null;
+		UsersDetails usersD = new UsersDetails();
+		
 		if (!StringUtils.isEmpty(login.getUserName())) {
 			com.ccsbi.co.usermanagement.repository.entity.Users userEnt = usersRepo.loginUser(userName);
 			if (userEnt != null) {
 				Users user = convertUsers(userEnt);
 
 				encryptPassword = reallyStrongSecuredPassword.encrypt(login.getPassword());
-				UsersDetails usersD = convertDetails(usersDetailsRepo.getUsersDetails(user.getUserId()));
+				com.ccsbi.co.usermanagement.repository.entity.UsersDetails usersDetailsEnt = usersDetailsRepo.getUsersDetails(user.getUserId());
+				if(usersDetailsEnt!=null) {
+					usersD = convertDetails(usersDetailsEnt);
+				} else {
+					return new Users();
+				}
+				
 				user.setUsersDetails(usersD);
 				UsersLoginRecord usersLoginRecord = new UsersLoginRecord();
-				if (user.getUserId() > 0) {
+				if (user.getUserId() > 0) { 
 
 					password = usersDetailsRepo.loginUser(user.getUserId());
 				}
@@ -130,19 +138,6 @@ public class LoginServiceImpl implements ILoginService {
 
 		} else {
 			users = login(login);
-
-			if (!StringUtils.isEmpty(users.getUserName())) {
-				usersLoginRecord.setPassword(login.getPassword());
-				usersLoginRecord = convertULR(usersLoginRecordRepo.getRecord(users.getUserId()));
-				if (usersLoginRecord.getUserId() == users.getUserId()) {
-					usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, users);
-				} else {
-					usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, users);
-				}
-				users.setUsersLoginRecord(usersLoginRecord);
-				return users;
-			}
-
 			return users;
 		}
 		return users;
@@ -220,7 +215,7 @@ public class LoginServiceImpl implements ILoginService {
 			usersLoginRecord.setCookie(cookieStr);
 			usersLoginRecord.setCookieExpirytime(86400);
 		}
-		int login = usersLoginRecordRepo.updateCookieToken(users.getUserId(), cookieStr, tokenStr);
+		int login = usersLoginRecordRepo.updateCookieToken(users.getUserId(), cookieStr, tokenStr,usersLoginRecord.getCookieExpirytime());
 		if (login != 0) {
 			return usersLoginRecord;
 		} else {
