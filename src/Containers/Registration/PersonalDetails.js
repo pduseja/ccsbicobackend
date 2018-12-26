@@ -3,6 +3,7 @@ import {states} from './States.js';
 import constants from '../../Utils/Constants';
 import {addPhoto} from "../../Actions/Actions";
 import connect from "react-redux/es/connect/connect";
+import Datepicker from "../../Widgets/Datepicker";
 
 let countries = require('country-list')();
 
@@ -15,16 +16,16 @@ export class PersonalDetails extends Component {
             imagePreviewUrl: '',
             formData: {
                 userName: '',
-                title: 'Mr.',
+                title: 'Select your title',
                 firstName: '',
                 middleName: '',
                 lastName: '',
                 photoId: 1,
                 gender: 'Male',
                 townOfBirth: '',
-                countryOfBirth: '',
+                countryOfBirth: 'Select your country of birth',
                 dateofbirth: '',
-                nationality: '',
+                nationality: 'Select your nationality',
                 fatherId: '',
                 motherId: '',
                 UsersPhoto: {
@@ -35,6 +36,7 @@ export class PersonalDetails extends Component {
                 }
             },
             formErrors: {
+                title: '',
                 firstName: '',
                 lastName: '',
                 townOfBirth: '',
@@ -42,6 +44,7 @@ export class PersonalDetails extends Component {
                 nationality: '',
                 countryOfBirth: ''
             },
+            titleValid: false,
             fnameValid: false,
             snameValid: false,
             dobValid: false,
@@ -54,9 +57,23 @@ export class PersonalDetails extends Component {
     }
 
     componentDidMount() {
+        let mandatoryFields = ["titleValid", "fnameValid",
+            "lastName",
+            "snameValid",
+            "dobValid",
+            "tobValid",
+            "nationalityValid",
+            "cobValid",
+        "formValid"];
+        let data = this.props.data;
+        Object.keys(data).length !== 0 && data.constructor === Object &&
+            mandatoryFields.forEach(fields => {
+                this.setState({[fields]: true})
+            });
+
         this.setState({
             formData: {...this.state.formData, ...this.props.data}
-        })
+        });
     }
 
     handleUserInput = (e) => {
@@ -68,11 +85,24 @@ export class PersonalDetails extends Component {
             });
     };
 
+    handleDateChange = (name, value) => {
+        this.setState({formData: {...this.state.formData, [name]: value}},
+            () => {
+                this.validateField(name, value)
+            });
+
+    };
+
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let {fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid} = this.state;
+        let {titleValid, fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid} = this.state;
 
         switch (fieldName) {
+            case 'title':
+                titleValid = value !== "Select your title";
+                fieldValidationErrors.title = titleValid ? '' : 'Your title is required';
+                break;
+
             case 'firstName':
                 fnameValid = value.length !== 0;
                 fieldValidationErrors.firstName = fnameValid ? '' : 'Your name is required';
@@ -106,8 +136,9 @@ export class PersonalDetails extends Component {
             default:
                 break;
         }
-        this.setState({
+        this.setState({...this.state,
             formErrors: fieldValidationErrors,
+            titleValid: titleValid,
             fnameValid: fnameValid,
             snameValid: snameValid,
             dobValid: dobValid,
@@ -146,7 +177,7 @@ export class PersonalDetails extends Component {
 
     validateForm() {
         this.setState({
-            formValid: this.state.fnameValid && this.state.snameValid &&
+            formValid: this.state.titleValid && this.state.fnameValid && this.state.snameValid &&
                 this.state.tobValid && this.state.dobValid && this.state.nationalityValid &&
                 this.state.cobValid
         });
@@ -154,8 +185,7 @@ export class PersonalDetails extends Component {
     };
 
     render() {
-        let {firstName, lastName, townOfBirth, nationality, countryOfBirth} = this.state.formErrors;
-
+        let {title, firstName, lastName, townOfBirth, nationality, countryOfBirth} = this.state.formErrors;
         let {imagePreviewUrl} = this.state;
         let data = this.state.formData;
         let $imagePreview = null;
@@ -171,9 +201,13 @@ export class PersonalDetails extends Component {
                 <div className="wrap-input">
                     <div className="col-sm-2 form-group">
                         <label>*Title</label>
-                        <select className="input" name="title" onChange={this.handleUserInput}>{constants.title.map(a =>
-                            <option
-                                key={a.value} value={a.value}>{a.label}</option>)}</select>
+                        <select className="input" name="title" value={this.state.formData.title}
+                                onChange={this.handleUserInput}>
+                            <option>Select your title</option>
+                            {constants.title.map(a =>
+                                <option
+                                    key={a.value} value={a.value}>{a.label}</option>)}</select>
+                        <p className="error-message">{title}</p>
                     </div>
                     <div className="col-sm-5 form-group">
                         <label>*Name</label>
@@ -214,13 +248,15 @@ export class PersonalDetails extends Component {
                                                        onChange={this.handleUserInput}
                                                        value="Female"/>Female</label></div>
                     <div className="col-sm-3 form-group">
-                        <label>Upload your picture<div id="upload_button">
-                            <label>
-                                <input type="file" id="upload-photo" onChange={this.handleImageChange}/>
-                                <i className="fa fa-upload"/>
-                            </label>
+                        <label>Upload your picture
+                            <div id="upload_button">
+                                <label>
+                                    <input type="file" id="upload-photo" onChange={this.handleImageChange}/>
+                                    <i className="fa fa-upload"/>
+                                </label>
 
-                        </div></label>
+                            </div>
+                        </label>
 
                         {$imagePreview}
                     </div>
@@ -229,10 +265,13 @@ export class PersonalDetails extends Component {
                 <div className="wrap-input">
                     <div className="col-sm-4 form-group">
                         <label>*Date of birth</label>
-                        <input type="date" className="input" name="dateofbirth" onChange={this.handleUserInput}/></div>
+                        <Datepicker date={this.state.formData.dateofbirth} onChange={this.handleDateChange}/>
+                        {/*<input type="date" className="input" name="dateofbirth" onChange={this.handleUserInput}/>*/}
+                    </div>
                     <div className="col-sm-5 form-group">
                         <label>*Nationality</label>
-                        <select className="input" name="nationality" onChange={this.handleUserInput}>
+                        <select className="input" ref="nationality" value={this.state.formData.nationality}
+                                name="nationality" onChange={this.handleUserInput}>
                             <option>Select your nationality</option>
                             {countries.getNames().map(a => <option
                                 key={a} value={a}>{a}</option>)}</select>
@@ -242,7 +281,8 @@ export class PersonalDetails extends Component {
                 <div className="wrap-input">
                     <div className="col-sm-5 form-group">
                         <label>*Country of birth</label>
-                        <select className="input" name="countryOfBirth" onChange={this.handleUserInput}>
+                        <select className="input" name="countryOfBirth" value={this.state.formData.countryOfBirth}
+                                onChange={this.handleUserInput}>
                             <option>Select your country of birth</option>
                             {countries.getNames().map(a => <option
                                 key={a} value={a}>{a}</option>)}</select>
@@ -260,12 +300,12 @@ export class PersonalDetails extends Component {
                     <div className="col-sm-4 form-group">
                         <label>Father Id</label>
                         <input className="input" type="text" name="fatherId" placeholder="Father id"
-                               onChange={this.handleUserInput} value={this.state.fatherId}/>
+                               onChange={this.handleUserInput} value={this.state.formData.fatherId}/>
                     </div>
                     <div className="col-sm-4 form-group">
                         <label>Mother Id</label>
-                        <input className="input" type="text" name="mid" placeholder="Mother id"
-                               onChange={this.handleUserInput} value={this.state.motherId}/>
+                        <input className="input" type="text" name="motherId" placeholder="Mother id"
+                               onChange={this.handleUserInput} value={this.state.formData.motherId}/>
                     </div>
 
                 </div>

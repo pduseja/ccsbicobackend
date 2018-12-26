@@ -472,6 +472,8 @@
 .footer {
     width: 100%;
     float: left;
+    position:fixed;
+    bottom: 0;
     background: #99a4be;
     color: #fff;
     padding: 15px 0;

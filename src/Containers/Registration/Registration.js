@@ -3,7 +3,7 @@ import {states} from './States.js';
 import {StateMachine} from './StateMachine.js';
 import Security from "./Security";
 import PersonalDetails from "./PersonalDetails";
-import {Address} from "./Address";
+import Address from "./Address";
 import connect from "react-redux/es/connect/connect";
 import {addData} from "../../Actions/Actions";
 
@@ -20,7 +20,6 @@ class App extends Component {
         let currentState = this.state.currentState;
         let nextState = this.stateMachine.transitionTo(currentState, desiredState);
         this.props.dispatch(addData(data));
-
         this.setState({
             currentState: nextState
         });

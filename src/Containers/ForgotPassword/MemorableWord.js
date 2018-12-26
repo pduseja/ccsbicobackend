@@ -4,7 +4,6 @@ import {states} from './States.js';
 export class MemorableWord extends Component {
     constructor(props) {
         super(props);
-        console.log("retrieve", props)
         const lengthOfWord = this.props.data.memorableWord.length;
         this.state = {
             memorable_char1: '',

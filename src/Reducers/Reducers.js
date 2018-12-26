@@ -1,5 +1,6 @@
 const initialState = {data:{},photo:''};
 export default function Reducers(state = initialState, action){
+
     switch(action.type){
         case 'ADD_DATA':
             return {...state,data:{...state.data,...action.text}}
@@ -8,7 +9,6 @@ export default function Reducers(state = initialState, action){
         case 'PERSONAL_STATE':
             return {...state,personalData: action.text};
         case 'ADD_USER_NAME':
-            console.log("dispatch", {...state,user: action.text});
             return {...state,user: action.text};
         default:{
             return state;

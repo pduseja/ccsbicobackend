@@ -83,8 +83,9 @@ export class Security extends Component {
                 break;
 
             case 'memorableWord':
-                memorableWordValid = value.length !== 0;
-                fieldValidationErrors.memorableWord = memorableWordValid ? '' : 'Your memorable word is required';
+                memorableWordValid = value.length >= 10;
+                fieldValidationErrors.memorableWord = memorableWordValid ? '' : 'Your memorable word is required and' +
+                    ' should atleast be 10 characters long';
                 break;
 
             default:

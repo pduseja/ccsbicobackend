@@ -29,7 +29,9 @@ export class Header extends Component {
     }
 
     componentWillUpdate(nextProps, nextState, nextContext) {
-        if(nextProps.location.pathname === '/login')
+        if(nextProps.location.pathname === '/login' ||
+            nextProps.location.pathname === '/forgotPassword' ||
+            nextProps.location.pathname === '/registration')
             this.props.dispatch(addUserName(''))
     }
 
@@ -86,7 +88,6 @@ export class Header extends Component {
                     let res = document.cookie;
                     let multiple = res.split(";");
                     for(let i = 0; i < multiple.length; i++) {
-                        console.log("called")
                         let key = multiple[i].split("=");
                         document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
                     }

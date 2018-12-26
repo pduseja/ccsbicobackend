@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
 import AddressForm from "../../Components/Registration/AddressForm";
+import connect from "react-redux/es/connect/connect";
 
 export class Address extends Component {
     constructor(props) {
@@ -21,6 +22,14 @@ export class Address extends Component {
         };
     }
 
+    componentDidMount() {
+        let data = this.props.data.AddressDetailsList;
+        if(data) {
+            this.setState({formValid:{...this.state.formValid,"1":true}
+            })
+        }
+    }
+
     next = () => {
         this.props.next(states.SECURITY, this.state.formData);
     };
@@ -30,6 +39,7 @@ export class Address extends Component {
     };
 
     isFormValid = (data, key, object) => {
+        if(object){
         let formStatus = this.state.formValid;
         let address = this.state.formData.AddressDetailsList;
         let found = false;
@@ -46,6 +56,7 @@ export class Address extends Component {
         });
 
         if (!found) address.push(object)
+        }
     };
 
     enableNext = () => {
@@ -102,3 +113,8 @@ export class Address extends Component {
         );
     }
 }
+const mapStateToProps = state => ({
+    data: state.data
+});
+
+export default connect(mapStateToProps)(Address)
