@@ -15,8 +15,8 @@ public interface UsersLoginRecordRepo extends JpaRepository<UsersLoginRecord, Lo
 	UsersLoginRecord verifyUser(@Param("cookie") String cookie, @Param("token") String token);
 	
 	@Modifying
-	@Query("update usersloginrecord ulr set ulr.cookie=:cookie, ulr.token=:token where ulr.userId=:userId")
-	int updateCookieToken(@Param("userId")int userId, @Param("cookie") String cookie,@Param("token") String token);
+	@Query("update usersloginrecord ulr set ulr.cookie=:cookie, ulr.token=:token,ulr.cookieExpirytime=:cookieExpirytime where ulr.userId=:userId")
+	int updateCookieToken(@Param("userId")int userId, @Param("cookie") String cookie,@Param("token") String token,@Param("cookieExpirytime") int cookieExpirytime);
 
 	@Query("select ulr from usersloginrecord ulr where ulr.userId=:userId")
 	UsersLoginRecord getRecord(@Param("userId")int userId);
