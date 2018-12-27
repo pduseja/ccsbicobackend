@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
+import {CountryDropdown, RegionDropdown} from "react-country-region-selector";
 
 export class AddressForm extends Component {
     constructor(props) {
@@ -60,6 +61,14 @@ export class AddressForm extends Component {
             });
     };
 
+    handleLocation = (name, value) => {
+        this.setState({formData: {...this.state.formData, [name]: value}},
+            () => {
+                this.validateField(name, value)
+            });
+    };
+
+
     validateForm = () => {
         let {formNumber} = this.props;
         if(this.state.isRequired || this.state.formData.type === "PermA"){
@@ -89,11 +98,11 @@ export class AddressForm extends Component {
                 fieldValidationErrors.cityTown = cityTownValid ? '' : 'Your city/town is required';
                 break;
             case 'stateProvince':
-                stateProvinceValid = value.length !== 0;
+                stateProvinceValid = value !== "";
                 fieldValidationErrors.stateProvince = stateProvinceValid ? '' : 'Your state/province is required';
                 break;
             case 'country':
-                countryValid = value.length !== 0;
+                countryValid = value !== "";
                 fieldValidationErrors.country = countryValid ? '' : 'Your country is required';
                 break;
             case 'pinPostCode':
@@ -153,21 +162,30 @@ export class AddressForm extends Component {
                 </div>
                 <div className="wrap-input">
                     <div className="col-sm-6 form-group">
-                        <label>*City/Town</label>
-                        <input className="input" type="text" name="cityTown" onChange={this.handleUserInput} value={this.state.formData.cityTown}/>
-                        <p className="error-message">{cityTown}</p>
+                        <label>*Country</label>
+                        {/*<input className="input" type="text" name="country" onChange={this.handleUserInput} value={this.state.formData.country}/>*/}
+                        <CountryDropdown className="input"
+                                         value={this.state.formData.country}
+                                         name="country"
+                                         onChange={(val) => this.handleLocation("country", val)}/>
+                        <p className="error-message">{country}</p>
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*State/ Province</label>
-                        <input className="input" type="text" name="stateProvince" onChange={this.handleUserInput} value={this.state.formData.stateProvince}/>
+                        {/*<input className="input" type="text" name="stateProvince" onChange={this.handleUserInput} value={this.state.formData.stateProvince}/>*/}
+                        <RegionDropdown className="input"
+                                        country={this.state.formData.country}
+                                        value={this.state.formData.stateProvince}
+                                        name="stateProvince"
+                                        onChange={(val) => this.handleLocation("stateProvince", val)}/>
                         <p className="error-message">{stateProvince}</p>
                     </div>
                 </div>
                 <div className="wrap-input">
                     <div className="col-sm-6 form-group">
-                        <label>*Country</label>
-                        <input className="input" type="text" name="country" onChange={this.handleUserInput} value={this.state.formData.country}/>
-                        <p className="error-message">{country}</p>
+                        <label>*City/Town</label>
+                        <input className="input" type="text" name="cityTown" onChange={this.handleUserInput} value={this.state.formData.cityTown}/>
+                        <p className="error-message">{cityTown}</p>
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*Pin/Postcode</label>
