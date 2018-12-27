@@ -63,7 +63,7 @@ export class Login extends Component {
         let {emailValid, passValid} = this.state;
         switch (fieldName) {
             case 'email':
-                emailValid = value.length !== 0;
+                emailValid = value.length >= 8;
                 fieldValidationErrors.email = emailValid ? '' : 'Username is invalid';
                 break;
 

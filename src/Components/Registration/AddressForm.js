@@ -110,7 +110,7 @@ export class AddressForm extends Component {
                 fieldValidationErrors.pinPostCode = pinPostCodeValid ? '' : 'Your pin_postcode is required';
                 break;
             case 'email':
-                emailValid = value.length !== 0;
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
                 fieldValidationErrors.email = emailValid ? '' : 'Your email id is invalid';
                 break;
 
@@ -196,17 +196,17 @@ export class AddressForm extends Component {
                 <div className="wrap-input">
                     <div className="col-sm-6 form-group">
                         <label>Mobile</label>
-                        <input className="input" type="text" name="mobile" onChange={this.handleUserInput} value={this.state.formData.mobile}/>
+                        <input className="input" type="number" name="mobile" onChange={this.handleUserInput} value={this.state.formData.mobile}/>
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>Landline</label>
-                        <input className="input" type="text" name="landline" onChange={this.handleUserInput} value={this.state.formData.landline}/>
+                        <input className="input" type="number" name="landline" onChange={this.handleUserInput} value={this.state.formData.landline}/>
                     </div>
                 </div>
                 <div className="wrap-input">
                     <div className="col-sm-6 form-group">
                         <label>*Email</label>
-                        <input className="input" type="text" name="email" onChange={this.handleUserInput} value={this.state.formData.email}/>
+                        <input className="input" type="email" name="email" onChange={this.handleUserInput} value={this.state.formData.email}/>
                         <p className="error-message">{email}</p>
                     </div>
                 </div>
