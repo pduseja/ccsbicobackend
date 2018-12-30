@@ -40,21 +40,37 @@ public class SecurityQuestionsAPI {
 	@ApiOperation(value = "Security Questions", notes = "Security Questions", nickname = "security Questions")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@GetMapping(path = "/questions/{questionsList}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public List<SecurityQuestions> questionsList(@ApiParam(value = "", required = true) @PathVariable String questionsList) {
-		
+	@GetMapping(path = "/questions/{questionsList}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public List<List<SecurityQuestions>> questionsList(
+			@ApiParam(value = "", required = true) @PathVariable String questionsList) {
+
 		LOGGER.debug("Inside Security Questions Get Method");
 		List<SecurityQuestions> list = new ArrayList<>();
+		List<List<SecurityQuestions>> finalList = new ArrayList<>();
 		list = convert(iSecurityQuestionsService.listOfSecurityQuestions());
-		return list;
-			
+		int listInt = list.size();
+		int divNum = 2;
+		int divcount = listInt / divNum;
+		List<SecurityQuestions> listOne = new ArrayList<>();
+		List<SecurityQuestions> listTwo = new ArrayList<>();
+		if (divcount > 0) {
+			listOne = list.subList(0, divcount);
+			listTwo = list.subList(divcount, listInt);
+		}		
+		finalList.add(listOne);
+		finalList.add(listTwo);
+		return finalList;
+
 	}
 
 	@SuppressWarnings("unchecked")
 	private List<SecurityQuestions> convert(
 			List<com.ccsbi.co.usermanagement.service.model.SecurityQuestions> listOfSecurityQuestions) {
 		List<SecurityQuestions> list = new ArrayList<>();
-		
+
 		return (List<SecurityQuestions>) dozerMapper.map(listOfSecurityQuestions, list.getClass());
 	}
+
+	
 }
