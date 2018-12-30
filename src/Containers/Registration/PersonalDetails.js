@@ -3,7 +3,7 @@ import {states} from './States.js';
 import constants from '../../Utils/Constants';
 import {addPhoto} from "../../Actions/Actions";
 import connect from "react-redux/es/connect/connect";
-import Datepicker from "../../Widgets/Datepicker";
+import DatePicker from 'react-date-picker';
 import {CountryDropdown, RegionDropdown} from 'react-country-region-selector';
 
 export class PersonalDetails extends Component {
@@ -56,6 +56,9 @@ export class PersonalDetails extends Component {
     }
 
     componentDidMount() {
+        document.getElementsByClassName('react-date-picker__inputGroup__input react-date-picker__inputGroup__day')[0].placeholder = "DD"
+        document.getElementsByClassName('react-date-picker__inputGroup__input react-date-picker__inputGroup__month')[0].placeholder = "MM"
+        document.getElementsByClassName('react-date-picker__inputGroup__input react-date-picker__inputGroup__year')[0].placeholder = "YYYY"
         let mandatoryFields = ["titleValid", "fnameValid",
             "lastName",
             "snameValid",
@@ -91,9 +94,12 @@ export class PersonalDetails extends Component {
             });
     };
 
-    handleDateChange = (name, value) => {
+    handleDateChange = (value) => {
+        let name = "dateofbirth"
         this.setState({formData: {...this.state.formData, [name]: value}},
-            () => {
+            () =>
+        {
+            console.log(this.state.formData)
                 this.validateField(name, value)
             });
 
@@ -272,7 +278,7 @@ export class PersonalDetails extends Component {
                 <div className="wrap-input">
                     <div className="col-sm-4 form-group">
                         <label>*Date of birth</label>
-                        <Datepicker date={this.state.formData.dateofbirth} onChange={this.handleDateChange}/>
+                        <DatePicker value={this.state.formData.dateofbirth} locale="en-GB" onChange={this.handleDateChange}/>
                         {/*<input type="date" className="input" name="dateofbirth" onChange={this.handleUserInput}/>*/}
                     </div>
                     <div className="col-sm-5 form-group">

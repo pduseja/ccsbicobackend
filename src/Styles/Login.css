@@ -78,14 +78,28 @@
 }
 
 
-.react-datepicker-wrapper {
+.react-date-picker {
     width:100%;
 }
-.react-datepicker-wrapper input{
+.react-date-picker__wrapper{
     height: 40px;
     padding: 8px;
     color: #757575;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd !important;
+}
+.react-date-picker__inputGroup__input{
+text-align:center}
+.react-date-picker__clear-button {
+display:none}
+
+.react-date-picker__inputGroup__day{
+    min-width:20px!important;
+}
+.react-date-picker__inputGroup__month{
+    min-width:25px!important;
+}
+.react-date-picker__inputGroup__year{
+    min-width:32px!important;
 }
 /*------------------------------------------------------------------
 */
@@ -124,16 +138,15 @@
     z-index: 1;
 }
 
-.registration-form .wrap-input div {
-    display: inline-block;
+.registration-form .wrap-input > div {
     padding-right: 0;
 }
 
-.registration-form .wrap-input div:last-child {
+.registration-form .wrap-input > div:last-child {
     padding-right: 0
 }
 
-.registration-form .wrap-input div:first-child {
+.registration-form .wrap-input > div:first-child {
     padding-left: 0
 }
 
