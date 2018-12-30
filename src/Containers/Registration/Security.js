@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {states} from './States.js';
-import constants from '../../Utils/Constants';
 import {connect} from "react-redux";
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
@@ -9,6 +8,7 @@ export class Security extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            securityQuestions: [],
             confirmPassword: '',
             formData: {UsersDetails:{
                 password: '',
@@ -35,6 +35,14 @@ export class Security extends Component {
             memorableWordValid: false,
             formValid: false
         };
+    }
+
+     componentDidMount() {
+        WebApi.getSecurityQuestions().then(response => response.json()).then(response => {
+            this.setState({...this.state,
+                securityQuestions: response
+            })
+        })
     }
 
     _back = (e) => {
@@ -139,6 +147,8 @@ export class Security extends Component {
 
     render() {
         let {password, confirmPassword, securityQuestionId1, securityQuestionId2, securityAnswer1, securityAnswer2, memorableWord} = this.state.formErrors;
+        let {securityQuestions} = this.state;
+
         return (
             <div className="registration-form-step2">
                 <div className="col-sm-12 form security">
@@ -158,10 +168,9 @@ export class Security extends Component {
                         <select className="input" name="securityQuestionId1"
                                 onChange={this.handleUserInput}>
                             <option>Select a security question</option>
-                            {constants.question.map(a => <option
-                                value={a.value} key={a.value}>{a.label}</option>)}</select>
+                            {securityQuestions[0] && securityQuestions[0].map(a => <option
+                                value={a.hintQuestion} key={a.securityQuestionId}>{a.hintQuestion}</option>)}</select>
                         <p className="error-message">{securityQuestionId1}</p>
-
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*Security Answer</label>
@@ -173,8 +182,8 @@ export class Security extends Component {
                         <select className="input" name="securityQuestionId2"
                                 onChange={this.handleUserInput}>
                             <option>Select a security question</option>
-                            {constants.question.map(a => <option
-                                value={a.value} key={a.value}>{a.label}</option>)}</select>
+                            {securityQuestions[1] && securityQuestions[1].map(a => <option
+                                value={a.hintQuestion} key={a.securityQuestionId}>{a.hintQuestion}</option>)}</select>
                         <p className="error-message">{securityQuestionId2}</p>
                     </div>
                     <div className="col-sm-6 form-group">

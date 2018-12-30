@@ -71,7 +71,17 @@ let WebApi = {
             "Content-Type": "application/json"
         },
     })
-    }
+    },
+    getSecurityQuestions(){
+    return fetch('http://localhost:9090/CCSBI/api/questions/a',{
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json"
+            },
+        })
+    },
+
+
 };
 
 export default WebApi;
