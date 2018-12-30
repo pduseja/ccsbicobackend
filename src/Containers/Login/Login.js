@@ -19,7 +19,9 @@ export class Login extends Component {
             error: ''
         }
     }
-
+    componentDidMount(){
+        document.title = "Login"
+    }
     handleUserInput = (event) => {
         const name = event.target.name;
         const target = event.target;

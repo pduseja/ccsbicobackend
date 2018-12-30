@@ -7,6 +7,9 @@ import image1 from '../Images/image1.jpg'
 import image2 from '../Images/image2.jpg'
 
 export default class Home extends Component {
+    componentDidMount(){
+        document.title = "CCSBI home"
+    }
     render() {
         window.scrollTo(0, 0)
         return (

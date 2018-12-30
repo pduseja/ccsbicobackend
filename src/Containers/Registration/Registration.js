@@ -15,7 +15,9 @@ class App extends Component {
         };
         this.stateMachine = new StateMachine();
     }
-
+    componentDidMount(){
+        document.title = "Registration"
+    }
     _next = (desiredState, data) => {
         let currentState = this.state.currentState;
         let nextState = this.stateMachine.transitionTo(currentState, desiredState);

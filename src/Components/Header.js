@@ -123,7 +123,7 @@ export class Header extends Component {
     render() {
         let {currentPage} = this.state;
         let {user} = this.props;
-        let facebookLink, twitterLink, linkedInLink, youtubeLink;
+        let facebookLink, twitterLink, linkedInLink, youtubeLink, marqueeText;
         let menuStatus = this.state.isOpen ? 'isopen' : '';
         let rightMenuStatus = this.state.isRightOpen ? 'is-right-open' : '';
         if (this.state.systemParams.length) {
@@ -131,6 +131,7 @@ export class Header extends Component {
             twitterLink = this.getPath("Twiter")[0].param1;
             linkedInLink = this.getPath("Linkedin")[0].param1;
             youtubeLink = this.getPath("Youtube")[0].param1;
+            marqueeText = this.getPath("HeaderText")[0].param1+" "+this.getPath("HeaderText")[1].param1;
         }
         return (
             <div ref="root">
@@ -150,7 +151,7 @@ export class Header extends Component {
                         <li><a href={facebookLink} rel="noopener noreferrer" target="_blank"><i className="fab fa-facebook-f"/></a></li>
                         <li><a href={twitterLink} rel="noopener noreferrer" target="_blank"><i className="fab fa-twitter"/></a></li>
                         <li><a href={linkedInLink} rel="noopener noreferrer" target="_blank"><i className="fab fa-linkedin-in"/></a></li>
-                        <li><a href={youtubeLink} rel="noopener noreferrer"><i className="fab fa-youtube"/></a></li>
+                        <li><a href={youtubeLink} rel="noopener noreferrer" target="_blank"><i className="fab fa-youtube"/></a></li>
                     </ul>
 
                     <div className="navbar-top">
@@ -229,6 +230,9 @@ export class Header extends Component {
 
                     </div>
                 </nav>
+                <div class="marquee">
+                	<p>{marqueeText}</p>
+                </div>
                 <MenuLinks menuStatus={menuStatus} login={this.login} logout={this.logout}/>
                 <UserOptions rightMenuStatus={rightMenuStatus}/>
             </div>

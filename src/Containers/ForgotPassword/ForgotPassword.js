@@ -14,7 +14,9 @@ class ForgotPassword extends Component {
         };
         this.stateMachine = new StateMachine();
     }
-
+    componentDidMount(){
+        document.title = "Forgot password"
+    }
     _next = (desiredState, data, userId) => {
         let currentState = this.state.currentState;
         let nextState = this.stateMachine.transitionTo(currentState, desiredState);

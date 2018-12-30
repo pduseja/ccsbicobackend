@@ -12,6 +12,9 @@ const style={
     }
 };
 export default class UnderConstruction extends React.Component{
+    componentDidMount(){
+        document.title = "Under construction"
+    }
     render(){
         return(
             <div style={style.container}>
