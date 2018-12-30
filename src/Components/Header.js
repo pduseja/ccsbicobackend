@@ -230,7 +230,7 @@ export class Header extends Component {
 
                     </div>
                 </nav>
-                <div class="marquee">
+                <div className="marquee">
                 	<p>{marqueeText}</p>
                 </div>
                 <MenuLinks menuStatus={menuStatus} login={this.login} logout={this.logout}/>

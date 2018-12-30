@@ -2,6 +2,7 @@ import React from 'react';
 
 export default class Footer extends React.Component{
     render(){
+    const dt = (new Date()).getFullYear();
         return(<>
             <section className="footer-bar d-flex d-sm-flex d-md-none d-lg-none d-xl-none">
                 <ul className="important-links">
@@ -16,7 +17,7 @@ export default class Footer extends React.Component{
             <div className="container">
             <div className="row">
             <div className="col-lg-12 col-sm-12 col-md-12">
-            <small>© 2018 ccsbi.com | All Rights Reserved.</small>
+            <small>© {dt} ccsbi.com | All Rights Reserved.</small>
     </div>
     </div>
     </div>

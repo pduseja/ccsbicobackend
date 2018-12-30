@@ -4,7 +4,7 @@
     width: 100%;
     display: block;
     height: 154px;
-    z-index: 9;
+    z-index: 999;
     transition: .25s ease-in-out;
     background-size: auto 5px;
     background: url(../Images/rainbow-bar.png) top repeat-x #fff;

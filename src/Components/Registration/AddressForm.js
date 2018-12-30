@@ -29,7 +29,8 @@ export class AddressForm extends Component {
             stateProvinceValid: false,
             countryValid: false,
             pinPostCodeValid: false,
-            emailValid: false,
+            emailValid: true,
+            mobileValid: true,
             currentFormValid: false
         };
     }
@@ -70,22 +71,39 @@ export class AddressForm extends Component {
 
 
     validateForm = () => {
-        let {formNumber} = this.props;
-        if(this.state.isRequired || this.state.formData.type === "PermA"){
-            let data = this.state.formData;
-        this.setState({
-            currentFormValid:this.state.addressLine1Valid && this.state.cityTownValid && this.state.stateProvinceValid
-                && this.state.countryValid && this.state.pinPostCodeValid && this.state.emailValid
-        },() => this.props.isFormValid(this.state.currentFormValid, formNumber, data));}
-        else{
-            this.props.isFormValid(true, formNumber)
-        }
-
+          let {formNumber} = this.props;
+            if(this.state.isRequired || this.state.formData.type === "PermA"){
+                let data = this.state.formData;
+            if(this.state.formData.type === "PermA"){
+            this.setState({
+                currentFormValid:this.state.addressLine1Valid && this.state.cityTownValid && this.state.stateProvinceValid
+                    && this.state.countryValid && this.state.pinPostCodeValid && this.state.emailValid &&
+                    this.state.mobileValid && (this.state.formData.email.length !== 0 || this.state.formData.mobile.length !== 0)
+            },() => this.props.isFormValid(this.state.currentFormValid, formNumber, data));
+            }
+            if(this.state.formData.type === "TempA" || this.state.formData.type === "BillA"){
+            this.setState({
+                        currentFormValid:this.state.addressLine1Valid && this.state.cityTownValid && this.state.stateProvinceValid
+                            && this.state.countryValid && this.state.pinPostCodeValid &&
+                            this.state.mobileValid
+                    },() => this.props.isFormValid(this.state.currentFormValid, formNumber, data));
+            }
+            if(this.state.formData.type === "WorkA"){
+            this.setState({
+                        currentFormValid:this.state.addressLine1Valid && this.state.cityTownValid && this.state.stateProvinceValid
+                            && this.state.countryValid && this.state.pinPostCodeValid &&
+                            this.state.mobileValid && this.state.emailValid
+                    },() => this.props.isFormValid(this.state.currentFormValid, formNumber, data));
+            }
+            }
+            else{
+                this.props.isFormValid(true, formNumber)
+            }
     };
 
     validateField = (fieldName, value) => {
         let fieldValidationErrors = this.state.formErrors;
-        let {addressLine1Valid, cityTownValid, stateProvinceValid, countryValid, pinPostCodeValid, emailValid} = this.state;
+        let {addressLine1Valid, cityTownValid, stateProvinceValid, countryValid, pinPostCodeValid, emailValid, mobileValid} = this.state;
 
 
         switch (fieldName) {
@@ -110,9 +128,15 @@ export class AddressForm extends Component {
                 fieldValidationErrors.pinPostCode = pinPostCodeValid ? '' : 'Your pin_postcode is required';
                 break;
             case 'email':
-                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+                emailValid = value.length === 0 || value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
                 fieldValidationErrors.email = emailValid ? '' : 'Your email id is invalid';
                 break;
+            case 'mobile':
+                mobileValid = !(value.length >= 1 && value.length <= 8)
+                fieldValidationErrors.mobile = mobileValid ? '' : 'Your mobile number is invalid';
+            break;
+
+
 
             default:
                 break;
@@ -124,14 +148,15 @@ export class AddressForm extends Component {
             stateProvinceValid: stateProvinceValid,
             countryValid: countryValid,
             pinPostCodeValid: pinPostCodeValid,
-            emailValid: emailValid
+            emailValid: emailValid,
+            mobileValid: mobileValid
         }, this.validateForm);
 
 
     };
 
     render() {
-        let {addressLine1, cityTown, stateProvince, country, pinPostCode, email} = this.state.formErrors;
+        let {addressLine1, cityTown, stateProvince, country, pinPostCode, email, mobile} = this.state.formErrors;
         return (
             <div className="registration-form">
                 {this.state.formData.type!== 'PermA' && <div className="wrap-input">
@@ -163,7 +188,6 @@ export class AddressForm extends Component {
                 <div className="wrap-input">
                     <div className="col-sm-6 form-group">
                         <label>*Country</label>
-                        {/*<input className="input" type="text" name="country" onChange={this.handleUserInput} value={this.state.formData.country}/>*/}
                         <CountryDropdown className="input"
                                          value={this.state.formData.country}
                                          name="country"
@@ -172,7 +196,6 @@ export class AddressForm extends Component {
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*State/ Province</label>
-                        {/*<input className="input" type="text" name="stateProvince" onChange={this.handleUserInput} value={this.state.formData.stateProvince}/>*/}
                         <RegionDropdown className="input"
                                         country={this.state.formData.country}
                                         value={this.state.formData.stateProvince}
@@ -194,21 +217,26 @@ export class AddressForm extends Component {
                     </div>
                 </div>
                 <div className="wrap-input">
-                    <div className="col-sm-6 form-group">
-                        <label>Mobile</label>
-                        <input className="input" type="number" name="mobile" onChange={this.handleUserInput} value={this.state.formData.mobile}/>
-                    </div>
-                    <div className="col-sm-6 form-group">
-                        <label>Landline</label>
-                        <input className="input" type="number" name="landline" onChange={this.handleUserInput} value={this.state.formData.landline}/>
-                    </div>
+                        {this.state.formData.type=== 'PermA' && <div>Your Mobile or Email id is required</div>}
                 </div>
                 <div className="wrap-input">
                     <div className="col-sm-6 form-group">
-                        <label>*Email</label>
+                        <label>Mobile</label>
+                        <input className="input" type="number" name="mobile" onChange={this.handleUserInput} value={this.state.formData.mobile}/>
+                        <p className="error-message">{mobile}</p>
+                    </div>
+                    {(this.state.formData.type === 'PermA' || this.state.formData.type === 'WorkA') &&<div className="col-sm-6 form-group">
+                        <label>Email</label>
                         <input className="input" type="email" name="email" onChange={this.handleUserInput} value={this.state.formData.email}/>
                         <p className="error-message">{email}</p>
-                    </div>
+                    </div>}
+
+                </div>
+                <div className="wrap-input">
+                    <div className="col-sm-6 form-group">
+                                            <label>Landline</label>
+                                            <input className="input" type="number" name="landline" onChange={this.handleUserInput} value={this.state.formData.landline}/>
+                                        </div>
                 </div>
             </div>
         )

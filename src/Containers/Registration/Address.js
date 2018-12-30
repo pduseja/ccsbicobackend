@@ -57,6 +57,12 @@ export class Address extends Component {
 
         if (!found) address.push(object)
         }
+        else{
+             let formStatus = this.state.formValid;
+             this.setState({formValid: {...formStatus, [key]: data}}
+             );
+        }
+
     };
 
     enableNext = () => {
