@@ -130,7 +130,8 @@ public class UsersServiceImpl implements IUsersService {
 			com.ccsbi.co.usermanagement.repository.entity.UsersDetails usersDetails = usersDetailsRepo.getUsersDetails(users.getUserId());
 			System.out.println("Hello");
 			if (usersDetails!=null) {
-				update = usersDetailsRepo.updateusersDetails(users.getUserId(), password);
+				String encryptPassword = reallyStrongSecuredPassword.encrypt(password);
+				update = usersDetailsRepo.updateusersDetails(users.getUserId(), encryptPassword);
 				if (update == 0) {
 					return 0;
 				} else {
