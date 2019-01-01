@@ -96,7 +96,7 @@ export class Login extends Component {
 					</span>
                         <div className="block-error">{this.state.error}</div>
                         <div className="wrap-input">
-                            <input className="input" type="text" name="email" placeholder="UserName"
+                            <input className="input" type="text" name="email" placeholder="Username"
                                    onChange={this.handleUserInput} value={this.state.email}/>
                             <span className="focus-input"/>
                             <span className="symbol-input">

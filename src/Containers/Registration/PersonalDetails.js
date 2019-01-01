@@ -99,7 +99,6 @@ export class PersonalDetails extends Component {
         this.setState({formData: {...this.state.formData, [name]: value}},
             () =>
         {
-            console.log(this.state.formData)
                 this.validateField(name, value)
             });
 

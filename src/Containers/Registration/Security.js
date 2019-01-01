@@ -9,6 +9,8 @@ export class Security extends Component {
         super(props);
         this.state = {
             securityQuestions: [],
+            securityQuestionId1: '',
+            securityQuestionId2: '',
             confirmPassword: '',
             formData: {UsersDetails:{
                 password: '',
@@ -141,6 +143,17 @@ export class Security extends Component {
             });
     };
 
+    handleChangeSecurityQuestion = (e,id) =>{
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState({[name]:value})
+        const questionId = this.state.securityQuestions[id].filter(q => q.hintQuestion === value)[0].securityQuestionId
+        this.setState({formData:{UsersDetails:{...this.state.formData.UsersDetails,[name]: questionId}}},
+        ()=>{
+               this.validateField(name, value)
+        });
+    };
+
     submit = () => {
         this.props.onAdd(this.state.formData);
     };
@@ -166,7 +179,7 @@ export class Security extends Component {
                     <div className="col-sm-6 form-group">
                         <label>*Security Question</label>
                         <select className="input" name="securityQuestionId1"
-                                onChange={this.handleUserInput}>
+                                onChange={(e) => this.handleChangeSecurityQuestion(e,0)}>
                             <option>Select a security question</option>
                             {securityQuestions[0] && securityQuestions[0].map(a => <option
                                 value={a.hintQuestion} key={a.securityQuestionId}>{a.hintQuestion}</option>)}</select>
@@ -180,7 +193,7 @@ export class Security extends Component {
                     <div className="col-sm-6 form-group">
                         <label>*Security Question</label>
                         <select className="input" name="securityQuestionId2"
-                                onChange={this.handleUserInput}>
+                                onChange={(e) => this.handleChangeSecurityQuestion(e,1)}>
                             <option>Select a security question</option>
                             {securityQuestions[1] && securityQuestions[1].map(a => <option
                                 value={a.hintQuestion} key={a.securityQuestionId}>{a.hintQuestion}</option>)}</select>
