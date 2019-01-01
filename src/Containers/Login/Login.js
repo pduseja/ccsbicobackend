@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import WebApi from "../../Utils/WebApi";
 import {connect} from "react-redux";
 import {addUserName} from "../../Actions/Actions";
+import Cookies from 'universal-cookie';
 
 export class Login extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ export class Login extends Component {
         }
     }
     componentDidMount(){
-        document.title = "Login"
+        document.title = "Login";
     }
     handleUserInput = (event) => {
         const name = event.target.name;
@@ -36,21 +37,26 @@ export class Login extends Component {
         this.setState({formValid: this.state.emailValid && this.state.passValid});
     };
 
+    getDate = () =>{
+    let d = new Date()
+    d.setDate(d.getDate() + 1)
+    return d;
+    };
+
+
     handleClick = () => {
         let {email, pass, rememberMe} = this.state;
         WebApi.getLoginUser(email, pass, rememberMe).then(response => response.json()
         ).then(response => {
             if (response.UsersLoginRecord.rememberMe === true) {
-                document.cookie = `token=${response.UsersLoginRecord.token}; expires=${response.cookieExpirytime}`;
-                document.cookie = `cookie=${response.UsersLoginRecord.cookie}; expires=${response.cookieExpirytime}`;
+                const cookies = new Cookies();
+                cookies.set('token', response.UsersLoginRecord.token, { path: '/', expires: this.getDate() });
+                cookies.set('cookie', response.UsersLoginRecord.cookie, { path: '/', expires: this.getDate() });
             }
             else{
-                let res = document.cookie;
-                let multiple = res.split(";");
-                for(let i = 0; i < multiple.length; i++) {
-                    let key = multiple[i].split("=");
-                    document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
-                }
+            const cookies = new Cookies();
+            cookies.remove('token');
+            cookies.remove('cookie');
             }
             this.props.history.push('/');
             this.setState({error: ''})

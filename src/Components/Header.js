@@ -6,6 +6,7 @@ import UserOptions from "./UserOptions";
 import WebApi from "../Utils/WebApi";
 import {connect} from "react-redux";
 import {addUserName} from "../Actions/Actions";
+import Cookies from 'universal-cookie';
 
 export class Header extends Component {
     constructor(props) {
@@ -62,35 +63,30 @@ export class Header extends Component {
         });
     };
 
-    getCookie = (name) => {
-        const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-        return v ? v[2] : null;
-    };
-
     login = () => {
         this.props.history.push('/login');
         this.setState({'isOpen': false, 'isRightOpen': false})
     };
 
     getUserDetails = () => {
-        const cookie = this.getCookie('cookie');
-        const token = this.getCookie('token');
+        const cookies = new Cookies();
+        const cookie = cookies.get('cookie');
+        const token = cookies.get('token');
         if(cookie && token){
         WebApi.getLoggedInUser(cookie, token)
             .then(response => response.json())
             .then(response => {
                 this.props.dispatch(addUserName(response.firstName))
                 if (response.UsersLoginRecord.rememberMe === true) {
-                    document.cookie = `token=${response.UsersLoginRecord.token}; expires=${response.cookieExpirytime}`;
-                    document.cookie = `cookie=${response.UsersLoginRecord.cookie}; expires=${response.cookieExpirytime}`;
+                const cookies = new Cookies();
+                     cookies.set('token', response.UsersLoginRecord.token, { path: '/', expires: this.getDate() });
+                     cookies.set('cookie', response.UsersLoginRecord.cookie, { path: '/', expires: this.getDate() });
+
                 }
                 else{
-                    let res = document.cookie;
-                    let multiple = res.split(";");
-                    for(let i = 0; i < multiple.length; i++) {
-                        let key = multiple[i].split("=");
-                        document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
-                    }
+                const cookies = new Cookies();
+                     cookies.remove('token');
+                     cookies.remove('cookie');
 
                 }
             }).catch(err =>{
@@ -102,13 +98,16 @@ export class Header extends Component {
         }
     };
 
+    getDate = () =>{
+        let d = new Date()
+        d.setDate(d.getDate() + 1)
+        return d;
+    };
+
     logout = () => {
-        let res = document.cookie;
-        let multiple = res.split(";");
-        for(let i = 0; i < multiple.length; i++) {
-            let key = multiple[i].split("=");
-            document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
-        }
+        const cookies = new Cookies();
+        cookies.remove('token');
+        cookies.remove('cookie');
         this.props.history.push('/');
         this.props.dispatch(addUserName(''))
         this.setState({'isOpen': false, 'isRightOpen': false})
