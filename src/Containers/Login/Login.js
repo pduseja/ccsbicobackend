@@ -55,8 +55,8 @@ export class Login extends Component {
             }
             else{
             const cookies = new Cookies();
-            cookies.remove('token');
-            cookies.remove('cookie');
+            cookies.remove('token', { path: '/' });
+            cookies.remove('cookie', { path: '/' });
             }
             this.props.history.push('/');
             this.setState({error: ''})

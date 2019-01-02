@@ -106,8 +106,8 @@ export class Header extends Component {
 
     logout = () => {
         const cookies = new Cookies();
-        cookies.remove('token');
-        cookies.remove('cookie');
+        cookies.remove('token', { path: '/' });
+        cookies.remove('cookie', { path: '/' });
         this.props.history.push('/');
         this.props.dispatch(addUserName(''))
         this.setState({'isOpen': false, 'isRightOpen': false})
