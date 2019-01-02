@@ -220,7 +220,7 @@ public class LoginServiceImpl implements ILoginService {
 			// 1 day = 24 x 60 x 60
 			usersLoginRecord.setCookieExpirytime(86400);
 		}
-		int login = usersLoginRecordRepo.updateCookieToken(users.getUserId(), cookieStr, tokenStr,
+		int login = usersLoginRecordRepo.updateCookieToken(users.getUserId(), usersLoginRecord.getCookie(), usersLoginRecord.getToken(),
 				usersLoginRecord.getCookieExpirytime());
 		if (login != 0) {
 			return usersLoginRecord;
