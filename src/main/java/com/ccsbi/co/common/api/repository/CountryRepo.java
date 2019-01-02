@@ -10,8 +10,8 @@ import com.ccsbi.co.common.api.repository.entity.Countries;
 @Repository
 public interface CountryRepo extends JpaRepository<Countries, Long> {
 	
+	@Query("Select c.id from countries c where c.name=:name")
+	int getCountryId(@Param("name") String name);
 	
-	@Query("SELECT c.countryName FROM countries c WHERE c.countryCode=:countryCode")
-	String getCountryName(@Param("countryCode") String countryCode);
 
 }
