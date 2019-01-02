@@ -92,6 +92,7 @@ public class LoginServiceImpl implements ILoginService {
 							usersLoginRecord.setRememberMe(false);
 							usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
 						} else {
+							usersLoginRecord.setRememberMe(true);
 							usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
 						}
 						user.setUsersLoginRecord(usersLoginRecord);
@@ -181,17 +182,17 @@ public class LoginServiceImpl implements ILoginService {
 		if (!usersLoginRecord.getRememberMe()) {
 			usersLoginRecord.setCookie("");
 			usersLoginRecord.setToken("");
-			usersLoginRecord.setCookieExpirytime(0);
+			usersLoginRecord.setCookieExpirytime(0);			
 		} else {
 			usersLoginRecord.setToken(tokenStr);
 			usersLoginRecord.setCookie(cookieStr);
 			// 1 day = 24 x 60 x 60
-			usersLoginRecord.setCookieExpirytime(86400);
+			usersLoginRecord.setCookieExpirytime(86400);			
 		}
 
 		usersLoginRecord.setPassword(users.getUsersDetails().getPassword());
 		usersLoginRecord.setUserName(users.getUserName());
-		usersLoginRecord.setRememberMe(true);
+		
 		usersLoginRecord = convertULR(usersLoginRecordRepo.save(convertUsersLR(usersLoginRecord)));
 
 		return usersLoginRecord;
