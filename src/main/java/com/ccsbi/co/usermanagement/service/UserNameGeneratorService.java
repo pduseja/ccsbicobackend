@@ -22,7 +22,7 @@ public class UserNameGeneratorService {
 			@SuppressWarnings("unused")
 			int updatePrefixNum = userNameRepo.updateSequenceNumber(prefixNum+1,prefix.toUpperCase());
 		}
-		String userName = prefix+prefixNum;
+		String userName = prefix.toUpperCase()+prefixNum;
 		
 		return userName;
 	}
