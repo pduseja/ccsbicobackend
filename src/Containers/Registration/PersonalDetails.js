@@ -5,6 +5,7 @@ import {addPhoto} from "../../Actions/Actions";
 import connect from "react-redux/es/connect/connect";
 import DatePicker from 'react-date-picker';
 import {CountryDropdown, RegionDropdown} from 'react-country-region-selector';
+import WebApi from "../../Utils/WebApi";
 
 export class PersonalDetails extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ export class PersonalDetails extends Component {
         this.state = {
             file: '',
             imagePreviewUrl: '',
+            cities: '',
             formData: {
                 userName: '',
                 title: 'Select your title',
@@ -22,6 +24,7 @@ export class PersonalDetails extends Component {
                 photoId: 1,
                 gender: 'Male',
                 townOfBirth: '',
+                cityOfBirth: '',
                 countryOfBirth: 'Select your country of birth',
                 dateofbirth: '',
                 nationality: 'Select your nationality',
@@ -41,7 +44,8 @@ export class PersonalDetails extends Component {
                 townOfBirth: '',
                 dateofbirth: '',
                 nationality: '',
-                countryOfBirth: ''
+                countryOfBirth: '',
+                cityOfBirth: ''
             },
             titleValid: false,
             fnameValid: false,
@@ -50,6 +54,7 @@ export class PersonalDetails extends Component {
             tobValid: false,
             nationalityValid: false,
             cobValid: false,
+            cityOfBirthValid: false,
             formValid: false
 
         }
@@ -66,6 +71,7 @@ export class PersonalDetails extends Component {
             "tobValid",
             "nationalityValid",
             "cobValid",
+            "cityOfBirthValid",
             "formValid"];
         let data = this.props.data;
         Object.keys(data).length !== 0 && data.constructor === Object &&
@@ -87,10 +93,20 @@ export class PersonalDetails extends Component {
             });
     };
 
-    handleLocation = (name, value) => {
+    handleChangeCountry = (name, value) => {
         this.setState({formData: {...this.state.formData, [name]: value}},
             () => {
                 this.validateField(name, value)
+            });
+    };
+
+    handleChangeState = (name, value) => {
+        this.setState({formData: {...this.state.formData, [name]: value}},
+            () => {
+                this.validateField(name, value)
+                WebApi.getCities(this.state.formData.countryOfBirth,this.state.formData.townOfBirth).then(response => response.json()).then(response => {
+                    this.setState({...this.state, cities: response})
+                })
             });
     };
 
@@ -106,7 +122,7 @@ export class PersonalDetails extends Component {
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let {titleValid, fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid} = this.state;
+        let {titleValid, fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid, cityOfBirthValid} = this.state;
 
         switch (fieldName) {
             case 'title':
@@ -144,6 +160,11 @@ export class PersonalDetails extends Component {
                 fieldValidationErrors.countryOfBirth = cobValid ? '' : 'Your country of birth is required';
                 break;
 
+            case 'cityOfBirth':
+                cityOfBirthValid = value !== "Select your city of birth";
+                fieldValidationErrors.cityOfBirth = cityOfBirthValid ? '' : 'Your city of birth is required';
+                break;
+
             default:
                 break;
         }
@@ -156,7 +177,8 @@ export class PersonalDetails extends Component {
             dobValid: dobValid,
             tobValid: tobValid,
             nationalityValid: nationalityValid,
-            cobValid: cobValid
+            cobValid: cobValid,
+            cityOfBirthValid: cityOfBirthValid
         }, this.validateForm);
 
 
@@ -191,13 +213,13 @@ export class PersonalDetails extends Component {
         this.setState({
             formValid: this.state.titleValid && this.state.fnameValid && this.state.snameValid &&
                 this.state.tobValid && this.state.dobValid && this.state.nationalityValid &&
-                this.state.cobValid
+                this.state.cobValid && this.state.cityOfBirthValid
         });
 
     };
 
     render() {
-        let {title, firstName, lastName, townOfBirth, nationality, countryOfBirth} = this.state.formErrors;
+        let {title, firstName, lastName, townOfBirth, nationality, countryOfBirth, cityOfBirth} = this.state.formErrors;
         let {imagePreviewUrl} = this.state;
         let data = this.state.formData;
         let $imagePreview = null;
@@ -285,7 +307,7 @@ export class PersonalDetails extends Component {
                         <CountryDropdown className="input"
                                          value={this.state.formData.nationality}
                                          name="nationality"
-                                         onChange={(val) => this.handleLocation("nationality", val)}/>
+                                         onChange={(val) => this.handleChangeCountry("nationality", val)}/>
                         <p className="error-message">{nationality}</p>
                     </div>
                 </div>
@@ -295,7 +317,7 @@ export class PersonalDetails extends Component {
                         <CountryDropdown className="input"
                                          value={this.state.formData.countryOfBirth}
                                          name="countryOfBirth"
-                                         onChange={(val) => this.handleLocation("countryOfBirth", val)}/><p
+                                         onChange={(val) => this.handleChangeCountry("countryOfBirth", val)}/><p
                         className="error-message">{countryOfBirth}</p>
 
                     </div>
@@ -305,13 +327,23 @@ export class PersonalDetails extends Component {
                                         country={this.state.formData.countryOfBirth}
                                         value={this.state.formData.townOfBirth}
                                         name="townOfBirth"
-                                        onChange={(val) => this.handleLocation("townOfBirth", val)}/>
+                                        onChange={(val) => this.handleChangeState("townOfBirth", val)}/>
                         <p className="error-message">{townOfBirth}</p>
                     </div>
                 </div>
 
 
                 <div className="wrap-input">
+                    <div className="col-sm-4 form-group">
+                        <label>*City of birth</label>
+                        <select className="input" name="cityOfBirth" value={this.state.formData.cityOfBirth}
+                                onChange={this.handleUserInput}>
+                            <option>Select your city of birth</option>
+                            {this.state.cities && this.state.cities.map((a,index) =>
+                                <option
+                                    key={index} value={a}>{a}</option>)}</select>
+                        <p className="error-message">{cityOfBirth}</p>
+                    </div>
                     <div className="col-sm-4 form-group">
                         <label>Father Id</label>
                         <input className="input" type="text" name="fatherId" placeholder="Father id"

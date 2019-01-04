@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {CountryDropdown, RegionDropdown} from "react-country-region-selector";
+import WebApi from "../../Utils/WebApi";
 
 export class AddressForm extends Component {
     constructor(props) {
@@ -62,10 +63,21 @@ export class AddressForm extends Component {
             });
     };
 
-    handleLocation = (name, value) => {
+    handleChangeCountry = (name, value) => {
         this.setState({formData: {...this.state.formData, [name]: value}},
             () => {
                 this.validateField(name, value)
+            });
+    };
+
+
+    handleChangeState = (name, value) => {
+        this.setState({formData: {...this.state.formData, [name]: value}},
+            () => {
+                this.validateField(name, value)
+                WebApi.getCities(this.state.formData.country,this.state.formData.stateProvince).then(response => response.json()).then(response => {
+                    this.setState({...this.state, cities: response})
+                })
             });
     };
 
@@ -112,7 +124,7 @@ export class AddressForm extends Component {
                 fieldValidationErrors.addressLine1 = addressLine1Valid ? '' : 'Your address line 1 is required';
                 break;
             case 'cityTown':
-                cityTownValid = value.length !== 0;
+                cityTownValid = value !== "";
                 fieldValidationErrors.cityTown = cityTownValid ? '' : 'Your city/town is required';
                 break;
             case 'stateProvince':
@@ -191,7 +203,7 @@ export class AddressForm extends Component {
                         <CountryDropdown className="input"
                                          value={this.state.formData.country}
                                          name="country"
-                                         onChange={(val) => this.handleLocation("country", val)}/>
+                                         onChange={(val) => this.handleChangeCountry("country", val)}/>
                         <p className="error-message">{country}</p>
                     </div>
                     <div className="col-sm-6 form-group">
@@ -200,14 +212,19 @@ export class AddressForm extends Component {
                                         country={this.state.formData.country}
                                         value={this.state.formData.stateProvince}
                                         name="stateProvince"
-                                        onChange={(val) => this.handleLocation("stateProvince", val)}/>
+                                        onChange={(val) => this.handleChangeState("stateProvince", val)}/>
                         <p className="error-message">{stateProvince}</p>
                     </div>
                 </div>
                 <div className="wrap-input">
                     <div className="col-sm-6 form-group">
                         <label>*City/Town</label>
-                        <input className="input" type="text" name="cityTown" onChange={this.handleUserInput} value={this.state.formData.cityTown}/>
+                        <select className="input" name="cityTown" value={this.state.formData.cityTown}
+                                onChange={this.handleUserInput}>
+                            <option>Select your city of birth</option>
+                            {this.state.cities && this.state.cities.map((a,index) =>
+                                <option
+                                    key={index} value={a}>{a}</option>)}</select>
                         <p className="error-message">{cityTown}</p>
                     </div>
                     <div className="col-sm-6 form-group">

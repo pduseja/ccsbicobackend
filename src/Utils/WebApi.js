@@ -73,13 +73,21 @@ let WebApi = {
     })
     },
     getSecurityQuestions(){
-    return fetch('http://localhost:9090/CCSBI/api/questions/a',{
+        return fetch('http://localhost:9090/CCSBI/api/questions/a',{
                 method: "GET",
                 headers: {
                 "Content-Type": "application/json"
             },
         })
     },
+    getCities(country, state){
+        return fetch(`http://localhost:9090/CCSBI/api/cities/${country}/${state}`,{
+                    method: "GET",
+                    headers: {
+                    "Content-Type": "application/json"
+                },
+        })
+    }
 
 
 };

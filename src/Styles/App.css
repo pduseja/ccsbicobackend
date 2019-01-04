@@ -471,6 +471,7 @@
 /* FOOTER */
 .footer {
     width: 100%;
+    z-index: 999;
     float: left;
     position:fixed;
     bottom: 0;
