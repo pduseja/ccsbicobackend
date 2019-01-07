@@ -58,11 +58,7 @@ export class Security extends Component {
         switch (fieldName) {
             case 'password':
                 passwordValid = value.length !== 0 && /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(value);
-                fieldValidationErrors.password = passwordValid ? '' : 'Password should be have at least 8 characters' +
-                    ' 1' +
-                    ' alphabet' +
-                    ' and 1' +
-                    ' special character';
+                fieldValidationErrors.password = passwordValid ? '' : 'Password should be at least 8 characters with 1 Capital Alphabet and 1 Special character';
                 break;
 
             case 'confirmPassword':
@@ -72,14 +68,12 @@ export class Security extends Component {
 
             case 'securityQuestionId1':
                 securityQuestionId1Valid = value !== 'Select 1st security question';
-                fieldValidationErrors.securityQuestionId1 = securityQuestionId1Valid ? '' : 'Please choose a' +
-                    ' security question';
+                fieldValidationErrors.securityQuestionId1 = securityQuestionId1Valid ? '' : 'Please choose a security question';
                 break;
 
             case 'securityQuestionId2':
                 securityQuestionId2Valid = value !== 'Select 2nd security question';
-                fieldValidationErrors.securityQuestionId2 = securityQuestionId2Valid ? '' : 'Please choose' +
-                    ' a security question';
+                fieldValidationErrors.securityQuestionId2 = securityQuestionId2Valid ? '' : 'Please choose a security question';
                 break;
 
             case 'securityAnswer1':
@@ -94,8 +88,7 @@ export class Security extends Component {
 
             case 'memorableWord':
                 memorableWordValid = value.length >= 10;
-                fieldValidationErrors.memorableWord = memorableWordValid ? '' : 'Your memorable word is required and' +
-                    ' should atleast be 10 characters long';
+                fieldValidationErrors.memorableWord = memorableWordValid ? '' : 'Memorable word is must for registration and should atleast be 10 characters long';
                 break;
 
             default:
