@@ -1,7 +1,9 @@
 import React,{ Component } from 'react';
 import constants from '../Utils/Constants';
 import Helpers from "../Utils/Helpers";
-export default class MenuLinks extends Component {
+import {connect} from "react-redux";
+
+export class MenuLinks extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -43,7 +45,7 @@ export default class MenuLinks extends Component {
 
 
     render() {
-        let { user } = this.state;
+        let { user } = this.props;
         let links = constants.menuItems.links.map((link, i) => <li ref={i + 1} key={i}>
                 <p onClick={() => this.toggle(link.name)} ><a href={link.link}>{link.text}</a>
                     {link.submenu &&
@@ -57,10 +59,16 @@ export default class MenuLinks extends Component {
             <div className={this.props.menuStatus} id='menu'>
                 <ul>
                     { links }
-                    {user ? <li><span onClick={this.props.logout}>Logout</span></li> :
-                        <li><span onClick={this.props.login}>Login</span></li>}
+                    {user === '' ? <li><span onClick={this.props.login}>Login</span></li> :
+                        <li><span onClick={this.props.logout}>Logout</span></li>}
                 </ul>
             </div>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(MenuLinks);

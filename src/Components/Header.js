@@ -155,7 +155,7 @@ export class Header extends Component {
 
                     <div className="navbar-top">
                         <div className="logo-container"><div onClick={this._menuToggle} id="hambmenu"
-                                                                              className={"d-inline-block d-sm-inline-block d-md-none d-lg-none" +
+                                                                              className={"d-inline-block d-sm-inline-block d-md-block d-lg-none" +
                                                                               " d-xl-none " + menuStatus}>
                             <i className="fas fa-bars"/>
                         </div>
@@ -172,7 +172,7 @@ export class Header extends Component {
                     </div>
 
 
-                    <div className="navbar-bottom  d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                    <div className="navbar-bottom  d-none d-sm-none d-md-none d-lg-block d-xl-block">
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <Link to="/" className="nav-link">Home</Link>

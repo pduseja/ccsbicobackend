@@ -50,6 +50,7 @@ export class PersonalDetails extends Component {
             titleValid: false,
             fnameValid: false,
             snameValid: false,
+            mnameValid: true,
             dobValid: false,
             tobValid: false,
             nationalityValid: false,
@@ -122,7 +123,7 @@ export class PersonalDetails extends Component {
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let {titleValid, fnameValid, snameValid, tobValid, dobValid, nationalityValid, cobValid, cityOfBirthValid} = this.state;
+        let {titleValid, fnameValid, snameValid, mnameValid, tobValid, dobValid, nationalityValid, cobValid, cityOfBirthValid} = this.state;
 
         switch (fieldName) {
             case 'title':
@@ -131,13 +132,18 @@ export class PersonalDetails extends Component {
                 break;
 
             case 'firstName':
-                fnameValid = value.length !== 0;
-                fieldValidationErrors.firstName = fnameValid ? '' : 'Your name is required';
+                fnameValid = value.length !== 0 && /^([a-zA-Z']*)$/.test(value);
+                fieldValidationErrors.firstName = fnameValid ? '' : 'Your name is invalid';
+                break;
+
+            case 'middleName':
+                mnameValid = /^([a-zA-Z']*)$/.test(value);
+                fieldValidationErrors.middleName = mnameValid ? '' : 'Your middle name is invalid';
                 break;
 
             case 'lastName':
-                snameValid = value.length !== 0;
-                fieldValidationErrors.lastName = snameValid ? '' : 'Your last name is required';
+                snameValid = value.length !== 0 && /^([a-zA-Z']*)$/.test(value);
+                fieldValidationErrors.lastName = snameValid ? '' : 'Your last name is invalid';
                 break;
 
             case 'dateofbirth':
@@ -174,6 +180,7 @@ export class PersonalDetails extends Component {
             titleValid: titleValid,
             fnameValid: fnameValid,
             snameValid: snameValid,
+            mnameValid: mnameValid,
             dobValid: dobValid,
             tobValid: tobValid,
             nationalityValid: nationalityValid,
@@ -211,7 +218,7 @@ export class PersonalDetails extends Component {
 
     validateForm() {
         this.setState({
-            formValid: this.state.titleValid && this.state.fnameValid && this.state.snameValid &&
+            formValid: this.state.titleValid && this.state.fnameValid && this.state.snameValid && this.state.mnameValid &&
                 this.state.tobValid && this.state.dobValid && this.state.nationalityValid &&
                 this.state.cobValid && this.state.cityOfBirthValid
         });
@@ -219,7 +226,7 @@ export class PersonalDetails extends Component {
     };
 
     render() {
-        let {title, firstName, lastName, townOfBirth, nationality, countryOfBirth, cityOfBirth} = this.state.formErrors;
+        let {title, firstName, lastName, middleName, townOfBirth, nationality, countryOfBirth, cityOfBirth} = this.state.formErrors;
         let {imagePreviewUrl} = this.state;
         let data = this.state.formData;
         let $imagePreview = null;
@@ -262,6 +269,7 @@ export class PersonalDetails extends Component {
                         <label>Middle Name</label>
                         <input className="input" type="text" name="middleName" placeholder="Middle name"
                                onChange={this.handleUserInput} value={this.state.formData.middleName}/>
+                         <p className="error-message">{middleName}</p>
                     </div>
 
                 </div>
