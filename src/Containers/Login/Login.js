@@ -62,7 +62,7 @@ export class Login extends Component {
             this.setState({error: ''})
             this.props.dispatch(addUserName(response.firstName))
         }).catch(() => {
-            this.setState({error: "User does not exist"})
+            this.setState({error: "UserID or Password is incorrect, Please try again"})
         });
     };
 
