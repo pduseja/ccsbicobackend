@@ -34,7 +34,8 @@ export class SetPassword extends Component {
         switch (fieldName) {
             case 'password':
                 passwordValid = value.length !== 0;
-                fieldValidationErrors.password = passwordValid ? '' : 'Please enter a new password';
+                fieldValidationErrors.password = passwordValid ? '' : 'Please enter a new password; '+
+                		'Password should be at least 8 characters with 1 Capital Alphabet and 1 Special character';
                 break;
 
             case 'confirmPassword':
