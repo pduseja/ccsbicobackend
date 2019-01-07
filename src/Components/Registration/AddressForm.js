@@ -41,13 +41,31 @@ export class AddressForm extends Component {
         if(data) {
             let addressType = this.props.data.AddressDetailsList.filter(address => address.type === this.state.formData.type);
             var address = Object.assign({},addressType[0])
-            if(addressType)
+            if(addressType){
+                    let mandatoryFields = [
+                        "isRequired",
+                        "addressLine1Valid",
+                        "cityTownValid",
+                        "stateProvinceValid",
+                        "countryValid",
+                        "pinPostCodeValid",
+                        "emailValid",
+                        "mobileValid",
+                        "currentFormValid"];
+
+                    mandatoryFields.forEach(fields => {
+                        this.setState({[fields]: true})
+                    });
             this.setState({
                 formData: {...this.state.formData, ...address}
+            },()=>{
+                    WebApi.getCities(this.state.formData.country,this.state.formData.stateProvince).then(response => response.json()).then(response => {
+                         this.setState({...this.state, cities: response})
+                    })
             });
         }
     }
-
+}
     handleCheckBox = () =>{
         this.setState({...this.state,isRequired:!this.state.isRequired},() => {
             this.validateField('isRequired', this.state.isRequired)
@@ -124,7 +142,7 @@ export class AddressForm extends Component {
                 fieldValidationErrors.addressLine1 = addressLine1Valid ? '' : 'Your address line 1 is required';
                 break;
             case 'cityTown':
-                cityTownValid = value !== "";
+                cityTownValid = value !== "Select your city";
                 fieldValidationErrors.cityTown = cityTownValid ? '' : 'Your city/town is required';
                 break;
             case 'stateProvince':
@@ -221,7 +239,7 @@ export class AddressForm extends Component {
                         <label>*City/Town</label>
                         <select className="input" name="cityTown" value={this.state.formData.cityTown}
                                 onChange={this.handleUserInput}>
-                            <option>Select your city of birth</option>
+                            <option>Select your city</option>
                             {this.state.cities && this.state.cities.map((a,index) =>
                                 <option
                                     key={index} value={a}>{a}</option>)}</select>

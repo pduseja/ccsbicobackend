@@ -22,7 +22,7 @@ export class PersonalDetails extends Component {
                 middleName: '',
                 lastName: '',
                 photoId: 1,
-                gender: 'Male',
+                gender: '',
                 townOfBirth: '',
                 cityOfBirth: '',
                 countryOfBirth: 'Select your country of birth',
@@ -51,6 +51,7 @@ export class PersonalDetails extends Component {
             fnameValid: false,
             snameValid: false,
             mnameValid: true,
+            genderValid: false,
             dobValid: false,
             tobValid: false,
             nationalityValid: false,
@@ -70,6 +71,7 @@ export class PersonalDetails extends Component {
             "snameValid",
             "dobValid",
             "tobValid",
+            "genderValid",
             "nationalityValid",
             "cobValid",
             "cityOfBirthValid",
@@ -82,7 +84,11 @@ export class PersonalDetails extends Component {
 
         this.setState({
             formData: {...this.state.formData, ...this.props.data}
-        });
+        },()=>{
+            WebApi.getCities(this.state.formData.countryOfBirth,this.state.formData.townOfBirth).then(response => response.json()).then(response => {
+               this.setState({...this.state, cities: response})
+            })
+        })
     }
 
     handleUserInput = (e) => {
@@ -123,7 +129,7 @@ export class PersonalDetails extends Component {
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let {titleValid, fnameValid, snameValid, mnameValid, tobValid, dobValid, nationalityValid, cobValid, cityOfBirthValid} = this.state;
+        let {titleValid, fnameValid, snameValid, mnameValid, genderValid, tobValid, dobValid, nationalityValid, cobValid, cityOfBirthValid} = this.state;
 
         switch (fieldName) {
             case 'title':
@@ -171,6 +177,10 @@ export class PersonalDetails extends Component {
                 fieldValidationErrors.cityOfBirth = cityOfBirthValid ? '' : 'Your city of birth is required';
                 break;
 
+            case 'gender':
+                genderValid = true
+                break;
+
             default:
                 break;
         }
@@ -181,6 +191,7 @@ export class PersonalDetails extends Component {
             fnameValid: fnameValid,
             snameValid: snameValid,
             mnameValid: mnameValid,
+            genderValid: genderValid,
             dobValid: dobValid,
             tobValid: tobValid,
             nationalityValid: nationalityValid,
@@ -219,7 +230,7 @@ export class PersonalDetails extends Component {
     validateForm() {
         this.setState({
             formValid: this.state.titleValid && this.state.fnameValid && this.state.snameValid && this.state.mnameValid &&
-                this.state.tobValid && this.state.dobValid && this.state.nationalityValid &&
+                this.state.genderValid && this.state.tobValid && this.state.dobValid && this.state.nationalityValid &&
                 this.state.cobValid && this.state.cityOfBirthValid
         });
 
@@ -274,21 +285,25 @@ export class PersonalDetails extends Component {
 
                 </div>
                 <div className="wrap-input">
-                    <div className="col-sm-3">
+                    <div className="col-sm-6 form-group">
+                     <label>*Gender</label>
+                        <div>
                         <label htmlFor="male"><input type="radio"
                                                      name="gender"
                                                      value="Male"
                                                      id="male"
+                                                     checked={this.state.formData.gender === "Male"}
                                                      onChange={this.handleUserInput}
-                                                     defaultChecked
+
                         />Male</label>
-                    </div>
-                    <div className="col-sm-3">
                         <label htmlFor="female"><input type="radio"
                                                        name="gender"
                                                        id="female"
+                                                       checked={this.state.formData.gender === "Female"}
                                                        onChange={this.handleUserInput}
-                                                       value="Female"/>Female</label></div>
+                                                       value="Female"/>Female</label>
+                                                       </div>
+                        </div>
                     <div className="col-sm-3 form-group">
                         <label>Upload your picture
                             <div id="upload_button">
