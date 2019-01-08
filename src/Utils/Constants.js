@@ -50,69 +50,95 @@ const constants = {
             }, {
                 text: 'About us',
                 name: 'aboutus',
-                link: '/',
+                link: '',
                 submenu: [{
-                    text: 'About us'
+                    text: 'About us',
+                    link: '/AboutUs'
                 }, {
-                    text: 'What we do'
+                    text: 'What we do',
+                    link: '/WhatWeDo'
                 }, {
-                    text: 'Team'
+                    text: 'Team',
+                    link: '/Team'
                 }, {
-                    text: 'Pricing'
+                    text: 'Pricing',
+                    link: '/Pricing'
                 }, {
-                    text: 'FAQs'
+                    text: 'FAQs',
+                    link: '/FAQ'
                 }]
             }, {
                 text: 'Services',
                 name: 'services',
+                link: '/',
                 submenu: [{
-                    text: 'Educational Support Services'
+                    text: 'Educational Support Services',
+                    link: "/EducationSupport"
                 }, {
-                    text: 'Care Support Services'
+                    text: 'Care Support Services',
+                    link: "/CareSupport"
                 }, {
-                    text: 'Business Support Services'
+                    text: 'Business Support Services',
+                    link: "/BusinessSupport"
                 }, {
-                    text: 'Operations Management'
+                    text: 'Operations Management',
+                    link: "/OperationManagement"
                 }, {
-                    text: 'Information Tech Services'
+                    text: 'Information Tech Services',
+                    link: "/InformationTech"
                 }]
             }, {
                 text: 'Our partners',
                 name: 'ourpartners',
+                link: '/',
                 submenu: [{
-                    text: 'Citizens'
+                    text: 'Citizens',
+                    link: "/Citizen"
                 }, {
-                    text: 'Small businesses'
+                    text: 'Small businesses',
+                    link: "/SmallBusiness"
                 }, {
-                    text: 'CCSBI Families'
+                    text: 'CCSBI Families',
+                    link: "/CCSBIFamilies"
                 }, {
-                    text: 'Franchises'
+                    text: 'Franchises',
+                    link: "/Franchises"
                 }, {
-                    text: 'Other stakeholders'
+                    text: 'Other stakeholders',
+                    link: "/Stakeholders"
                 }]
             }, {
                 text: 'Service & Product Search',
                 name: 'search',
+                link: '/',
                 submenu: [{
-                    text: 'Service & Product Search'
+                    text: 'Service & Product Search',
+                    link: "/ServicesProdSearch"
                 }, {
-                    text: 'Our approach'
+                    text: 'Our approach',
+                    link: "/OurApproach"
                 }, {
-                    text: 'Help: How it Works'
+                    text: 'Help: How it Works',
+                    link: "/Help"
                 }, {
-                    text: 'Write your need'
+                    text: 'Write your need',
+                    link: "/WriteToUs"
                 }, {
-                    text: 'Additional information'
+                    text: 'Additional information',
+                    link: "/AdditionalInfo"
                 }]
             },{
                 text: 'Charity Options',
-                name: 'charityoptions'
+                name: 'charityoptions',
+                link: "/CharityOptions"
             }, {
                 text: 'Opinion polls',
-                name: 'opinionpolls'
+                name: 'opinionpolls',
+                link: "/OpinionPolls"
             }, {
                 text: 'Contact us',
                 name: 'contactus',
+                link: "/ContactUs"
             }
             ]
         },

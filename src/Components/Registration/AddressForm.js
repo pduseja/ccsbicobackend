@@ -133,6 +133,8 @@ export class AddressForm extends Component {
 
     validateField = (fieldName, value) => {
         let fieldValidationErrors = this.state.formErrors;
+        let clearCity = this.state;
+        let clearCityData = this.state.formData;
         let {addressLine1Valid, cityTownValid, stateProvinceValid, countryValid, pinPostCodeValid, emailValid, mobileValid} = this.state;
 
 
@@ -141,18 +143,30 @@ export class AddressForm extends Component {
                 addressLine1Valid = value.length !== 0;
                 fieldValidationErrors.addressLine1 = addressLine1Valid ? '' : 'Your address line 1 is required';
                 break;
+            case 'country':
+                countryValid = value !== "";
+                stateProvinceValid = false;
+                cityTownValid = false;
+                fieldValidationErrors.country = countryValid ? '' : 'Your country is required';
+                fieldValidationErrors.stateProvince = 'Your state/province is required';
+                fieldValidationErrors.cityTown = 'Your city/town is required';
+                clearCity.cities = '';
+                clearCityData.cityTown = ''
+                break;
+            case 'stateProvince':
+                stateProvinceValid = value !== "";
+                cityTownValid = false;
+                fieldValidationErrors.stateProvince = stateProvinceValid ? '' : 'Your state/province is required';
+                fieldValidationErrors.cityTown = 'Your city/town is required';
+                clearCity.cities = '';
+                clearCityData.cityTown = ''
+                break;
             case 'cityTown':
                 cityTownValid = value !== "Select your city";
                 fieldValidationErrors.cityTown = cityTownValid ? '' : 'Your city/town is required';
                 break;
-            case 'stateProvince':
-                stateProvinceValid = value !== "";
-                fieldValidationErrors.stateProvince = stateProvinceValid ? '' : 'Your state/province is required';
-                break;
-            case 'country':
-                countryValid = value !== "";
-                fieldValidationErrors.country = countryValid ? '' : 'Your country is required';
-                break;
+
+
             case 'pinPostCode':
                 pinPostCodeValid = value.length !== 0;
                 fieldValidationErrors.pinPostCode = pinPostCodeValid ? '' : 'Your pin_postcode is required';

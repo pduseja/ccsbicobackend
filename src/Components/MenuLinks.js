@@ -51,7 +51,7 @@ export class MenuLinks extends Component {
                     {link.submenu &&
                     <i className={"icon " + (this.state.active[link.name] ? 'fas fa-chevron-up' : 'fas fa-chevron-down')} />}</p>
                 {link.submenu && this.state.active[link.name] && <ul className="sub-menu">
-                        {link.submenu.map(item => <li key={item.text}><a href="/">{item.text}</a></li>)}</ul>}
+                        {link.submenu.map(item => <li key={item.text}><a href={item.link}>{item.text}</a></li>)}</ul>}
 
         </li>);
 

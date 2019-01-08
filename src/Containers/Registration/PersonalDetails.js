@@ -77,11 +77,11 @@ export class PersonalDetails extends Component {
             "cityOfBirthValid",
             "formValid"];
         let data = this.props.data;
-        Object.keys(data).length !== 0 && data.constructor === Object &&
+        let reload = Object.keys(data).length !== 0 && data.constructor === Object;
+        if(reload){
         mandatoryFields.forEach(fields => {
             this.setState({[fields]: true})
         });
-
         this.setState({
             formData: {...this.state.formData, ...this.props.data}
         },()=>{
@@ -89,6 +89,7 @@ export class PersonalDetails extends Component {
                this.setState({...this.state, cities: response})
             })
         })
+        }
     }
 
     handleUserInput = (e) => {
@@ -130,7 +131,8 @@ export class PersonalDetails extends Component {
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
         let {titleValid, fnameValid, snameValid, mnameValid, genderValid, tobValid, dobValid, nationalityValid, cobValid, cityOfBirthValid} = this.state;
-
+        let clearCity = this.state;
+        let clearCityData = this.state.formData;
         switch (fieldName) {
             case 'title':
                 titleValid = value !== "Select your title";
@@ -157,11 +159,6 @@ export class PersonalDetails extends Component {
                 fieldValidationErrors.dateofbirth = dobValid ? '' : 'Your date of birth is required';
                 break;
 
-            case 'townOfBirth':
-                tobValid = value !== "";
-                fieldValidationErrors.townOfBirth = tobValid ? '' : 'Your town of birth is required';
-                break;
-
             case 'nationality':
                 nationalityValid = value !== "";
                 fieldValidationErrors.nationality = nationalityValid ? '' : 'Your nationality is required';
@@ -169,7 +166,24 @@ export class PersonalDetails extends Component {
 
             case 'countryOfBirth':
                 cobValid = value !== "";
+                tobValid = false;
+                cityOfBirthValid = false;
                 fieldValidationErrors.countryOfBirth = cobValid ? '' : 'Your country of birth is required';
+                fieldValidationErrors.townOfBirth = 'Your region of birth is required';
+                fieldValidationErrors.cityOfBirth = 'Your city of birth is required';
+                clearCity.cities = '';
+                clearCityData.cityOfBirth = ''
+
+                break;
+
+            case 'townOfBirth':
+                tobValid = value !== "";
+                cityOfBirthValid = false;
+                fieldValidationErrors.townOfBirth = tobValid ? '' : 'Your region of birth is required';
+                fieldValidationErrors.cityOfBirth = 'Your city of birth is required';
+                clearCity.cities = '';
+                clearCityData.cityOfBirth = ''
+
                 break;
 
             case 'cityOfBirth':

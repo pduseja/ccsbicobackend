@@ -37,7 +37,6 @@ class App extends Component {
                     <Route exact path="/Team" component={UnderConstruction}/>
                     <Route exact path="/Pricing" component={UnderConstruction}/>
                     <Route exact path="/FAQ" component={UnderConstruction}/>
-                    <Route exact path="/AboutUs" component={UnderConstruction}/>
                     <Route exact path="/EducationSupport" component={UnderConstruction}/>
                     <Route exact path="/CareSupport" component={UnderConstruction}/>
                     <Route exact path="/BusinessSupport" component={UnderConstruction}/>
