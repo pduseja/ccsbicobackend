@@ -59,10 +59,11 @@ export class AddressForm extends Component {
             this.setState({
                 formData: {...this.state.formData, ...address}
             },()=>{
+                    if(this.state.formData.country !== ""){
                     WebApi.getCities(this.state.formData.country,this.state.formData.stateProvince).then(response => response.json()).then(response => {
                          this.setState({...this.state, cities: response})
-                    })
-            });
+                    }) }
+            })
         }
     }
 }
