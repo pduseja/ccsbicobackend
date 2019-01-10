@@ -425,6 +425,8 @@
 .footer-bar {
     width: 100%;
     float: left;
+    position: fixed;
+    bottom: 46px;
     justify-content: center;
     background: #99a4be;
     padding: 15px 0;

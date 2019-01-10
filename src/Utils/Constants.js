@@ -46,99 +46,99 @@ const constants = {
             links: [{
                 text: 'Home',
                 name: 'home',
-                link: '/',
+                link: '/CCSBI',
             }, {
                 text: 'About us',
                 name: 'aboutus',
                 link: '',
                 submenu: [{
                     text: 'About us',
-                    link: '/AboutUs'
+                    link: '/CCSBI/AboutUs'
                 }, {
                     text: 'What we do',
-                    link: '/WhatWeDo'
+                    link: '/CCSBI/WhatWeDo'
                 }, {
                     text: 'Team',
-                    link: '/Team'
+                    link: '/CCSBI/Team'
                 }, {
                     text: 'Pricing',
-                    link: '/Pricing'
+                    link: '/CCSBI/Pricing'
                 }, {
                     text: 'FAQs',
-                    link: '/FAQ'
+                    link: '/CCSBI/FAQ'
                 }]
             }, {
                 text: 'Services',
                 name: 'services',
-                link: '/',
+                link: '/CCSBI/',
                 submenu: [{
                     text: 'Educational Support Services',
-                    link: "/EducationSupport"
+                    link: "/CCSBI/EducationSupport"
                 }, {
                     text: 'Care Support Services',
-                    link: "/CareSupport"
+                    link: "/CCSBI/CareSupport"
                 }, {
                     text: 'Business Support Services',
-                    link: "/BusinessSupport"
+                    link: "/CCSBI/BusinessSupport"
                 }, {
                     text: 'Operations Management',
-                    link: "/OperationManagement"
+                    link: "/CCSBI/OperationManagement"
                 }, {
                     text: 'Information Tech Services',
-                    link: "/InformationTech"
+                    link: "/CCSBI/InformationTech"
                 }]
             }, {
                 text: 'Our partners',
                 name: 'ourpartners',
-                link: '/',
+                link: '/CCSBI/',
                 submenu: [{
                     text: 'Citizens',
-                    link: "/Citizen"
+                    link: "/CCSBI/Citizen"
                 }, {
                     text: 'Small businesses',
-                    link: "/SmallBusiness"
+                    link: "/CCSBI/SmallBusiness"
                 }, {
                     text: 'CCSBI Families',
-                    link: "/CCSBIFamilies"
+                    link: "/CCSBI/CCSBIFamilies"
                 }, {
                     text: 'Franchises',
-                    link: "/Franchises"
+                    link: "/CCSBI/Franchises"
                 }, {
                     text: 'Other stakeholders',
-                    link: "/Stakeholders"
+                    link: "/CCSBI/Stakeholders"
                 }]
             }, {
                 text: 'Service & Product Search',
                 name: 'search',
-                link: '/',
+                link: '/CCSBI/',
                 submenu: [{
                     text: 'Service & Product Search',
-                    link: "/ServicesProdSearch"
+                    link: "/CCSBI/ServicesProdSearch"
                 }, {
                     text: 'Our approach',
-                    link: "/OurApproach"
+                    link: "/CCSBI/OurApproach"
                 }, {
                     text: 'Help: How it Works',
-                    link: "/Help"
+                    link: "/CCSBI/Help"
                 }, {
                     text: 'Write your need',
-                    link: "/WriteToUs"
+                    link: "/CCSBI/WriteToUs"
                 }, {
                     text: 'Additional information',
-                    link: "/AdditionalInfo"
+                    link: "/CCSBI/AdditionalInfo"
                 }]
             },{
                 text: 'Charity Options',
                 name: 'charityoptions',
-                link: "/CharityOptions"
+                link: "/CCSBI/CharityOptions"
             }, {
                 text: 'Opinion polls',
                 name: 'opinionpolls',
-                link: "/OpinionPolls"
+                link: "/CCSBI/OpinionPolls"
             }, {
                 text: 'Contact us',
                 name: 'contactus',
-                link: "/ContactUs"
+                link: "/CCSBI/.footer-barContactUs"
             }
             ]
         },
