@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import constants from '../Utils/Constants';
 import Helpers from "../Utils/Helpers";
 import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 
 export class MenuLinks extends Component {
     constructor(props) {
@@ -47,11 +48,12 @@ export class MenuLinks extends Component {
     render() {
         let { user } = this.props;
         let links = constants.menuItems.links.map((link, i) => <li ref={i + 1} key={i}>
-                <p onClick={() => this.toggle(link.name)} ><a href={link.link}>{link.text}</a>
+                <p onClick={() => this.toggle(link.name)} >
+                    {link.link ? <Link to={link.link}>{link.text}</Link> : <span>{link.text}</span>}
                     {link.submenu &&
                     <i className={"icon " + (this.state.active[link.name] ? 'fas fa-chevron-up' : 'fas fa-chevron-down')} />}</p>
                 {link.submenu && this.state.active[link.name] && <ul className="sub-menu">
-                        {link.submenu.map(item => <li key={item.text}><a href={item.link}>{item.text}</a></li>)}</ul>}
+                        {link.submenu.map(item => <li key={item.text}><Link to={item.link}>{item.text}</Link></li>)}</ul>}
 
         </li>);
 

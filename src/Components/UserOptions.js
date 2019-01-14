@@ -1,18 +1,15 @@
 import React, {Component} from 'react';
-import constants from "../Utils/Constants";
+import {Link} from "react-router-dom";
 
 export default class UserOptions extends Component {
     render() {
-        let links = constants.menuItems.links.map((link, i) => <li ref={i + 1} key={i}>
-            <p onClick={() => this.toggle(link.name)}><a href={link.link}>{link.text}</a>
-            </p>
-
-        </li>);
-
         return (
-            <div className={this.props.rightMenuStatus} id='menu'>
+            <div className={"hide "+this.props.rightMenuStatus}>
+            <span className="up-arrow"></span>
                 <ul>
-                    {links}
+                    <li>My Profile</li>
+                    <li>My Dashboard</li>
+                    <li><Link to="/AdminDashboard">Admin dashboard</Link></li>
                 </ul>
             </div>
         )

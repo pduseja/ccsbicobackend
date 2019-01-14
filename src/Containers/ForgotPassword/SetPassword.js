@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import WebApi from "../../Utils/WebApi";
-import {Link} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 export class SetPassword extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props,"set")
         this.state = {
             password: '',
             confirmPassword: '',
@@ -33,7 +32,7 @@ export class SetPassword extends Component {
 
         switch (fieldName) {
             case 'password':
-                passwordValid = value.length !== 0;
+                passwordValid = value.length !== 0 && /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(value);;
                 fieldValidationErrors.password = passwordValid ? '' : 'Please enter a new password; '+
                 		'Password should be at least 8 characters with 1 Capital Alphabet and 1 Special character';
                 break;
@@ -63,7 +62,8 @@ export class SetPassword extends Component {
 
     submit = () => {
         WebApi.changeUserPassword(this.props.userId, this.state.password).then(() =>{
-            this.setState({info: true,error:''})
+            this.setState({error:''})
+            this.props.history.push({pathname:"/UserCreated",data: "Password changed successfully"})
         }).catch(()=>{
             this.setState({
                 error: "There seems some issue please contact administrator"
@@ -79,7 +79,6 @@ export class SetPassword extends Component {
                 <span className="title">
 						Reset password
 					</span>
-                {this.state.info && <span className="info">Password changed successfully.Please <Link to="/login">login</Link></span>}
                 <span className="error-msg error-message">{this.state.error}</span>
                 <div className="col-sm-6 form-group">
                     <label>*Password</label>
@@ -108,3 +107,5 @@ export class SetPassword extends Component {
         )
     }
 }
+
+export default withRouter(SetPassword);

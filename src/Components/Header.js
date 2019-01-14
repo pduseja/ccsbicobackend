@@ -122,7 +122,7 @@ export class Header extends Component {
     render() {
         let {currentPage} = this.state;
         let {user} = this.props;
-        let facebookLink, twitterLink, linkedInLink, youtubeLink, marqueeText;
+        let facebookLink, twitterLink, linkedInLink, youtubeLink;
         let menuStatus = this.state.isOpen ? 'isopen' : '';
         let rightMenuStatus = this.state.isRightOpen ? 'is-right-open' : '';
         if (this.state.systemParams.length) {
@@ -130,7 +130,6 @@ export class Header extends Component {
             twitterLink = this.getPath("Twiter")[0].param1;
             linkedInLink = this.getPath("Linkedin")[0].param1;
             youtubeLink = this.getPath("Youtube")[0].param1;
-            marqueeText = this.getPath("HeaderText")[0].param1+" "+this.getPath("HeaderText")[1].param1;
         }
         return (
             <div ref="root">
@@ -163,9 +162,9 @@ export class Header extends Component {
                                 <img src="http://ccsbi.info/usersresource/images/logo.png" alt="logo"/>
                             </Link></div>
                         {user !== '' &&
-                        <div className="user-info">
-                            <span>{user}</span><i id="ellipsis"
-                                                  onClick={this._menuRightToggle}
+                        <div className="user-info" onClick={this._menuRightToggle}>
+                            Hello <span>{user}</span><i id="ellipsis"
+
                                                   className="fa fa-ellipsis-v"/>
                         </div>
                         }
@@ -229,9 +228,7 @@ export class Header extends Component {
 
                     </div>
                 </nav>
-                <div className="marquee">
-                	<p>{marqueeText}</p>
-                </div>
+
                 <MenuLinks menuStatus={menuStatus} login={this.login} logout={this.logout}/>
                 <UserOptions rightMenuStatus={rightMenuStatus}/>
             </div>

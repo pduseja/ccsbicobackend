@@ -4,7 +4,8 @@ import {StateMachine} from './StateMachine.js';
 import {UserID} from "./UserID";
 import {MemorableWord} from "./MemorableWord";
 import {SecurityQuestion} from "./SecurityQuestion";
-import {SetPassword} from "./SetPassword";
+import SetPassword from "./SetPassword";
+import connect from "react-redux/es/connect/connect";
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -56,4 +57,4 @@ class ForgotPassword extends Component {
     }
 }
 
-export default ForgotPassword;
+export default connect()(ForgotPassword);
