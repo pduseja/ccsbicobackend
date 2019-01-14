@@ -56,6 +56,8 @@ class App extends Component {
                     <Route exact path="/CharityOptions" component={UnderConstruction}/>
                     <Route exact path="/OpinionPolls" component={UnderConstruction}/>
                     <Route exact path="/ContactUs" component={UnderConstruction}/>
+                    <Route exact path="/MyProfile" component={UnderConstruction}/>
+                    <Route exact path="/MyDashboard" component={UnderConstruction}/>
                     <Route exact path="/AdminDashboard" component={AdminDashboard}/>
 
                     <Route path="/" component={Footer} />

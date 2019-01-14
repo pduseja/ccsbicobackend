@@ -1,4 +1,17 @@
 .common-wrapper{
     display: flex;
-    padding: 150px 0 0 0;
+    padding: 170px 15px 150px 15px;
+    width: 100%;
 }
+.admin-menu-content{
+    padding: 0 15px;
+}
+
+@media only screen and (max-width: 1024px), only screen and (max-device-width: 1024px) {
+.admin-menu{
+    width: 25%;
+}
+.admin-menu-content{
+    width: 75%;
+    overflow: auto
+}}

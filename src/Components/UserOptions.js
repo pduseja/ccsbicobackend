@@ -6,10 +6,10 @@ export default class UserOptions extends Component {
         return (
             <div className={"hide "+this.props.rightMenuStatus}>
             <span className="up-arrow"></span>
-                <ul>
-                    <li>My Profile</li>
-                    <li>My Dashboard</li>
-                    <li><Link to="/AdminDashboard">Admin dashboard</Link></li>
+                <ul className="user-options">
+                    <li onClick={this.props.hideMenu}><Link to="/MyProfile">My Profile</Link></li>
+                    <li onClick={this.props.hideMenu}><Link to="/MyDashboard">My Dashboard</Link></li>
+                    <li onClick={this.props.hideMenu}><Link to="/AdminDashboard">Admin dashboard</Link></li>
                 </ul>
             </div>
         )

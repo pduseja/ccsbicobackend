@@ -4,42 +4,68 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css'
 
 export default class SystemParams extends Component{
+    state={
+        response: []
+    }
     componentDidMount(){
         WebApi.getSystemParams().then(response => response.json()).then(response => {
-            console.log(response);
+            this.setState({
+                response: response.filter(r => r.active === "Y")
+            })
         })
     }
     render(){
-    const data = [{
-                         name: 'Tanner Linsley',
-                         age: 26,
-                         friend: {
-                           name: 'Jason Maurer',
-                           age: 23,
-                         }
-                       }]
-
-                       const columns = [{
-                         Header: 'Name',
-                         accessor: 'name' // String-based value accessors!
-                       }, {
-                         Header: 'Age',
-                         accessor: 'age',
-                         Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
-                       }, {
-                         id: 'friendName', // Required because our accessor is not a string
-                         Header: 'Friend Name',
-                         accessor: d => d.friend.name // Custom value accessors!
-                       }, {
-                         Header: props => <span>Friend Age</span>, // Custom header components!
-                         accessor: 'friend.age'
-                       }]
+       const columns = [{
+         Header: 'Id',
+         accessor: 'id'
+       },
+       {
+         Header: 'KeyValue1',
+         accessor: 'keyVal1'
+       },
+       {
+         Header: 'KeyValue2',
+         accessor: 'keyVal2'
+      },
+      {
+         Header: 'KeyValue3',
+         accessor: 'keyVal3'
+      },
+      {
+         Header: 'KeyValue4',
+         accessor: 'keyVal4'
+      },
+      {
+         Header: 'KeyValue5',
+         accessor: 'keyVal5'
+      },
+     {
+       Header: 'Param1',
+       accessor: 'param1'
+     },
+     {
+       Header: 'Param2',
+       accessor: 'param2'
+    },
+    {
+       Header: 'Param3',
+       accessor: 'param3'
+    },
+    {
+       Header: 'Param4',
+       accessor: 'param4'
+    },
+    {
+       Header: 'Param5',
+       accessor: 'param5'
+    }]
         return(
             <div>
 
                    <ReactTable
-                     data={data}
+                     data={this.state.response}
                      columns={columns}
+                     defaultPageSize={10}
                    /></div>
         )
     }

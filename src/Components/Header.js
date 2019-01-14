@@ -44,6 +44,10 @@ export class Header extends Component {
         if (!this.refs.root.contains(e.target) && this.state.isOpen === true) {
             this.setState({
                 isOpen: false,
+            });
+        }
+        if (!this.refs.root.contains(e.target) && this.state.isRightOpen === true) {
+            this.setState({
                 isRightOpen: false
             });
         }
@@ -118,6 +122,12 @@ export class Header extends Component {
             p.keyVal1 === param
         );
     };
+
+    hideMenu = () =>{
+        this.setState({
+            isRightOpen: false
+        });
+    }
 
     render() {
         let {currentPage} = this.state;
@@ -230,7 +240,7 @@ export class Header extends Component {
                 </nav>
 
                 <MenuLinks menuStatus={menuStatus} login={this.login} logout={this.logout}/>
-                <UserOptions rightMenuStatus={rightMenuStatus}/>
+                <UserOptions rightMenuStatus={rightMenuStatus} hideMenu={this.hideMenu}/>
             </div>
         )
     }

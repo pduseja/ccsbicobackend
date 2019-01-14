@@ -423,13 +423,14 @@
 
 /* FOOTER BAR */
 .footer-bar {
+    z-index: 99;
     width: 100%;
     float: left;
     position: fixed;
     bottom: 46px;
     justify-content: center;
     background: #99a4be;
-    padding: 15px 0;
+    padding: 5px 0;
     color: #fff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -461,10 +462,12 @@
 
 .footer-bar .important-links{
     justify-content: center;
+    margin: 0px;
 }
 
 .footer-bar .important-links li{
     border-color:#fff;
+    width:25%;
 }
 .footer-bar .important-links li a{
     color:#fff;
@@ -473,7 +476,7 @@
 /* FOOTER */
 .footer {
     width: 100%;
-    z-index: 999;
+    z-index: 99;
     float: left;
     position:fixed;
     bottom: 0;
