@@ -35,6 +35,8 @@ public class Users implements Serializable {
 
 	private String motherId;
 	
+	private String active;
+	
 	private UsersDetails usersDetails;
 	
 	private UsersPhoto usersPhoto;
@@ -42,6 +44,38 @@ public class Users implements Serializable {
 	private List<AddressDetails> addressDetailsList;
 	
 	private UsersLoginRecord usersLoginRecord;
+	
+	private int profileId;
+	
+	
+	
+	/**
+	 * @return the profileId
+	 */
+	public int getProfileId() {
+		return profileId;
+	}
+
+	/**
+	 * @param profileId the profileId to set
+	 */
+	public void setProfileId(int profileId) {
+		this.profileId = profileId;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public String getActive() {
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(String active) {
+		this.active = active;
+	}
 
 	/**
 	 * @return the addressDetailsList

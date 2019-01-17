@@ -55,6 +55,40 @@ public class Users implements Serializable {
 
 	@Column(name = "motherid")
 	private String motherId;
+	
+	@Column(name = "profileid")
+	private int profileId;
+	
+	@Column(name="active")
+	private String active;
+
+	/**
+	 * @return the active
+	 */
+	public String getActive() {
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(String active) {
+		this.active = active;
+	}
+
+	/**
+	 * @return the profileId
+	 */
+	public int getProfileId() {
+		return profileId;
+	}
+
+	/**
+	 * @param profileId the profileId to set
+	 */
+	public void setProfileId(int profileId) {
+		this.profileId = profileId;
+	}
 
 	/**
 	 * @return the middleName

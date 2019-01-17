@@ -196,7 +196,7 @@ public class UserApi {
 			@ApiResponse(code = 404, message = "Page not found") })
 	@GetMapping(path = "/reset/{userName}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<UsersDetails> paramList(
+	public ResponseEntity<UsersDetails> resetPassword(
 			@ApiParam(value = "", required = true) @PathVariable String userName) {
 
 		UsersDetails usersDetails = new UsersDetails();

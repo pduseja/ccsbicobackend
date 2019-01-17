@@ -12,5 +12,8 @@ public interface SecurityQuestionsRepo extends JpaRepository<SecurityQuestions, 
 	
 	@Query("Select sq.hintQuestion from securityquestions sq where id=:id")
 	String hintQuestion(@Param("id") int id);
+	
+	@Query("Select count(*) from securityquestions")
+	int tableCount();
 
 }

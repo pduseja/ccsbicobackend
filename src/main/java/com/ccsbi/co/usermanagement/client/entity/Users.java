@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JacksonXmlRootElement(localName = "Users")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("serial")
-public class Users implements Serializable{
+public class Users implements Serializable {
 
 	@ApiModelProperty(name = "userId", required = true, readOnly = true, value = "The User ID")
 	@JsonProperty("userId")
@@ -29,11 +29,6 @@ public class Users implements Serializable{
 	@JsonProperty("userName")
 	@JacksonXmlProperty(localName = "userName")
 	private String userName;
-	
-	@ApiModelProperty(name = "UsersDetails", value = "UsersDetails")
-	@JsonProperty("UsersDetails")
-	@JacksonXmlProperty(localName = "UsersDetails")
-	private UsersDetails usersDetails;
 
 	@ApiModelProperty(name = "title", value = "title")
 	@JsonProperty("title")
@@ -75,26 +70,6 @@ public class Users implements Serializable{
 	@JacksonXmlProperty(localName = "countryOfBirth")
 	private String countryOfBirth;
 
-	@ApiModelProperty(name = "permAId", value = "permAId")
-	@JsonProperty("permAId")
-	@JacksonXmlProperty(localName = "permAId")
-	private String permAId;
-
-	@ApiModelProperty(name = "tempAId", value = "tempAId")
-	@JsonProperty("tempAId")
-	@JacksonXmlProperty(localName = "tempAId")
-	private String tempAId;
-
-	@ApiModelProperty(name = "workAId", value = "workAId")
-	@JsonProperty("workAId")
-	@JacksonXmlProperty(localName = "workAId")
-	private String workAId;
-
-	@ApiModelProperty(name = "billAId", value = "billAId")
-	@JsonProperty("billAId")
-	@JacksonXmlProperty(localName = "billAId")
-	private String billAId;
-	
 	@ApiModelProperty(name = "dateofbirth", value = "dateofbirth")
 	@JsonProperty("dateofbirth")
 	@JacksonXmlProperty(localName = "dateofbirth")
@@ -115,29 +90,70 @@ public class Users implements Serializable{
 	@JacksonXmlProperty(localName = "motherId")
 	private String motherId;
 
-	@ApiModelProperty(name = "secDetId", value = "secDetId")
-	@JsonProperty("secDetId")
-	@JacksonXmlProperty(localName = "secDetId")
-	private String secDetId;
+	@ApiModelProperty(name = "active", value = "active")
+	@JsonProperty("active")
+	@JacksonXmlProperty(localName = "active")
+	private String active;
 
 	@ApiModelProperty(name = "UsersPhoto", value = "UsersPhoto")
 	@JsonProperty("UsersPhoto")
 	@JacksonXmlProperty(localName = "UsersPhoto")
 	private UsersPhoto usersPhoto;
-	
+
 	@ApiModelProperty(name = "AddressDetailsList", value = "AddressDetailsList")
 	@JsonProperty("AddressDetailsList")
 	@JacksonXmlProperty(localName = "AddressDetailsList")
 	private List<AddressDetails> addressDetailsList;
-	
+
 	@ApiModelProperty(name = "UsersLoginRecord", value = "UsersLoginRecord")
 	@JsonProperty("UsersLoginRecord")
 	@JacksonXmlProperty(localName = "UsersLoginRecord")
 	private UsersLoginRecord usersLoginRecord;
-	
+
+	@ApiModelProperty(name = "UsersDetails", value = "UsersDetails")
+	@JsonProperty("UsersDetails")
+	@JacksonXmlProperty(localName = "UsersDetails")
+	private UsersDetails usersDetails;
+
+	@ApiModelProperty(name = "profileId", value = "profileId")
+	@JsonProperty("profileId")
+	@JacksonXmlProperty(localName = "profileId")
+	private int profileId;
+
 	public Users() {
 		super();
 	}
+
+	/**
+	 * @return the active
+	 */
+	public String getActive() {
+		return active;
+	}
+
+	/**
+	 * @param active
+	 *            the active to set
+	 */
+	public void setActive(String active) {
+		this.active = active;
+	}
+
+	/**
+	 * @return the profileId
+	 */
+	public int getProfileId() {
+		return profileId;
+	}
+
+	/**
+	 * @param profileId
+	 *            the profileId to set
+	 */
+	public void setProfileId(int profileId) {
+		this.profileId = profileId;
+	}
+
 	/**
 	 * @return the addressDetailsList
 	 */
@@ -146,7 +162,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param addressDetailsList the addressDetailsList to set
+	 * @param addressDetailsList
+	 *            the addressDetailsList to set
 	 */
 	public void setAddressDetailsList(List<AddressDetails> addressDetailsList) {
 		this.addressDetailsList = addressDetailsList;
@@ -160,7 +177,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param usersLoginRecord the usersLoginRecord to set
+	 * @param usersLoginRecord
+	 *            the usersLoginRecord to set
 	 */
 	public void setUsersLoginRecord(UsersLoginRecord usersLoginRecord) {
 		this.usersLoginRecord = usersLoginRecord;
@@ -174,7 +192,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param userId the userId to set
+	 * @param userId
+	 *            the userId to set
 	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
@@ -188,7 +207,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param userName the userName to set
+	 * @param userName
+	 *            the userName to set
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
@@ -202,7 +222,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param title the title to set
+	 * @param title
+	 *            the title to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -216,7 +237,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param firstName the firstName to set
+	 * @param firstName
+	 *            the firstName to set
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
@@ -230,7 +252,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param middleName the middleName to set
+	 * @param middleName
+	 *            the middleName to set
 	 */
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
@@ -244,7 +267,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param usersDetails the usersDetails to set
+	 * @param usersDetails
+	 *            the usersDetails to set
 	 */
 	public void setUsersDetails(UsersDetails usersDetails) {
 		this.usersDetails = usersDetails;
@@ -258,7 +282,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param lastName the lastName to set
+	 * @param lastName
+	 *            the lastName to set
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
@@ -272,7 +297,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param photoId the photoId to set
+	 * @param photoId
+	 *            the photoId to set
 	 */
 	public void setPhotoId(int photoId) {
 		this.photoId = photoId;
@@ -286,7 +312,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param gender the gender to set
+	 * @param gender
+	 *            the gender to set
 	 */
 	public void setGender(String gender) {
 		this.gender = gender;
@@ -300,7 +327,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param townOfBirth the townOfBirth to set
+	 * @param townOfBirth
+	 *            the townOfBirth to set
 	 */
 	public void setTownOfBirth(String townOfBirth) {
 		this.townOfBirth = townOfBirth;
@@ -314,66 +342,11 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param countryOfBirth the countryOfBirth to set
+	 * @param countryOfBirth
+	 *            the countryOfBirth to set
 	 */
 	public void setCountryOfBirth(String countryOfBirth) {
 		this.countryOfBirth = countryOfBirth;
-	}
-
-	/**
-	 * @return the permAId
-	 */
-	public String getPermAId() {
-		return permAId;
-	}
-
-	/**
-	 * @param permAId the permAId to set
-	 */
-	public void setPermAId(String permAId) {
-		this.permAId = permAId;
-	}
-
-	/**
-	 * @return the tempAId
-	 */
-	public String getTempAId() {
-		return tempAId;
-	}
-
-	/**
-	 * @param tempAId the tempAId to set
-	 */
-	public void setTempAId(String tempAId) {
-		this.tempAId = tempAId;
-	}
-
-	/**
-	 * @return the workAId
-	 */
-	public String getWorkAId() {
-		return workAId;
-	}
-
-	/**
-	 * @param workAId the workAId to set
-	 */
-	public void setWorkAId(String workAId) {
-		this.workAId = workAId;
-	}
-
-	/**
-	 * @return the billAId
-	 */
-	public String getBillAId() {
-		return billAId;
-	}
-
-	/**
-	 * @param billAId the billAId to set
-	 */
-	public void setBillAId(String billAId) {
-		this.billAId = billAId;
 	}
 
 	/**
@@ -391,14 +364,16 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param usersPhoto the usersPhoto to set
+	 * @param usersPhoto
+	 *            the usersPhoto to set
 	 */
 	public void setUsersPhoto(UsersPhoto usersPhoto) {
 		this.usersPhoto = usersPhoto;
 	}
 
 	/**
-	 * @param dateofbirth the dateofbirth to set
+	 * @param dateofbirth
+	 *            the dateofbirth to set
 	 */
 	public void setDateofbirth(Date dateofbirth) {
 		this.dateofbirth = dateofbirth;
@@ -412,7 +387,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param nationality the nationality to set
+	 * @param nationality
+	 *            the nationality to set
 	 */
 	public void setNationality(String nationality) {
 		this.nationality = nationality;
@@ -426,7 +402,8 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param fatherId the fatherId to set
+	 * @param fatherId
+	 *            the fatherId to set
 	 */
 	public void setFatherId(String fatherId) {
 		this.fatherId = fatherId;
@@ -440,24 +417,11 @@ public class Users implements Serializable{
 	}
 
 	/**
-	 * @param motherId the motherId to set
+	 * @param motherId
+	 *            the motherId to set
 	 */
 	public void setMotherId(String motherId) {
 		this.motherId = motherId;
-	}
-
-	/**
-	 * @return the secDetId
-	 */
-	public String getSecDetId() {
-		return secDetId;
-	}
-
-	/**
-	 * @param secDetId the secDetId to set
-	 */
-	public void setSecDetId(String secDetId) {
-		this.secDetId = secDetId;
 	}
 
 	@Override
