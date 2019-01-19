@@ -19,5 +19,9 @@ public interface FaqRepo extends JpaRepository<Faq, Long> {
 	
 	@Modifying
 	@Query("Update faq f set f.question=:question,f.answer=:answer,f.modDate=:modDate where f.id=:id")
-	int updateFaq(@Param("id") int id,@Param("question") String question,@Param("answer") String answer,@Param("modDate") Date modDate);		
+	int updateFaq(@Param("id") int id,@Param("question") String question,@Param("answer") String answer,@Param("modDate") Date modDate);
+	
+	@Modifying
+	@Query("delete from faq f where f.id=:id")
+	int deleteFaq(@Param("id") int id);
 }
