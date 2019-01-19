@@ -121,6 +121,16 @@ let WebApi = {
             },
         })
     },
+    updateFaqs(data){
+        return fetch("http://localhost:9090/CCSBI/api/updatefaq",{
+                    method: "PATCH",
+                    mode: "cors",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                })
+    }
 
 };
 

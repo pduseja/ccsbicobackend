@@ -9,7 +9,6 @@ export default class PendingUsers extends Component{
     }
     componentDidMount(){
         WebApi.getApprovedUsers().then(response => response.json()).then(response => {
-        console.log(response)
             this.setState({
                 response: response
             })

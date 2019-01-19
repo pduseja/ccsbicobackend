@@ -1,26 +1,28 @@
 import React, {Component} from 'react';
-import RichTextEditor from 'react-rte';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default class RTE extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { text: '' }
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.shouldErase === true && nextProps.shouldErase === this.props.shouldErase)
+        this.setState({text: ''})
+    if(nextProps.value && nextProps.value !== this.props.value)
+        this.setState({text: nextProps.value})
+  }
 
-  state = {
-    value: RichTextEditor.createEmptyValue()
-  };
+  handleChange = (value) => {
+    this.setState({ text: value })
+    this.props.onChange(value, this.props.type)
+  }
 
-  onChange = (value) => {
-    this.setState({value});
-    this.props.handleChange(value.toString('html'), this.props.type);
-  };
-
-  render () {
+  render() {
     return (
-    <div className="RTE">
-      <h6>{this.props.type}</h6>
-      <RichTextEditor
-        value={this.state.value}
-        onChange={this.onChange}
-      />
-     </div>
-    );
+      <ReactQuill value={this.state.text}
+                  onChange={this.handleChange} />
+    )
   }
 }

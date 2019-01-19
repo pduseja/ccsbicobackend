@@ -10,6 +10,8 @@ export default class FAQS extends Component{
         response: [],
         question: '',
         answer: '',
+        eraseQuestion: false,
+        eraseAnswer: false
     }
     componentDidMount(){
         this.getFaqs();
@@ -23,44 +25,57 @@ export default class FAQS extends Component{
         })
     }
 
-    onEdit = (props) => {
-        console.log("called",ReactHtmlParser(props.original.question))
+    onUpdate = (props) => {
+        this.setState({...this.state,
+            question: props.original.question,
+            answer: props.original.answer,
+            q: props.original.question,
+            a: props.original.answer,
+            id: props.original.id
+        })
     }
 
     onDelete = (props) => {
-        console.log("called",props)
-    }
 
-
-  onChange = (value) => {
-    this.setState({value});
-    this.props.handleChange(value.toString('html'), this.props.type);
-  };
-    handleChange = (data, type) => {
-        this.setState({...this.state,
-            [type]: data
-        })
     }
 
     handleSave = () => {
         const data = {
-            "id": 0,
+            "id": this.state.id || 0,
             "question": this.state.question,
             "answer": this.state.answer,
             "status": "A"
         }
-         WebApi.saveFaqs(data).then(() => {
-         this.setState({
-                             question: 'question',
-                             answer: 'answer',
-                         })
-            this.getFaqs();
-
+         if(this.state.id)
+            WebApi.updateFaqs(data).then(() => {
+                this.getFaqs();
+                this.setState({...this.state,
+                eraseQuestion: true,
+                eraseAnswer: true,
+                id: ''
+              })
          })
+         else{
+            WebApi.saveFaqs(data).then(() => {
+                this.getFaqs();
+                this.setState({...this.state,
+                eraseQuestion: true,
+                eraseAnswer: true
+            })
+         })
+         }
     }
 
     enableSave = () => {
-        return !(this.state.question.length && this.state.answer.length);
+        return !(this.state.question.replace(/<[^>]+>/g, '').length && this.state.answer.replace(/<[^>]+>/g, '').length);
+    }
+
+    onChange = (value,type) =>{
+        this.setState({...this.state,
+            [type]: value,
+            eraseQuestion: false,
+            eraseAnswer: false
+        })
     }
 
     render(){
@@ -82,7 +97,7 @@ export default class FAQS extends Component{
       },
       {
         Header: 'Action',
-        Cell: props => <button onClick={() => this.onAction(props)}>Edit</button>
+        Cell: props => <button onClick={() => this.onUpdate(props)}>Edit</button>
     },
 
      {
@@ -96,8 +111,8 @@ export default class FAQS extends Component{
                  columns={columns}
                  defaultPageSize={5}
                />
-                <RTE type="question" handleChange={this.handleChange} value={this.state.question}/>
-                <RTE type="answer"  handleChange={this.handleChange} value={this.state.answer}/>
+                <RTE onChange={this.onChange} type="question" shouldErase={this.state.eraseQuestion} value={this.state.q}/>
+                <RTE onChange={this.onChange} type="answer" shouldErase={this.state.eraseAnswer} value={this.state.a}/>
                 <button onClick={this.handleSave} disabled={this.enableSave()}>Save</button>
                </div>
 
