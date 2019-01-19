@@ -2,25 +2,35 @@ import React,{ Component } from 'react';
 import WebApi from "../../Utils/WebApi";
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
+import {withRouter} from "react-router-dom";
 
-export default class PendingUsers extends Component{
+export class RegisteredUsers extends Component{
     state={
         response: []
     }
     componentDidMount(){
-        WebApi.getApprovedUsers().then(response => response.json()).then(response => {
-            this.setState({
-                response: response
-            })
-        })
+       this.getUsers();
     }
 
-    onAction = (props) => {
-        console.log("called",props)
+    getUsers = () => {
+        WebApi.getApprovedUsers().then(response => response.json()).then(response => {
+                this.setState({
+                    response: response
+                })
+            })
+    }
+
+    onUpdate = (props) => {
+        this.props.history.push({pathname:"/EditRole",data: props.original})
     }
 
     onDelete = (props) => {
-        console.log("called",props)
+    let data = {
+        userName: props.original.userName
+    }
+        WebApi.deleteUser(data).then(response => {
+            this.getUsers();
+        })
     }
 
     render(){
@@ -46,7 +56,7 @@ export default class PendingUsers extends Component{
       },
       {
         Header: 'Action',
-        Cell: props => <button onClick={() => this.onAction(props)}>Assign Role</button>
+        Cell: props => <button onClick={() => this.onUpdate(props)}>Assign Role</button>
     },
 
      {
@@ -64,3 +74,5 @@ export default class PendingUsers extends Component{
         )
     }
 }
+
+export default withRouter(RegisteredUsers)

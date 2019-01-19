@@ -1,3 +1,9 @@
+.common-wrapper{
+    display: flex;
+    padding: 170px 15px 150px 15px;
+    width: 100%;
+}
+
 /* GHOST BUTTON */
 .ghost-btn {
     position: relative;

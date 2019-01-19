@@ -13,6 +13,7 @@ import Reducers from "../Reducers/Reducers";
 import UserCreated from "../Components/UserCreated";
 import UnderConstruction from "../Components/UnderConstruction";
 import Footer from "../Components/Footer";
+import EditRole from "../Components/Admin/EditRole";
 import AdminDashboard from "../Containers/Admin/AdminDashboard"
 const store = createStore(Reducers);
 
@@ -59,6 +60,7 @@ class App extends Component {
                     <Route exact path="/MyProfile" component={UnderConstruction}/>
                     <Route exact path="/MyDashboard" component={UnderConstruction}/>
                     <Route exact path="/AdminDashboard" component={AdminDashboard}/>
+                    <Route exact path="/EditRole" component={EditRole}/>
 
                     <Route path="/" component={Footer} />
                 </div>

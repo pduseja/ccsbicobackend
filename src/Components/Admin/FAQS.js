@@ -11,7 +11,8 @@ export default class FAQS extends Component{
         question: '',
         answer: '',
         eraseQuestion: false,
-        eraseAnswer: false
+        eraseAnswer: false,
+        active: 'A'
     }
     componentDidMount(){
         this.getFaqs();
@@ -31,12 +32,18 @@ export default class FAQS extends Component{
             answer: props.original.answer,
             q: props.original.question,
             a: props.original.answer,
-            id: props.original.id
+            id: props.original.id,
+            active: props.original.status
         })
     }
 
     onDelete = (props) => {
-
+        const data = {
+            id : props.original.id
+        }
+        WebApi.deleteFaq(data).then(response => {
+            this.getFaqs();
+        })
     }
 
     handleSave = () => {
@@ -44,8 +51,9 @@ export default class FAQS extends Component{
             "id": this.state.id || 0,
             "question": this.state.question,
             "answer": this.state.answer,
-            "status": "A"
+            "status": this.state.active
         }
+        console.log(data)
          if(this.state.id)
             WebApi.updateFaqs(data).then(() => {
                 this.getFaqs();
@@ -71,6 +79,7 @@ export default class FAQS extends Component{
     }
 
     onChange = (value,type) =>{
+        console.log(value,type)
         this.setState({...this.state,
             [type]: value,
             eraseQuestion: false,
@@ -113,6 +122,10 @@ export default class FAQS extends Component{
                />
                 <RTE onChange={this.onChange} type="question" shouldErase={this.state.eraseQuestion} value={this.state.q}/>
                 <RTE onChange={this.onChange} type="answer" shouldErase={this.state.eraseAnswer} value={this.state.a}/>
+                <select value={this.state.active} name="active" onChange={(e) => this.onChange(e.target.value, "active")}>
+                    <option value="A">Yes</option>
+                    <option value="N">No</option>
+                </select>
                 <button onClick={this.handleSave} disabled={this.enableSave()}>Save</button>
                </div>
 

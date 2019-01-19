@@ -20,27 +20,6 @@ const constants = {
             value: 'dr',
             label: 'Dr',
         }],
-    question: [
-        {
-            value: 1,
-            label: "What is your mother's maiden name?"
-        },
-        {
-            value: 2,
-            label: "What is your childhood School name?"
-        },
-        {
-            value: 3,
-            label: "Which place you like visiting again & again?"
-        },
-        {
-            value: 4,
-            label: "Who is your best friend?"
-        },
-        {
-            value: 5,
-            label: "What is your pet name?"
-        }],
     menuItems:
         {
             links: [{

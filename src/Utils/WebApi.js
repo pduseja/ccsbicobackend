@@ -122,7 +122,7 @@ let WebApi = {
         })
     },
     updateFaqs(data){
-        return fetch("http://localhost:9090/CCSBI/api/updatefaq",{
+        return fetch("http://localhost:9090/CCSBI/api/updateFaq",{
                     method: "PATCH",
                     mode: "cors",
                     body: JSON.stringify(data),
@@ -130,6 +130,42 @@ let WebApi = {
                         "Content-Type": "application/json"
                     },
                 })
+    },
+
+    deleteFaq(data){
+        return fetch("http://localhost:9090/CCSBI/api/deleteFaq",{
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+    },
+    updateUser(data){
+        return fetch("http://localhost:9090/CCSBI/api/update",{
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+    },
+    deleteUser(data){
+        return fetch("http://localhost:9090/CCSBI/api/delete",{
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+    },
+    getProfiles(){
+        return fetch(' http://localhost:9090/CCSBI/api/profiles/a',{
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json"
+            },
+        })
     }
 
 };
