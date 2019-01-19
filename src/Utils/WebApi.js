@@ -87,8 +87,40 @@ let WebApi = {
                     "Content-Type": "application/json"
                 },
         })
-    }
-
+    },
+    getPendingUsers(){
+        return fetch('http://localhost:9090/CCSBI/api/pending/a',{
+                    method: "GET",
+                    headers: {
+                    "Content-Type": "application/json"
+                },
+        })
+    },
+    getApprovedUsers(){
+            return fetch('http://localhost:9090/CCSBI/api/approved/a',{
+                        method: "GET",
+                        headers: {
+                        "Content-Type": "application/json"
+                    },
+            })
+        },
+    getFaqs(){
+        return fetch('http://localhost:9090/CCSBI/api/faq/a',{
+                                method: "GET",
+                                headers: {
+                                "Content-Type": "application/json"
+                            },
+                    })
+    },
+    saveFaqs(data){
+        return fetch("http://localhost:9090/CCSBI/api/saveFaq",{
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+    },
 
 };
 
