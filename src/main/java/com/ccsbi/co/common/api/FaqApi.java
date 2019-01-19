@@ -77,7 +77,7 @@ public class FaqApi {
 	@ApiOperation(value = "Faq List", notes = "Faq List", nickname = "Faq List")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@PatchMapping(path = "/updatefaq", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+	@PatchMapping(path = "/updateFaq", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<String> updateFaq(@ApiParam(value = "", required = true) @RequestBody Faq faq) {
 
@@ -85,6 +85,23 @@ public class FaqApi {
 		int update = faqServiceImpl.updateFaq(convertF(faq));
 		if (update > 0) {
 			return new ResponseEntity<>("Update was successful", HttpStatus.OK);
+		} else {
+			return ResponseEntity.badRequest().build();
+		}
+
+	}
+	
+	@ApiOperation(value = "Faq List", notes = "Faq List", nickname = "Faq List")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@PostMapping(path = "/deleteFaq", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<String> deleteFaq(@ApiParam(value = "", required = true) @RequestBody Faq faq) {
+
+		LOGGER.debug("Inside delete FAQ Method");
+		int update = faqServiceImpl.deleteFaq(convertF(faq));
+		if (update > 0) {
+			return new ResponseEntity<>("Delete was successful", HttpStatus.OK);
 		} else {
 			return ResponseEntity.badRequest().build();
 		}
