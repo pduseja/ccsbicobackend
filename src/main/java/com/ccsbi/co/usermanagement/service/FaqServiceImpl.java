@@ -54,7 +54,7 @@ public class FaqServiceImpl implements IFaqService {
 		int update = 0;
 		String question = faq.getQuestion();
 		String answer = faq.getAnswer();		
-		Date modDate = new Date(Calendar.getInstance().getTime().getTime());;
+		Date modDate = new Date(Calendar.getInstance().getTime().getTime());
 		update = faqRepo.updateFaq(faq.getId(),question,answer,modDate
 				);
 		if(update!=0) {
@@ -65,6 +65,20 @@ public class FaqServiceImpl implements IFaqService {
 		
 	}
 
+	@Override
+	public int deleteFaq(Faq faq) {
+		
+		int delete = 0;
+		
+		delete = faqRepo.deleteFaq(faq.getId());
+		if(delete!=0) {
+			return delete;
+		} else {
+			return delete;
+		}
+		
+	}
+	
 	private Faq convertFaqE(com.ccsbi.co.usermanagement.repository.entity.Faq faqEnt) {
 
 		return dozerMapper.map(faqEnt, Faq.class);

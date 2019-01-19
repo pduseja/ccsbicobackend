@@ -11,5 +11,8 @@ public interface IFaqService {
 	Faq saveFaq(Faq faq);
 	
 	int updateFaq(Faq faq);
+	
+	int deleteFaq(Faq faq);
+	
 
 }
