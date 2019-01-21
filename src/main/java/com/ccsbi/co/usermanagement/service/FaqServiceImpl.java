@@ -55,8 +55,7 @@ public class FaqServiceImpl implements IFaqService {
 		String question = faq.getQuestion();
 		String answer = faq.getAnswer();		
 		Date modDate = new Date(Calendar.getInstance().getTime().getTime());
-		update = faqRepo.updateFaq(faq.getId(),question,answer,modDate
-				);
+		update = faqRepo.updateFaq(faq.getId(),question,answer,modDate,faq.getStatus());
 		if(update!=0) {
 			return update;
 		} else {

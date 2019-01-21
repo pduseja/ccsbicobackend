@@ -88,8 +88,9 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 		int update = 0;
 		String userName = users.getUserName();
 		String active = users.getActive();
+		int profileId = users.getProfileId();
 		if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(active)) {
-			update = usersRepo.updateUsersStatus(userName, active);
+			update = usersRepo.updateUsersStatus(userName, active,profileId);
 			// TODO add logic to send email to user
 		} else {
 			update = 0;
