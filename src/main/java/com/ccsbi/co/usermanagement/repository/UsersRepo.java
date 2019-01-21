@@ -26,8 +26,8 @@ public interface UsersRepo extends JpaRepository<Users, Long> {
 	List<Users> getApprovedUsersList(@Param("flag") String flag);
 	
 	@Modifying
-    @Query("UPDATE users u SET u.active=:active WHERE u.userName=:userName")
-	int updateUsersStatus(@Param("userName") String userName,@Param("active") String active);
+    @Query("UPDATE users u SET u.active=:active,u.profileId=:profileId WHERE u.userName=:userName")
+	int updateUsersStatus(@Param("userName") String userName,@Param("active") String active,@Param("profileId") int profileId);
 
 	@Modifying
 	@Query("delete from users u where u.userName=:userName")
