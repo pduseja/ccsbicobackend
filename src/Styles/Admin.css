@@ -1,8 +1,45 @@
 
 .admin-menu-content{
     padding: 0 15px;
+    width:70%
 }
 
+.ReactTable button{
+     background: #fff;
+     border: 0;
+     border-radius: 30px;
+     line-height: -2px;
+     padding: 0 14px;
+     font-weight: 600;
+     height: 26px;
+     cursor:pointer;
+}
+
+.ReactTable button.action{
+     color: #007bff;
+     border: 1px solid #007bff;
+}
+.ReactTable button.danger{
+     color: #da4911;
+     border: 1px solid #da4911;
+}
+.ReactTable .rt-tbody .rt-td{
+    text-align: center;
+}
+.edit-role .form-group{
+    padding: 0;
+}
+.edit-role button{
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    padding: 0 40px;
+    height: 40px;
+    background: #57b846;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
 @media only screen and (max-width: 1024px), only screen and (max-device-width: 1024px) {
 .admin-menu{
     width: 25%;

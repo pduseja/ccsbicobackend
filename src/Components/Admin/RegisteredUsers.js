@@ -56,12 +56,12 @@ export class RegisteredUsers extends Component{
       },
       {
         Header: 'Action',
-        Cell: props => <button onClick={() => this.onUpdate(props)}>Assign Role</button>
+        Cell: props => <button className="action" onClick={() => this.onUpdate(props)}>Assign Role</button>
     },
 
      {
        Header: 'Delete',
-       Cell: props => <button onClick={() => this.onDelete(props)}>Delete</button>
+       Cell: props => <button className="danger" onClick={() => this.onDelete(props)}>Delete</button>
      }]
         return(
             <div>

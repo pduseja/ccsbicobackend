@@ -5,7 +5,7 @@ import {withRouter} from "react-router-dom";
 export class EditRole extends React.Component{
 
     state = {
-        profileId: this.props.location.data,
+        profileId: this.props.location.data.profileId,
         active: "Y"
     }
     componentDidMount(){
@@ -46,8 +46,12 @@ export class EditRole extends React.Component{
     }
     render(){
         let {userName,firstName} = this.props.location.data;
-        return(<div className="common-wrapper">
-                     <div className="col-sm-12 form">
+        return(<>
+
+        <div className="common-wrapper">
+
+                     <div className="col-sm-12 form edit-role">
+                     <h5>Edit User Role</h5>
                          <div className="col-sm-6 form-group">
                              <label>User name</label>
                              <input className="input" disabled value={userName}/>
@@ -75,7 +79,7 @@ export class EditRole extends React.Component{
                        </div>
 
                     </div>
-           </div>
+           </div></>
         )
     }
 }

@@ -150,7 +150,7 @@ display:none}
     padding-left: 0
 }
 
-.registration-form .input, .registration-form-step2 .input {
+.registration-form .input, .registration-form-step2 .input, .edit-role input, .edit-role select {
     width: 100%;
     height: 40px;
     padding: 8px;

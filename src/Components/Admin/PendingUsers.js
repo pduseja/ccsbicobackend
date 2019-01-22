@@ -61,12 +61,12 @@ export class PendingUsers extends Component{
       },
       {
         Header: 'Action',
-        Cell: props => <button onClick={() => this.onAction(props)}>Assign Role</button>
+        Cell: props => <button className="action" onClick={() => this.onAction(props)}>Assign Role</button>
     },
 
      {
        Header: 'Delete',
-       Cell: props => <button onClick={() => this.onDelete(props)}>Delete</button>
+       Cell: props => <button className="danger" onClick={() => this.onDelete(props)}>Delete</button>
      }]
         return(
             <div>
