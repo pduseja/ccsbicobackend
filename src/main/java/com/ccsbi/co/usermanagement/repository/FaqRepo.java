@@ -14,7 +14,7 @@ import com.ccsbi.co.usermanagement.repository.entity.Faq;
 @Repository
 public interface FaqRepo extends JpaRepository<Faq, Long> {
 
-	@Query("SELECT u FROM faq u where u.status=:status")
+	@Query("SELECT u FROM faq u")
 	List<Faq> getActiveFaq(@Param("status") String status);
 	
 	@Modifying
