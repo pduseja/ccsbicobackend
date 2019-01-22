@@ -12,6 +12,6 @@ public interface IUsersRegistrationService {
 	
 	int deleteUser(String userName);
 	
-	int updateUser(Users users);
+	Users updateUser(Users users);
 
 }

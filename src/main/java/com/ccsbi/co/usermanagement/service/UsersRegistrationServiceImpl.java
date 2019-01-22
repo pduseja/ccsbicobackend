@@ -84,19 +84,26 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 	}
 
 	@Override
-	public int updateUser(Users users) {
+	public Users updateUser(Users users) {
 		int update = 0;
+		Users usersM = new Users();
 		String userName = users.getUserName();
 		String active = users.getActive();
 		int profileId = users.getProfileId();
 		if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(active)) {
 			update = usersRepo.updateUsersStatus(userName, active,profileId);
+			usersM = convertUsers(usersRepo.loginUser(userName));
 			// TODO add logic to send email to user
 		} else {
-			update = 0;
+			return usersM;
 		}
 
-		return update;
+		return usersM;
+	}
+
+	private Users convertUsers(com.ccsbi.co.usermanagement.repository.entity.Users loginUser) {
+		
+		return dozerMapper.map(loginUser, Users.class);
 	}
 
 	@SuppressWarnings("unchecked")
