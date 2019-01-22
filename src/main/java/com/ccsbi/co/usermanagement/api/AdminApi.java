@@ -79,10 +79,9 @@ public class AdminApi {
 		
 		LOGGER.info("Inside {}.updateUsers()", getClass().getSimpleName());
 		Users users = user;
-		int update = usersRegistrationServiceImpl.updateUser(convertU(users));
+		users = convertUsers(usersRegistrationServiceImpl.updateUser(convertU(users)));
 
-		if (update > 0) {
-			users.setActive("Y");
+		if (users.getUserId()>0) {			
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else {
 			return ResponseEntity.badRequest().build();
@@ -90,6 +89,11 @@ public class AdminApi {
 
 	}
 	
+	private Users convertUsers(com.ccsbi.co.usermanagement.service.model.Users updateUser) {
+		
+		return dozerMapper.map(updateUser, Users.class);
+	}
+
 	@ApiOperation(value = "Delete User", notes = "Delete User", nickname = "Delete User")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
