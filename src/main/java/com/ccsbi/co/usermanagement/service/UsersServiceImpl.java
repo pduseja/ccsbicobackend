@@ -55,6 +55,8 @@ public class UsersServiceImpl implements IUsersService {
 
 			String userName = userNameGeneratorService.userNameGen(users.getFirstName(), users.getLastName());
 			users.setUserName(userName);
+			users.setProfileId(1);
+			users.setActive("N");
 
 			users = convertUsers(usersRepo.save(convertU(users)));
 
