@@ -30,7 +30,8 @@ public class FaqServiceImpl implements IFaqService {
 
 		List<com.ccsbi.co.usermanagement.repository.entity.Faq> listEnt = new ArrayList<>();
 		String status = "A";
-		listEnt = faqRepo.getActiveFaq(status);
+		String noStatus = "N";
+		listEnt = faqRepo.getActiveFaq(status,noStatus);
 		if (!listEnt.isEmpty()) {
 			list = convert(listEnt);
 		}
