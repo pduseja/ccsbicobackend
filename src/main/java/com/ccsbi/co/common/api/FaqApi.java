@@ -51,8 +51,13 @@ public class FaqApi {
 
 		LOGGER.debug("Inside get FAQ Method");
 		List<Faq> list = new ArrayList<>();
-		list = convert(faqServiceImpl.getActiveFaq());
-
+		List<com.ccsbi.co.usermanagement.service.model.Faq> faqM = new ArrayList<>();
+		faqM = faqServiceImpl.getActiveFaq();
+		if(faqM.size()>0) {
+		
+		list = convert(faqM);
+		} 
+		
 		return list;
 
 	}
