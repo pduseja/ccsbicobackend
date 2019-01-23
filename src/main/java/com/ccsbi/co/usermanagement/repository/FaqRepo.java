@@ -14,8 +14,8 @@ import com.ccsbi.co.usermanagement.repository.entity.Faq;
 @Repository
 public interface FaqRepo extends JpaRepository<Faq, Long> {
 
-	@Query("SELECT u FROM faq u")
-	List<Faq> getActiveFaq(@Param("status") String status);
+	@Query("SELECT u FROM faq u where u.status=:status OR status=:noStatus")
+	List<Faq> getActiveFaq(@Param("status") String status,@Param("noStatus") String noStatus);
 	
 	@Modifying
 	@Query("Update faq f set f.question=:question,f.answer=:answer,f.modDate=:modDate,f.status=:status where f.id=:id")
