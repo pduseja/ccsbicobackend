@@ -15,6 +15,10 @@ public interface UsersPhotoRepo extends JpaRepository<UsersPhoto, Long> {
 	UsersPhoto save(UsersPhoto usersPhoto);
 	
 	@Modifying
+	@Query("update usersphoto up set up.photo=:photo, up.photoContent=:photoContent where up.photoId=:photoId")
+	int update(@Param("photoId") int photoId,@Param("photoContent") byte[] photoContent,@Param("photo") String photo);
+	
+	@Modifying
 	@Query("delete from usersphoto up where up.photoId=:photoId")
 	int delete(@Param("photoId") int photoId);
 

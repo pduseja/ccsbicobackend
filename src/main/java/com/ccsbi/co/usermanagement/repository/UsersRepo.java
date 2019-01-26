@@ -33,5 +33,7 @@ public interface UsersRepo extends JpaRepository<Users, Long> {
 	@Query("delete from users u where u.userName=:userName")
 	int delete(@Param("userName") String userName);
 	
+	@Query("SELECT u.userId FROM users u WHERE u.userName=:userName")
+	int getUserId(@Param("userName") String userName);
 	
 }
