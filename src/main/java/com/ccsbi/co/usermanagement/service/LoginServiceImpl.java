@@ -1,5 +1,7 @@
 package com.ccsbi.co.usermanagement.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,10 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersLoginRecordRepo;
+import com.ccsbi.co.usermanagement.repository.UsersPhotoRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
+import com.ccsbi.co.usermanagement.service.model.AddressDetails;
 import com.ccsbi.co.usermanagement.service.model.Users;
 import com.ccsbi.co.usermanagement.service.model.UsersDetails;
 import com.ccsbi.co.usermanagement.service.model.UsersLoginRecord;
+import com.ccsbi.co.usermanagement.service.model.UsersPhoto;
 import com.ccsbi.co.usermanagement.util.ReallyStrongSecuredPassword;
 
 @Transactional
@@ -26,7 +31,13 @@ public class LoginServiceImpl implements ILoginService {
 	UsersRepo usersRepo;
 
 	@Autowired
+	UsersPhotoRepo usersPhotoRepo;
+
+	@Autowired
 	UsersLoginRecordRepo usersLoginRecordRepo;
+
+	@Autowired
+	AddressDetailsServiceImpl addressDetailsService;
 
 	@Autowired
 	private Mapper dozerMapper;
@@ -87,6 +98,8 @@ public class LoginServiceImpl implements ILoginService {
 
 						}
 						user.setUsersLoginRecord(usersLoginRecord);
+						// add usersdetails and addressdetails to users object.
+						user = addUserDetailsAddressDetails(user);
 						return user;
 					} else {
 						// Add Login code
@@ -98,12 +111,14 @@ public class LoginServiceImpl implements ILoginService {
 							usersLoginRecord = saveUsersLoginRecord(usersLoginRecord, user);
 						}
 						user.setUsersLoginRecord(usersLoginRecord);
+						// add usersdetails and addressdetails to users object.
+						user = addUserDetailsAddressDetails(user);
 						return user;
 
 					}
 				} else {
 					// Add Logic to update Login attempts.
-					
+
 					return new Users();
 				}
 			} else {
@@ -134,6 +149,8 @@ public class LoginServiceImpl implements ILoginService {
 					if (!StringUtils.isEmpty(users.getFirstName())) {
 						usersLoginRecord = updateUsersLoginRecord(usersLoginRecord, users);
 						users.setUsersLoginRecord(usersLoginRecord);
+						// add usersdetails and addressdetails to users object.
+						users = addUserDetailsAddressDetails(users);
 						return users;
 					}
 				}
@@ -146,6 +163,36 @@ public class LoginServiceImpl implements ILoginService {
 			return users;
 		}
 		return users;
+	}
+
+	private Users addUserDetailsAddressDetails(Users user) {
+
+		UsersDetails usersD = new UsersDetails();
+		com.ccsbi.co.usermanagement.repository.entity.UsersDetails usersDetailsEnt = usersDetailsRepo
+				.getUsersDetails(user.getUserId());
+		if (usersDetailsEnt != null) {
+			usersD = convertDetails(usersDetailsEnt);
+		} else {
+			return new Users();
+		}
+		user.setUsersDetails(usersD);
+
+		List<AddressDetails> listAdd = addressDetailsService.getAddressList(user.getUserId());
+		if (!listAdd.isEmpty()) {
+			user.setAddressDetailsList(listAdd);
+		} else {
+			return new Users();
+		}
+		if (user.getPhotoId() > 0) {
+			UsersPhoto userPhoto = convertUsersPhoto(usersPhotoRepo.findUsersPhoto(user.getPhotoId()));
+			user.setUsersPhoto(userPhoto);
+		}
+		return user;
+	}
+
+	private UsersPhoto convertUsersPhoto(com.ccsbi.co.usermanagement.repository.entity.UsersPhoto findUsersPhoto) {
+
+		return dozerMapper.map(findUsersPhoto, UsersPhoto.class);
 	}
 
 	public int loginAttempts(UsersLoginRecord login, int userId) {
@@ -222,8 +269,8 @@ public class LoginServiceImpl implements ILoginService {
 			// 1 day = 24 x 60 x 60
 			usersLoginRecord.setCookieExpirytime(86400);
 		}
-		int login = usersLoginRecordRepo.updateCookieToken(users.getUserId(), usersLoginRecord.getCookie(), usersLoginRecord.getToken(),
-				usersLoginRecord.getCookieExpirytime());
+		int login = usersLoginRecordRepo.updateCookieToken(users.getUserId(), usersLoginRecord.getCookie(),
+				usersLoginRecord.getToken(), usersLoginRecord.getCookieExpirytime());
 		if (login != 0) {
 			return usersLoginRecord;
 		} else {
