@@ -7,5 +7,9 @@ public interface IUsersService {
 	Users save(Users users) throws Exception;
 
 	int changePassword(String userName, String password);
+	
+	int update(Users user);
+	
+	int updateSecurityDetails(Users user);
 
 }

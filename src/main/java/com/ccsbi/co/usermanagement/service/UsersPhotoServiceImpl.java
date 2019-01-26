@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.transaction.Transactional;
+
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ccsbi.co.usermanagement.repository.UsersPhotoRepo;
 import com.ccsbi.co.usermanagement.service.model.UsersPhoto;
 
+@Transactional
 @Service
 public class UsersPhotoServiceImpl implements IUsersPhotoService {
 
@@ -56,6 +59,36 @@ public class UsersPhotoServiceImpl implements IUsersPhotoService {
 		return convertUsersPhoto(usersPhotoRepo.save(convertUsersP(usersPhoto)));
 	}
 
+	@Override
+	public int update(UsersPhoto usersPhoto, MultipartFile userPhoto) throws Exception {
+		// Make sure directory exists!
+		int update = 0;
+		File uploadDir = new File(UPLOAD_DIR);
+		uploadDir.mkdirs();
+
+		// Normalize file name
+		String fileName = StringUtils.cleanPath(userPhoto.getOriginalFilename());
+
+		byte[] bytes = userPhoto.getBytes();
+		Path path = Paths.get(UPLOAD_DIR+fileName);
+		Files.write(path, bytes);
+
+		try {
+			// Check if the file's name contains invalid characters
+			if (fileName.contains("..")) {
+				throw new Exception("Sorry! Filename contains invalid path sequence " + fileName);
+			}
+
+		} catch (IOException ex) {
+			throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
+		}
+
+		String photo = UPLOAD_DIR+fileName;
+		
+		return usersPhotoRepo.update(usersPhoto.getPhotoId(),bytes,photo);
+		 
+	}
+	
 	private UsersPhoto convertUsersPhoto(com.ccsbi.co.usermanagement.repository.entity.UsersPhoto usersPhoto) {
 
 		return dozerMapper.map(usersPhoto, UsersPhoto.class);
@@ -65,5 +98,7 @@ public class UsersPhotoServiceImpl implements IUsersPhotoService {
 
 		return dozerMapper.map(usersPhoto, com.ccsbi.co.usermanagement.repository.entity.UsersPhoto.class);
 	}
+
+	
 
 }

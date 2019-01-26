@@ -7,4 +7,6 @@ public interface IUsersDetailsService {
 	public UsersDetails save(UsersDetails userDetails);
 	
 	public UsersDetails getUsersDetails(String userName);
+	
+	public int updateUsersDetails(UsersDetails userDetails, int userId);
 }
