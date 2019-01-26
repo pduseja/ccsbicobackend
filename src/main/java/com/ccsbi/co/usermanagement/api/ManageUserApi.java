@@ -69,12 +69,12 @@ public class ManageUserApi {
 	@ApiOperation(value = "Update Personal Info", notes = "Update Personal Info", nickname = "Update Personal Info")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@PatchMapping(path = "/updatePerAddDetails", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+	@PatchMapping(path = "/updatePerPic", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<Users> updatePersonalAddressDetails(@ApiParam(value = "user", required = true) @Valid String users,
+	public ResponseEntity<Users> updatePersonalPhoto(@ApiParam(value = "user", required = true) @Valid String users,
 			@RequestParam(value = "photo", required = false) MultipartFile photo) throws Exception {
 
-		LOGGER.debug("Inside update Personal Address Details Method");
+		LOGGER.debug("Inside update Personal Details Method");
 		String userName = null;
 		int updatePhoto = 0;
 		UsersPhoto userPhoto = new UsersPhoto();
@@ -82,38 +82,66 @@ public class ManageUserApi {
 
 		ObjectMapper mapper = new ObjectMapper();
 		Users user = mapper.readValue(jsonObj.toString(), Users.class);
-		
+
 		// Content of Photo from input
-				if (photo != null) {
-					String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
+		if (photo != null) {
+			String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
 
-					try {
-						// Check if the file's name contains invalid characters
-						if (fileName.contains("..")) {
-							throw new Exception("Sorry! Filename contains invalid path sequence " + fileName);
-						}
-					} catch (IOException ex) {
-						throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
-					}
-					byte[] photoContent = photo.getBytes();
-
-					userPhoto = user.getUsersPhoto();
-					userPhoto.setPhotoId(user.getPhotoId());
-					userPhoto.setPhotoContent(photoContent);
-					updatePhoto = usersPhotoService.update(convertPModel(userPhoto), photo);
-					
+			try {
+				// Check if the file's name contains invalid characters
+				if (fileName.contains("..")) {
+					throw new Exception("Sorry! Filename contains invalid path sequence " + fileName);
 				}
+			} catch (IOException ex) {
+				throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
+			}
+			byte[] photoContent = photo.getBytes();
+			
+			userPhoto.setPhotoContent(photoContent);			
+			
+			if (user.getPhotoId() > 0) {
+				userPhoto = user.getUsersPhoto();
+				userPhoto.setPhotoId(user.getPhotoId());
+				updatePhoto = usersPhotoService.update(convertPModel(userPhoto), photo);
+			} else {
+ 				userPhoto = convertPClient(usersPhotoService.save(convertPModel(userPhoto), photo));
+				if (userPhoto.getPhotoId() > 0) {
+					user.setPhotoId(userPhoto.getPhotoId());
+					updatePhoto = usersService.updatePhoto(convertUsers(user));
+					
+				} else {
+					updatePhoto = 0;
+				}
+			}
 
-		
-		int update = usersService.update(convertUsers(user));
-		if (update>0 || updatePhoto>0) {
+		}
+
+		if (updatePhoto > 0) {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else {
 			return ResponseEntity.badRequest().build();
 		}
 
 	}
-	
+
+	@ApiOperation(value = "Update Personal Address Info", notes = "Update Personal Address Info", nickname = "Update Personal Address Info")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@PatchMapping(path = "/updatePerAddDetails", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Users> updatePersonalPhoto(@ApiParam(value = "", required = true) @RequestBody Users users) {
+
+		LOGGER.debug("Inside update Personal Address Details Method");
+
+		int update = usersService.update(convertUsers(users));
+
+		if (update > 0) {
+			return new ResponseEntity<>(users, HttpStatus.OK);
+		} else {
+			return ResponseEntity.badRequest().build();
+		}
+
+	}
 
 	@ApiOperation(value = "Update Sec Info", notes = "Update Sec Info", nickname = "Update Sec Info")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
@@ -142,7 +170,7 @@ public class ManageUserApi {
 
 		return dozerMapper.map(userPhoto, com.ccsbi.co.usermanagement.service.model.UsersPhoto.class);
 	}
-	
+
 	private UsersPhoto convertPClient(com.ccsbi.co.usermanagement.service.model.UsersPhoto usersPhoto) {
 
 		return dozerMapper.map(usersPhoto, UsersPhoto.class);
