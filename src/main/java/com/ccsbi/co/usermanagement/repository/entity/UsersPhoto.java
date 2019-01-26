@@ -126,6 +126,7 @@ public class UsersPhoto implements Serializable {
 	private void prePersist() {
 		Date rightNow = new Date(Calendar.getInstance().getTime().getTime());
 		this.sysDate = Optional.ofNullable(this.getSysDate()).orElse(rightNow);
+		this.active = Optional.ofNullable(this.getActive()).orElse("Y");
 	}
 
 }
