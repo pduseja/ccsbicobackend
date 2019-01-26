@@ -10,6 +10,7 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsbi.co.usermanagement.repository.AddressDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.AddressDetails;
@@ -90,31 +91,59 @@ public class UsersServiceImpl implements IUsersService {
 	}
 
 	@Override
-	public int update(Users user) {
+	public Users update(Users user) {
 		int update = 0;
 		String userName = user.getUserName();
 		int userid = usersRepo.getUserId(userName);
+		int numberOfAddress = addressDetailsService.sizeOfAddressList(userid);
+
 		List<AddressDetails> addressDetailsList = user.getAddressDetailsList();
 		Iterator<AddressDetails> itr = addressDetailsList.iterator();
 		int updateAddress = 0;
-		while (itr.hasNext()) {
-			AddressDetails addressDetails1 = (AddressDetails) itr.next();
-			AddressDetails addressDetails = new AddressDetails();
-			addressDetails = populateAddressDetails(addressDetails, addressDetails1);
-			updateAddress = addressDetailsService.update(addressDetails, userid);
+		if (numberOfAddress == addressDetailsList.size()) {
+			while (itr.hasNext()) {
+				AddressDetails addressDetails1 = (AddressDetails) itr.next();
+				AddressDetails addressDetails = new AddressDetails();
+				addressDetails = populateAddressDetails(addressDetails, addressDetails1);
+				addressDetails.setId(addressDetails1.getId());
+				updateAddress = addressDetailsService.update(addressDetails, userid);
+				System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
+			}
+		} else {
+			while (itr.hasNext()) {
+				AddressDetails addressDetails1 = (AddressDetails) itr.next();
+				AddressDetails addressDetails = new AddressDetails();
+				if(addressDetails1.getId()>0) {
+				addressDetails = populateAddressDetails(addressDetails, addressDetails1);
+				addressDetails.setId(addressDetails1.getId());
+				updateAddress = addressDetailsService.update(addressDetails, userid);
+				System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
+				} else {
+					addressDetails = populateAddressDetails(addressDetails, addressDetails1);
+					addressDetails.setId(addressDetails1.getId());
+					user.setUserId(userid);
+					addressDetails.setUsers(user);
+					addressDetailsService.save(addressDetails);
+					System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
+					
+				}
+			}
+			
 		}
 
 		if (updateAddress > 0) {
-			update = 1;
-			return update;
+			addressDetailsList = addressDetailsService.getAddressList(userid);
+			user.setAddressDetailsList(addressDetailsList);
+			user.setUserId(userid);
+			return user;
 		} else {
-			return update;
+			return new Users();
 		}
 
 	}
 
 	@Override
-	public int updateSecurityDetails(Users user) {
+	public Users updateSecurityDetails(Users user) {
 		int update = 0;
 		UsersDetails userDetails = user.getUsersDetails();
 		String userName = user.getUserName();
@@ -134,8 +163,16 @@ public class UsersServiceImpl implements IUsersService {
 			userDetails.setAccountLocked("N");
 			update = usersDetailsServiceImpl.updateUsersDetails(userDetails, userid);
 		}
+		if(update>0) {
+			userDetails = usersDetailsServiceImpl.getUsersDetails(userName);
+			user.setUserId(userid);
+			user.setUsersDetails(userDetails);
+			return user;
+		} else {
+			return new Users();
+		}
 
-		return update;
+		
 
 	}
 
@@ -160,7 +197,6 @@ public class UsersServiceImpl implements IUsersService {
 
 		return addressDetails;
 	}
-	
 
 	private Users convertUsers(com.ccsbi.co.usermanagement.repository.entity.Users users) {
 
@@ -203,11 +239,10 @@ public class UsersServiceImpl implements IUsersService {
 		int update = 0;
 		String userName = user.getUserName();
 		int userid = usersRepo.getUserId(userName);
-		
+
 		update = usersRepo.updatePhoto(userid, user.getPhotoId());
+		
 		return update;
 	}
-
-
 
 }

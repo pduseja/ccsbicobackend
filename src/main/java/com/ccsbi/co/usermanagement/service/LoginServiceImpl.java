@@ -175,6 +175,7 @@ public class LoginServiceImpl implements ILoginService {
 		} else {
 			return new Users();
 		}
+		usersD = decryptUsersD(usersD);
 		user.setUsersDetails(usersD);
 
 		List<AddressDetails> listAdd = addressDetailsService.getAddressList(user.getUserId());
@@ -188,6 +189,15 @@ public class LoginServiceImpl implements ILoginService {
 			user.setUsersPhoto(userPhoto);
 		}
 		return user;
+	}
+
+	private UsersDetails decryptUsersD(UsersDetails usersD) {
+		String decryptMemorableWord = reallyStrongSecuredPassword.decrypt(usersD.getMemorableWord());
+		usersD.setPassword("");
+		usersD.setSecurityAnswer1("");
+		usersD.setSecurityAnswer2("");
+		usersD.setMemorableWord(decryptMemorableWord);
+		return usersD;
 	}
 
 	private UsersPhoto convertUsersPhoto(com.ccsbi.co.usermanagement.repository.entity.UsersPhoto findUsersPhoto) {

@@ -8,9 +8,9 @@ public interface IUsersService {
 
 	int changePassword(String userName, String password);
 	
-	int update(Users user);
+	Users update(Users user);
 	
-	int updateSecurityDetails(Users user);
+	Users updateSecurityDetails(Users user);
 	
 	int updatePhoto(Users user);
 

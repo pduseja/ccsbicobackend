@@ -31,7 +31,7 @@ public class AddressDetailsServiceImpl implements IAddressDetailsService {
 	@Override
 	public int update(AddressDetails addressDetails, int userid) {
 
-		String flatNo = addressDetails.getFlatNo() != null ? addressDetails.getHouseName() : "";
+		String flatNo = addressDetails.getFlatNo() != null ? addressDetails.getFlatNo() : "";
 		String houseName = addressDetails.getHouseName() != null ? addressDetails.getHouseName() : "";
 		String addressLine1 = addressDetails.getAddressLine1() != null ? addressDetails.getAddressLine1() : "";
 		String addressLine2 = addressDetails.getAddressLine2() != null ? addressDetails.getAddressLine2() : "";
@@ -45,9 +45,10 @@ public class AddressDetailsServiceImpl implements IAddressDetailsService {
 		String mobile = addressDetails.getMobile() != null ? addressDetails.getMobile() : "";
 		String landline = addressDetails.getLandline() != null ? addressDetails.getLandline() : "";
 		String email = addressDetails.getEmail() != null ? addressDetails.getEmail() : "";
+		
 
 		int update = addressDetailsRepo.update(flatNo, houseName, addressLine1, addressLine2, addressLine3, cityTown,
-				stateProvince, country, pinPostCode, type, active, mobile, landline, email, userid);
+				stateProvince, country, pinPostCode, type, active, mobile, landline, email, userid,addressDetails.getId());
 		if (update != 0) {
 			return update;
 		} else {
@@ -85,6 +86,14 @@ public class AddressDetailsServiceImpl implements IAddressDetailsService {
 	private com.ccsbi.co.usermanagement.repository.entity.AddressDetails convertAddress(AddressDetails addressDetails) {
 
 		return dozerMapper.map(addressDetails, com.ccsbi.co.usermanagement.repository.entity.AddressDetails.class);
+	}
+
+	@Override
+	public int sizeOfAddressList(int userId) {
+		
+		List<AddressDetails> listAdd = convertList(addressDetailsRepo.getAddressDetailsList(userId));
+		
+		return listAdd.size();
 	}
 
 }

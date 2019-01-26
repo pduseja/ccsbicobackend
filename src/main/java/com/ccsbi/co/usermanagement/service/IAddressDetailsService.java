@@ -11,5 +11,7 @@ public interface IAddressDetailsService {
 	int update(AddressDetails addressDetails,int userid);
 	
 	List<AddressDetails> getAddressList(int userid);
+	
+	int sizeOfAddressList(int userId);
 
 }
