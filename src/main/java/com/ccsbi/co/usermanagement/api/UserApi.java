@@ -215,7 +215,7 @@ public class UserApi {
 		if (user.getUserId() != 0) {
 			loginAttempts = loginService.loginAttempts(convertLogin(login), user.getUserId());
 			if (loginAttempts < 3 || loginAttempts == 0) {
-				user.setUsersDetails(null);
+				
 				user.setUserId(0);
 				return user;
 			} else {

@@ -96,19 +96,19 @@ public class ManageUserApi {
 				throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
 			}
 			byte[] photoContent = photo.getBytes();
-			
-			userPhoto.setPhotoContent(photoContent);			
-			
+
+			userPhoto.setPhotoContent(photoContent);
+
 			if (user.getPhotoId() > 0) {
 				userPhoto = user.getUsersPhoto();
 				userPhoto.setPhotoId(user.getPhotoId());
 				updatePhoto = usersPhotoService.update(convertPModel(userPhoto), photo);
 			} else {
- 				userPhoto = convertPClient(usersPhotoService.save(convertPModel(userPhoto), photo));
+				userPhoto = convertPClient(usersPhotoService.save(convertPModel(userPhoto), photo));
 				if (userPhoto.getPhotoId() > 0) {
 					user.setPhotoId(userPhoto.getPhotoId());
 					updatePhoto = usersService.updatePhoto(convertUsers(user));
-					
+					user.setUsersPhoto(userPhoto);
 				} else {
 					updatePhoto = 0;
 				}
@@ -133,9 +133,10 @@ public class ManageUserApi {
 
 		LOGGER.debug("Inside update Personal Address Details Method");
 
-		int update = usersService.update(convertUsers(users));
+		users = convert(usersService.update(convertUsers(users)));
 
-		if (update > 0) {
+		if (users.getUserId() > 0) {
+			users.setUserId(0);
 			return new ResponseEntity<>(users, HttpStatus.OK);
 		} else {
 			return ResponseEntity.badRequest().build();
@@ -152,8 +153,9 @@ public class ManageUserApi {
 			@ApiParam(value = "", required = true) @RequestBody Users users) {
 
 		LOGGER.debug("Inside update Personal Security Details Method");
-		int update = usersService.updateSecurityDetails(convertUsers(users));
-		if (update != 0) {
+		users = convert(usersService.updateSecurityDetails(convertUsers(users)));
+		if (users.getUserId() > 0) {
+			users.setUserId(0);
 			return new ResponseEntity<>(users, HttpStatus.OK);
 		} else {
 			return ResponseEntity.badRequest().build();
@@ -176,4 +178,8 @@ public class ManageUserApi {
 		return dozerMapper.map(usersPhoto, UsersPhoto.class);
 	}
 
+	private Users convert(com.ccsbi.co.usermanagement.service.model.Users update) {
+
+		return dozerMapper.map(update, Users.class);
+	}
 }
