@@ -94,6 +94,11 @@ public class Users implements Serializable {
 	@JsonProperty("active")
 	@JacksonXmlProperty(localName = "active")
 	private String active;
+	
+	@ApiModelProperty(name = "profileId", value = "profileId")
+	@JsonProperty("profileId")
+	@JacksonXmlProperty(localName = "profileId")
+	private int profileId;
 
 	@ApiModelProperty(name = "UsersPhoto", value = "UsersPhoto")
 	@JsonProperty("UsersPhoto")
@@ -115,10 +120,7 @@ public class Users implements Serializable {
 	@JacksonXmlProperty(localName = "UsersDetails")
 	private UsersDetails usersDetails;
 
-	@ApiModelProperty(name = "profileId", value = "profileId")
-	@JsonProperty("profileId")
-	@JacksonXmlProperty(localName = "profileId")
-	private int profileId;
+
 
 	public Users() {
 		super();
