@@ -36,4 +36,7 @@ public interface UsersRepo extends JpaRepository<Users, Long> {
 	@Query("SELECT u.userId FROM users u WHERE u.userName=:userName")
 	int getUserId(@Param("userName") String userName);
 	
+	@Modifying
+	@Query("update users u set u.photoId=:photoId where u.userId=:userId")
+	int updatePhoto(@Param("userId") int userId,@Param("photoId") int photoId);
 }
