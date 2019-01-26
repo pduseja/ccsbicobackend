@@ -21,5 +21,8 @@ public interface UsersPhotoRepo extends JpaRepository<UsersPhoto, Long> {
 	@Modifying
 	@Query("delete from usersphoto up where up.photoId=:photoId")
 	int delete(@Param("photoId") int photoId);
+	
+	@Query("select up from usersphoto up where up.photoId=:photoId")
+	UsersPhoto findUsersPhoto(@Param("photoId") int photoId);
 
 }
