@@ -106,7 +106,7 @@ public class ManageUserApi {
 
 		
 		int update = usersService.update(convertUsers(user));
-		if (update>0 && updatePhoto>0) {
+		if (update>0 || updatePhoto>0) {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else {
 			return ResponseEntity.badRequest().build();
