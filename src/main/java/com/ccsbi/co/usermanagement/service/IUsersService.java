@@ -11,5 +11,7 @@ public interface IUsersService {
 	int update(Users user);
 	
 	int updateSecurityDetails(Users user);
+	
+	int updatePhoto(Users user);
 
 }

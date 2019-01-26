@@ -160,6 +160,7 @@ public class UsersServiceImpl implements IUsersService {
 
 		return addressDetails;
 	}
+	
 
 	private Users convertUsers(com.ccsbi.co.usermanagement.repository.entity.Users users) {
 
@@ -196,5 +197,17 @@ public class UsersServiceImpl implements IUsersService {
 		}
 		return update;
 	}
+
+	@Override
+	public int updatePhoto(Users user) {
+		int update = 0;
+		String userName = user.getUserName();
+		int userid = usersRepo.getUserId(userName);
+		
+		update = usersRepo.updatePhoto(userid, user.getPhotoId());
+		return update;
+	}
+
+
 
 }

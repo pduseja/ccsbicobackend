@@ -55,7 +55,7 @@ public class UsersPhotoServiceImpl implements IUsersPhotoService {
 		}
 
 		usersPhoto.setPhoto(UPLOAD_DIR+fileName);
-		
+		usersPhoto.setFileType(fileName);
 		return convertUsersPhoto(usersPhotoRepo.save(convertUsersP(usersPhoto)));
 	}
 
