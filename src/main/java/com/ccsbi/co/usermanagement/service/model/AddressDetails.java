@@ -1,8 +1,14 @@
 package com.ccsbi.co.usermanagement.service.model;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-public class AddressDetails {
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+@SuppressWarnings("serial")
+public class AddressDetails implements Serializable{
 
 	private int id;
 
@@ -325,5 +331,34 @@ public class AddressDetails {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj == this) {
+			return true;
+		}
+
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+
+		AddressDetails rhs = (AddressDetails) obj;
+		return new EqualsBuilder().append(this.id, rhs.id).isEquals();
 	}
 }
