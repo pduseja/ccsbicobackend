@@ -33,10 +33,10 @@ public class UsersDetails implements Serializable {
 	private int securityQuestionId2;
 
 	@Column(name = "securityanswer1")
-	private String SecurityAnswer1;
+	private String securityAnswer1;
 
 	@Column(name = "securityanswer2")
-	private String SecurityAnswer2;
+	private String securityAnswer2;
 
 	@Column(name = "password")
 	private String password;
@@ -135,7 +135,7 @@ public class UsersDetails implements Serializable {
 	 * @return the securityAnswer1
 	 */
 	public String getSecurityAnswer1() {
-		return SecurityAnswer1;
+		return securityAnswer1;
 	}
 
 	/**
@@ -143,14 +143,14 @@ public class UsersDetails implements Serializable {
 	 *            the securityAnswer1 to set
 	 */
 	public void setSecurityAnswer1(String securityAnswer1) {
-		SecurityAnswer1 = securityAnswer1;
+		this.securityAnswer1 = securityAnswer1;
 	}
 
 	/**
 	 * @return the securityAnswer2
 	 */
 	public String getSecurityAnswer2() {
-		return SecurityAnswer2;
+		return securityAnswer2;
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class UsersDetails implements Serializable {
 	 *            the securityAnswer2 to set
 	 */
 	public void setSecurityAnswer2(String securityAnswer2) {
-		SecurityAnswer2 = securityAnswer2;
+		this.securityAnswer2 = securityAnswer2;
 	}
 
 	/**
