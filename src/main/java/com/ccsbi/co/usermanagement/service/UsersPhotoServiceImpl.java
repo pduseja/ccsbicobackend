@@ -83,7 +83,7 @@ public class UsersPhotoServiceImpl implements IUsersPhotoService {
 			throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
 		}
 
-		String photo = UPLOAD_DIR+fileName;
+ 		String photo = UPLOAD_DIR+fileName;
 		
 		return usersPhotoRepo.update(usersPhoto.getPhotoId(),bytes,photo);
 		 
