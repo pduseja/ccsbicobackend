@@ -4,6 +4,36 @@
     width: 100%;
 }
 
+.form-container {
+    width: 100%;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background: #f1f5fd;
+}
+
+.wrapper {
+    align-items: center;
+    width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 30px;
+    margin: 175px 0 70px 0;
+    z-index:99;
+    box-shadow: 0 3px 15px 0 #c9cdd3;
+}
+
 /* GHOST BUTTON */
 .ghost-btn {
     position: relative;
@@ -511,10 +541,17 @@
 
 .ReactTable{
     margin-bottom: 30px;
+    background: #fff;
 }
 
 .quill{
     margin-top:10px;
+    background: #fff;
+}
+
+.file-upload-img {
+    width: 200px;
+    height: auto;
 }
 
 /* RESPONSIVE MEDIUM  FIXES */

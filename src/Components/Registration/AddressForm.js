@@ -6,6 +6,7 @@ import WebApi from "../../Utils/WebApi";
 export class AddressForm extends Component {
     constructor(props) {
         super(props);
+        console.log(props.data)
         this.state = {
             formData: {
                 flatNo: '',
@@ -37,9 +38,10 @@ export class AddressForm extends Component {
     }
 
     componentDidMount() {
-        let data = this.props.data.AddressDetailsList;
+
+        let data = this.props.data.AddressDetailsList ? this.props.data : this.props.details;
         if(data) {
-            let addressType = this.props.data.AddressDetailsList.filter(address => address.type === this.state.formData.type);
+            let addressType = data.AddressDetailsList.filter(address => address.type === this.state.formData.type);
             var address = Object.assign({},addressType[0])
             if(addressType){
                     let mandatoryFields = [
@@ -294,7 +296,8 @@ export class AddressForm extends Component {
 }
 
 const mapStateToProps = state => ({
-    data: state.data
+    data: state.data,
+    details: state.details
 });
 
 export default connect(mapStateToProps)(AddressForm)

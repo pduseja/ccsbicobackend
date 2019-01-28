@@ -54,12 +54,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <div className="form-container">
-
-                    <div className="wrapper">
-                        {this._currentStep()}
-                    </div>
-                </div>
+                {this._currentStep()}
             </div>
         );
     }

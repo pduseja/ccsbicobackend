@@ -3,6 +3,7 @@ import {states} from './States.js';
 import {connect} from "react-redux";
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export class Security extends Component {
     constructor(props) {
@@ -151,24 +152,29 @@ export class Security extends Component {
         this.props.onAdd(this.state.formData);
     };
 
+    onSubmit = () => {
+
+    }
     render() {
         let {password, confirmPassword, securityQuestionId1, securityQuestionId2, securityAnswer1, securityAnswer2, memorableWord} = this.state.formErrors;
         let {securityQuestions} = this.state;
 
         return (
+         <div className="form-container">
+            <div className="wrapper">
             <div className="registration-form-step2">
                 <div className="col-sm-12 form security">
-                    <div className="col-sm-6 form-group">
+                    {this.props.location && this.props.location.flow !== "Profile" && <div className="col-sm-6 form-group">
                         <label>*Password</label>
                         <input className="input" type="password" name="password" onChange={this.handleUserInput}/>
                         <p className="error-message">{password}</p>
-                    </div>
-                    <div className="col-sm-6 form-group">
+                    </div>}
+                    {this.props.location && this.props.location.flow !== "Profile" && <div className="col-sm-6 form-group">
                         <label>*Confirm Password</label>
                         <input className="input" type="password" name="confirmPassword"
                                onChange={this.handleUserInput}/>
                         <p className="error-message">{confirmPassword}</p>
-                    </div>
+                    </div>}
                     <div className="col-sm-6 form-group">
                         <label>*Security Question</label>
                         <select className="input" name="securityQuestionId1"
@@ -205,13 +211,20 @@ export class Security extends Component {
                         <p className="error-message">{memorableWord}</p>
                     </div>
                 </div>
+                {this.props.location && this.props.location.flow === "Profile" ?
+                <div><Link to="/Profile">Back to profile</Link>
+                     <button className="login-form-btn" onClick={this.onSubmit}>Submit</button>
+                </div> :
                 <div className="container-login-form-btn">
                     <button className="login-form-btn" onClick={this._back}>Back</button>
                     <button className="login-form-btn" disabled={!this.state.formValid}
                             onClick={() => this.submit()}>Submit
                     </button>
-                </div>
+                </div>}
 
+            </div>
+
+            </div>
             </div>
         );
     }

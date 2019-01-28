@@ -4,6 +4,9 @@ import {BrowserRouter, Route} from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login/Login";
 import Registration from "./Registration/Registration";
+import PersonalDetails from "./Registration/PersonalDetails";
+import Security from "./Registration/Security";
+import Address from "./Registration/Address";
 import '../Styles/Override.css'
 import Header from "../Components/Header";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
@@ -11,6 +14,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Reducers from "../Reducers/Reducers";
 import UserCreated from "../Components/UserCreated";
+import Profile from "../Containers/Profile/Profile";
 import UnderConstruction from "../Components/UnderConstruction";
 import Footer from "../Components/Footer";
 import EditRole from "../Components/Admin/EditRole";
@@ -27,6 +31,9 @@ class App extends Component {
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/registration" component={Registration}/>
+                    <Route exact path="/PersonalDetails" component={PersonalDetails}/>
+                    <Route exact path="/Address" component={Address}/>
+                    <Route exact path="/Security" component={Security}/>
                     <Route exact path="/forgotPassword" component={ForgotPassword}/>
                     <Route exact path="/UserCreated" component={UserCreated} />
                     <Route exact path="/ImportantLinks" component={UnderConstruction} />
@@ -57,7 +64,7 @@ class App extends Component {
                     <Route exact path="/CharityOptions" component={UnderConstruction}/>
                     <Route exact path="/OpinionPolls" component={UnderConstruction}/>
                     <Route exact path="/ContactUs" component={UnderConstruction}/>
-                    <Route exact path="/MyProfile" component={UnderConstruction}/>
+                    <Route exact path="/Profile" component={Profile}/>
                     <Route exact path="/MyDashboard" component={UnderConstruction}/>
                     <Route exact path="/AdminDashboard" component={AdminDashboard}/>
                     <Route exact path="/EditRole" component={EditRole}/>

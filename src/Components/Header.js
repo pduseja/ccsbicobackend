@@ -5,7 +5,7 @@ import '../Styles/Header.css'
 import UserOptions from "./UserOptions";
 import WebApi from "../Utils/WebApi";
 import {connect} from "react-redux";
-import {addUserName} from "../Actions/Actions";
+import {addUserName,addUserDetails} from "../Actions/Actions";
 import Cookies from 'universal-cookie';
 
 export class Header extends Component {
@@ -81,6 +81,7 @@ export class Header extends Component {
             .then(response => response.json())
             .then(response => {
                 this.props.dispatch(addUserName(response.firstName))
+                this.props.dispatch(addUserDetails(response))
                 if (response.UsersLoginRecord.rememberMe === true) {
                 const cookies = new Cookies();
                      cookies.set('token', response.UsersLoginRecord.token, { path: '/', expires: this.getDate() });
@@ -114,6 +115,7 @@ export class Header extends Component {
         cookies.remove('cookie', { path: '/' });
         this.props.history.push('/');
         this.props.dispatch(addUserName(''))
+        this.props.dispatch(addUserDetails(''))
         this.setState({'isOpen': false, 'isRightOpen': false})
     };
 

@@ -166,6 +166,16 @@ let WebApi = {
                 "Content-Type": "application/json"
             },
         })
+    },
+    editAddress(data){
+        return fetch("http://localhost:9090/CCSBI/api/updatePerAddDetails",{
+                        method: "PATCH",
+                        mode: "cors",
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+        })
     }
 
 };

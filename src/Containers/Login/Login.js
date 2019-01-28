@@ -3,7 +3,7 @@ import '../../Styles/Login.css'
 import {Link} from "react-router-dom";
 import WebApi from "../../Utils/WebApi";
 import {connect} from "react-redux";
-import {addUserName} from "../../Actions/Actions";
+import {addUserName,addUserDetails} from "../../Actions/Actions";
 import Cookies from 'universal-cookie';
 
 export class Login extends Component {
@@ -61,6 +61,7 @@ export class Login extends Component {
             this.props.history.push('/');
             this.setState({error: ''})
             this.props.dispatch(addUserName(response.firstName))
+            this.props.dispatch(addUserDetails(response))
         }).catch(() => {
             this.setState({error: "UserID or Password is incorrect, Please try again"})
         });

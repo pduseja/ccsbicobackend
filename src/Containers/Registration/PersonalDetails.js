@@ -21,7 +21,6 @@ export class PersonalDetails extends Component {
                 firstName: '',
                 middleName: '',
                 lastName: '',
-                photoId: 1,
                 gender: '',
                 townOfBirth: '',
                 cityOfBirth: '',
@@ -76,14 +75,14 @@ export class PersonalDetails extends Component {
             "cobValid",
             "cityOfBirthValid",
             "formValid"];
-        let data = this.props.data;
+        let data = this.props.location ? this.props.location.data : this.props.data;
         let reload = Object.keys(data).length !== 0 && data.constructor === Object;
         if(reload){
         mandatoryFields.forEach(fields => {
             this.setState({[fields]: true})
         });
         this.setState({
-            formData: {...this.state.formData, ...this.props.data}
+            formData: {...this.state.formData, ...data}
         },()=>{
             WebApi.getCities(this.state.formData.countryOfBirth,this.state.formData.townOfBirth).then(response => response.json()).then(response => {
                this.setState({...this.state, cities: response})
@@ -259,7 +258,9 @@ export class PersonalDetails extends Component {
             $imagePreview = (<img className="file-upload-img" alt="user" src={imagePreviewUrl}/>);
         }
         return (
+            <div className="form-container">
 
+                    <div className="wrapper">
             <div className="registration-form">
                 <span className="title">
 						Personal details
@@ -401,6 +402,8 @@ export class PersonalDetails extends Component {
                     </button>
                 </div>
 
+            </div>
+            </div>
             </div>
         )
     }

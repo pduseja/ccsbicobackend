@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {states} from './States.js';
 import AddressForm from "../../Components/Registration/AddressForm";
 import connect from "react-redux/es/connect/connect";
+import WebApi from "../../Utils/WebApi";
+import {Link} from "react-router-dom";
 
 export class Address extends Component {
     constructor(props) {
@@ -23,7 +25,7 @@ export class Address extends Component {
     }
 
     componentDidMount() {
-        let data = this.props.data.AddressDetailsList;
+        let data = this.props.details ? this.props.details : this.props.data;
         if(data) {
             this.setState({formValid:{...this.state.formValid,"1":true}
             })
@@ -70,8 +72,18 @@ export class Address extends Component {
         return !(formStatus["1"] && formStatus["2"] && formStatus["3"] && formStatus["4"])
     };
 
+    onSubmit = () => {
+        let data = {...this.state.formData,...this.props.details}
+        WebApi.editAddress(data).then(response => response.json()).then(response => {
+            this.props.history.push('/Profile');
+        })
+    };
+
     render() {
         return (
+         <div className="form-container">
+
+           <div className="wrapper">
             <div className="registration-form-step2">
 
                 <ul className="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
@@ -108,19 +120,25 @@ export class Address extends Component {
                     </div>
                 </div>
 
-                <div className="container-login-form-btn">
+                {this.props.location && this.props.location.flow === "Profile" ?
+                 <div>
+                    <Link to="/Profile">Back to profile</Link>
+                    <button className="login-form-btn" onClick={this.onSubmit}>Submit</button>
+                </div> : <div className="container-login-form-btn">
                     <button className="login-form-btn" onClick={this.back}>Back
                     </button>
                     <button className="login-form-btn" onClick={() => this.next()} disabled={this.enableNext()}>Next
                     </button>
-                </div>
+                </div>}
             </div>
-
+        </div>
+        </div>
         );
     }
 }
 const mapStateToProps = state => ({
-    data: state.data
+    data: state.data,
+    details: state.details
 });
 
 export default connect(mapStateToProps)(Address)

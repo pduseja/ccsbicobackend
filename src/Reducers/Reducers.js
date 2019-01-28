@@ -10,6 +10,8 @@ export default function Reducers(state = initialState, action){
             return {...state,personalData: action.text};
         case 'ADD_USER_NAME':
             return {...state,user: action.text};
+        case 'ADD_USER_DETAILS':
+            return {...state,details: action.text};
         case 'CLEAR_DATA':
             return {data:{},photo:'',user:''};
         default:{
