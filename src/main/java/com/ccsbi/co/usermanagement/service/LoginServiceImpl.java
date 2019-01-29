@@ -29,6 +29,9 @@ public class LoginServiceImpl implements ILoginService {
 
 	@Autowired
 	UsersRepo usersRepo;
+	
+	@Autowired
+	UsersDetailsServiceImpl usersDetailsServiceImpl;
 
 	@Autowired
 	UsersPhotoRepo usersPhotoRepo;
@@ -168,13 +171,8 @@ public class LoginServiceImpl implements ILoginService {
 	private Users addUserDetailsAddressDetails(Users user) {
 
 		UsersDetails usersD = new UsersDetails();
-		com.ccsbi.co.usermanagement.repository.entity.UsersDetails usersDetailsEnt = usersDetailsRepo
-				.getUsersDetails(user.getUserId());
-		if (usersDetailsEnt != null) {
-			usersD = convertDetails(usersDetailsEnt);
-		} else {
-			return new Users();
-		}
+		usersD = usersDetailsServiceImpl.getUsersDetails(user.getUserName());
+		
 		usersD = decryptUsersD(usersD);
 		user.setUsersDetails(usersD);
 
@@ -192,11 +190,11 @@ public class LoginServiceImpl implements ILoginService {
 	}
 
 	private UsersDetails decryptUsersD(UsersDetails usersD) {
-		String decryptMemorableWord = reallyStrongSecuredPassword.decrypt(usersD.getMemorableWord());
+		
 		usersD.setPassword("");
-		usersD.setSecurityAnswer1("");
-		usersD.setSecurityAnswer2("");
-		usersD.setMemorableWord(decryptMemorableWord);
+		usersD.setSecurityAnswer1(reallyStrongSecuredPassword.decrypt(usersD.getSecurityAnswer1()));
+		usersD.setSecurityAnswer2(reallyStrongSecuredPassword.decrypt(usersD.getSecurityAnswer2()));
+		usersD.setMemorableWord(reallyStrongSecuredPassword.decrypt(usersD.getMemorableWord()));
 		return usersD;
 	}
 
