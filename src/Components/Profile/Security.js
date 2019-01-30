@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {states} from './States.js';
 import {connect} from "react-redux";
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
@@ -12,8 +11,9 @@ export class Security extends Component {
             securityQuestionId1: '',
             securityQuestionId2: '',
             confirmPassword: '',
-            formData: {UsersDetails:{
-                password: '',
+            formData: {
+            userName:'',
+            UsersDetails:{
                 securityQuestionId1: '',
                 securityQuestionId2: '',
                 securityAnswer1: '',
@@ -21,15 +21,12 @@ export class Security extends Component {
                 memorableWord: ''
             }},
             formErrors: {
-                password: '',
                 securityQuestionId1: '',
                 securityQuestionId2: '',
                 securityAnswer1: '',
                 securityAnswer2: '',
                 memorableWord: ''
             },
-            passwordValid: false,
-            confirmPasswordValid: false,
             securityQuestionId1Valid: false,
             securityQuestionId2Valid: false,
             securityAnswer1Valid: false,
@@ -40,32 +37,36 @@ export class Security extends Component {
     }
 
      componentDidMount() {
+        let mandatoryFields = ["securityQuestionId1Valid", "securityQuestionId2Valid",
+                 "securityAnswer1Valid",
+                 "securityAnswer2Valid",
+                 "memorableWordValid","formValid"];
+
+             mandatoryFields.forEach(fields => {
+                 this.setState({[fields]: true})
+             });
         WebApi.getSecurityQuestions().then(response => response.json()).then(response => {
             this.setState({...this.state,
-                securityQuestions: response
+                securityQuestions: response,
+                securityQuestionIdStr1: this.props.details.UsersDetails.securityQuestionIdStr1,
+                securityQuestionIdStr2: this.props.details.UsersDetails.securityQuestionIdStr2,
+                formData : {
+                    userName:this.props.details.userName,
+                    UsersDetails: {
+                    securityQuestionId1: this.props.details.UsersDetails.securityQuestionId1,
+                    securityQuestionId2: this.props.details.UsersDetails.securityQuestionId2,
+                    securityAnswer1: this.props.details.UsersDetails.securityAnswer1,
+                    securityAnswer2: this.props.details.UsersDetails.securityAnswer2,
+                    memorableWord: this.props.details.UsersDetails.memorableWord
+                }}
             })
         })
     }
 
-    _back = (e) => {
-        e.preventDefault();
-        this.props.back(states.ADDRESS);
-    };
-
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let {passwordValid, confirmPasswordValid, securityQuestionId1Valid, securityQuestionId2Valid, securityAnswer1Valid, securityAnswer2Valid, memorableWordValid} = this.state;
+        let {securityQuestionId1Valid, securityQuestionId2Valid, securityAnswer1Valid, securityAnswer2Valid, memorableWordValid} = this.state;
         switch (fieldName) {
-            case 'password':
-                passwordValid = value.length !== 0 && /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(value);
-                fieldValidationErrors.password = passwordValid ? '' : 'Password should be at least 8 characters with 1 Capital Alphabet and 1 Special character';
-                break;
-
-            case 'confirmPassword':
-                confirmPasswordValid = value.length !== 0 && value === this.state.formData.UsersDetails.password;
-                fieldValidationErrors.confirmPassword = confirmPasswordValid ? '' : 'Please confirm your password';
-                break;
-
             case 'securityQuestionId1':
                 securityQuestionId1Valid = value !== 'Select 1st security question';
                 fieldValidationErrors.securityQuestionId1 = securityQuestionId1Valid ? '' : 'Please choose a security question';
@@ -94,10 +95,8 @@ export class Security extends Component {
             default:
                 break;
         }
-        this.setState({
+        this.setState({...this.state,
             formErrors: fieldValidationErrors,
-            passwordValid: passwordValid,
-            confirmPasswordValid: confirmPasswordValid,
             securityQuestionId1Valid: securityQuestionId1Valid,
             securityQuestionId2Valid: securityQuestionId2Valid,
             securityAnswer1Valid: securityAnswer1Valid,
@@ -107,9 +106,8 @@ export class Security extends Component {
     };
 
     validateForm() {
-        this.setState({
-            formValid: this.state.passwordValid &&
-                this.state.confirmPasswordValid &&
+        this.setState({...this.state,
+            formValid:
                 this.state.securityQuestionId1Valid &&
                 this.state.securityAnswer1Valid &&
                 this.state.securityQuestionId2Valid &&
@@ -119,18 +117,10 @@ export class Security extends Component {
 
     };
 
-    componentDidUpdate = (prevProps) => {
-        if(prevProps.data !== this.props.data)
-            WebApi.registerUser(this.props.data,this.props.photo, (err, response)=>{
-                if(err){ throw err}
-                this.props.history.push({pathname:"/UserCreated",data: response})
-            })
-    };
-
     handleUserInput = (e) => {
         const name = e.target.name;
         const value = e.target.type === 'radio' ? e.target.value : e.target.value;
-        this.setState({formData:{UsersDetails:{...this.state.formData.UsersDetails,[name]: value}}},
+        this.setState({formData:{...this.state.formData,UsersDetails:{...this.state.formData.UsersDetails,[name]: value}}},
             () => {
                 this.validateField(name, value)
             });
@@ -148,11 +138,18 @@ export class Security extends Component {
     };
 
     submit = () => {
-        this.props.onAdd(this.state.formData);
+        WebApi.editSecurity(this.state.formData).then(response => response.json()).then(response => {
+            this.props.history.push("/Profile");
+        })
+    };
+
+    back = () => {
+        this.props.history.push("/Profile");
     };
 
     render() {
-        let {password, confirmPassword, securityQuestionId1, securityQuestionId2, securityAnswer1, securityAnswer2, memorableWord} = this.state.formErrors;
+        console.log("formData", this.state.formData)
+        let {securityQuestionId1, securityQuestionId2, securityAnswer1, securityAnswer2, memorableWord} = this.state.formErrors;
         let {securityQuestions} = this.state;
 
         return (
@@ -160,60 +157,47 @@ export class Security extends Component {
             <div className="wrapper">
             <div className="registration-form-step2">
                 <div className="col-sm-12 form security">
-                    <div className="col-sm-6 form-group">
-                        <label>*Password</label>
-                        <input className="input" type="password" name="password" onChange={this.handleUserInput}/>
-                        <p className="error-message">{password}</p>
-                    </div>
-                    <div className="col-sm-6 form-group">
-                        <label>*Confirm Password</label>
-                        <input className="input" type="password" name="confirmPassword"
-                               onChange={this.handleUserInput}/>
-                        <p className="error-message">{confirmPassword}</p>
-                    </div>
+
                     <div className="col-sm-6 form-group">
                         <label>*Security Question</label>
-                        <select className="input" name="securityQuestionId1"
+                        <select className="input" name="securityQuestionId1" value={this.state.securityQuestionIdStr1}
                                 onChange={(e) => this.handleChangeSecurityQuestion(e,0)}>
-                            <option>Select a security question</option>
                             {securityQuestions[0] && securityQuestions[0].map(a => <option
                                 value={a.hintQuestion} key={a.securityQuestionId}>{a.hintQuestion}</option>)}</select>
                         <p className="error-message">{securityQuestionId1}</p>
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*Security Answer</label>
-                        <input className="input" type="text" name="securityAnswer1" onChange={this.handleUserInput}/>
+                        <input className="input" type="text" name="securityAnswer1" value={this.state.formData.UsersDetails.securityAnswer1} onChange={this.handleUserInput}/>
                         <p className="error-message">{securityAnswer1}</p>
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*Security Question</label>
                         <select className="input" name="securityQuestionId2"
-                                onChange={(e) => this.handleChangeSecurityQuestion(e,1)}>
-                            <option>Select a security question</option>
+                                onChange={(e) => this.handleChangeSecurityQuestion(e,1)} value={this.state.securityQuestionIdStr2}>
                             {securityQuestions[1] && securityQuestions[1].map(a => <option
                                 value={a.hintQuestion} key={a.securityQuestionId}>{a.hintQuestion}</option>)}</select>
                         <p className="error-message">{securityQuestionId2}</p>
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*Security Answer</label>
-                        <input className="input" type="text" name="securityAnswer2" onChange={this.handleUserInput}/>
+                        <input className="input" type="text" name="securityAnswer2" value={this.state.formData.UsersDetails.securityAnswer2} onChange={this.handleUserInput}/>
                         <p className="error-message">{securityAnswer2}</p>
                     </div>
 
 
                     <div className="col-sm-6 form-group">
                         <label>*Memorable word</label>
-                        <input className="input" type="text" name="memorableWord" onChange={this.handleUserInput}/>
+                        <input className="input" type="text" name="memorableWord" value={this.state.formData.UsersDetails.memorableWord} onChange={this.handleUserInput}/>
                         <p className="error-message">{memorableWord}</p>
                     </div>
                 </div>
                 <div className="container-login-form-btn">
-                    <button className="login-form-btn" onClick={this._back}>Back</button>
+                    <button className="login-form-btn" onClick={()=> this.back()}>Back</button>
                     <button className="login-form-btn" disabled={!this.state.formValid}
                             onClick={() => this.submit()}>Submit
                     </button>
                 </div>
-
             </div>
 
             </div>
@@ -223,13 +207,10 @@ export class Security extends Component {
 }
 
 const mapStateToProps = state => ({
-    data: state.data,
-    photo: state.photo
+    details: state.details
 });
-const mapDispatchToProps = (dispatch) => ({
-    onAdd: (data) => dispatch({ type: 'ADD_DATA', text: data })
-});
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Security));
+
+export default withRouter(connect(mapStateToProps)(Security));
 
 
 

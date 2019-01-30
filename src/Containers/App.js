@@ -5,7 +5,7 @@ import Home from "./Home";
 import Login from "./Login/Login";
 import Registration from "./Registration/Registration";
 import PersonalDetails from "./Registration/PersonalDetails";
-import Security from "./Registration/Security";
+import Security from "../Components/Profile/Security";
 import Address from "./Registration/Address";
 import '../Styles/Override.css'
 import Header from "../Components/Header";

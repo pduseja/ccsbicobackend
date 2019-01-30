@@ -176,7 +176,32 @@ let WebApi = {
                             "Content-Type": "application/json"
                         },
         })
-    }
+    },
+    editSecurity(data){
+        return fetch("http://localhost:9090/CCSBI/api/updatePerSecDetails",{
+                        method: "PATCH",
+                        mode: "cors",
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+        })
+    },
+    editPhoto(data, photo, done){
+            let request = new XMLHttpRequest();
+            request.open('PATCH', 'http://localhost:9090/CCSBI/api/updatePerPic');
+            let formData = new FormData();
+            formData.append('photo', photo || {})
+            formData.append('users', JSON.stringify(data));
+            request.onload = function () {
+                done(null, request.response);
+            };
+            request.onerror = function () {
+                done(request.response);
+            };
+            request.send(formData);
+        },
+
 
 };
 

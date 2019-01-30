@@ -5,26 +5,26 @@ import {Link} from "react-router-dom";
 export class ViewSecurityDetails extends React.Component{
 
     render(){
-        let {securityQuestionId1, securityQuestionId2, memorableWord} = this.props.details.UsersDetails
+        let {securityQuestionIdStr1, securityQuestionIdStr2, securityAnswer1, securityAnswer2, memorableWord} = this.props.details.UsersDetails
         return(<div className="profile-details">
         <Link to={{pathname:"/Security", flow: "Profile"}}>
            <i style={{fontSize: 25, float: 'right'}} class="fas fa-edit"></i>
         </Link>
             <div className="form-group">
                 <label>Security question 1</label>
-                <span>{securityQuestionId1}</span>
+                <span>{securityQuestionIdStr1}</span>
            </div>
          <div className="form-group">
               <label>Security answer</label>
-              <span></span>
+              <span>{securityAnswer1}</span>
          </div>
            <div className="form-group">
                 <label>Security question 2</label>
-                <span>{securityQuestionId2}</span>
+                <span>{securityQuestionIdStr2}</span>
            </div>
              <div className="form-group">
                   <label>Security answer</label>
-                  <span></span>
+                  <span>{securityAnswer2}</span>
              </div>
            <div className="form-group">
                 <label>MemorableWord</label>

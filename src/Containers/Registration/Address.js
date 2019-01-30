@@ -123,7 +123,7 @@ export class Address extends Component {
                 {this.props.location && this.props.location.flow === "Profile" ?
                  <div>
                     <Link to="/Profile">Back to profile</Link>
-                    <button className="login-form-btn" onClick={this.onSubmit}>Submit</button>
+                    <button className="login-form-btn" onClick={this.onSubmit}  disabled={this.enableNext()}>Submit</button>
                 </div> : <div className="container-login-form-btn">
                     <button className="login-form-btn" onClick={this.back}>Back
                     </button>
