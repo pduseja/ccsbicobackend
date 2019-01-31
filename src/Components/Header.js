@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import Logo from '../Images/logo.png'
 import MenuLinks from "./MenuLinks";
 import {Link} from "react-router-dom";
 import '../Styles/Header.css'
 import UserOptions from "./UserOptions";
 import WebApi from "../Utils/WebApi";
 import {connect} from "react-redux";
-import {addUserName} from "../Actions/Actions";
+import {addUserName,addUserDetails} from "../Actions/Actions";
 import Cookies from 'universal-cookie';
 
 export class Header extends Component {
@@ -44,6 +45,10 @@ export class Header extends Component {
         if (!this.refs.root.contains(e.target) && this.state.isOpen === true) {
             this.setState({
                 isOpen: false,
+            });
+        }
+        if (!this.refs.root.contains(e.target) && this.state.isRightOpen === true) {
+            this.setState({
                 isRightOpen: false
             });
         }
@@ -77,6 +82,7 @@ export class Header extends Component {
             .then(response => response.json())
             .then(response => {
                 this.props.dispatch(addUserName(response.firstName))
+                this.props.dispatch(addUserDetails(response))
                 if (response.UsersLoginRecord.rememberMe === true) {
                 const cookies = new Cookies();
                      cookies.set('token', response.UsersLoginRecord.token, { path: '/', expires: this.getDate() });
@@ -110,6 +116,7 @@ export class Header extends Component {
         cookies.remove('cookie', { path: '/' });
         this.props.history.push('/');
         this.props.dispatch(addUserName(''))
+        this.props.dispatch(addUserDetails(''))
         this.setState({'isOpen': false, 'isRightOpen': false})
     };
 
@@ -118,6 +125,12 @@ export class Header extends Component {
             p.keyVal1 === param
         );
     };
+
+    hideMenu = () =>{
+        this.setState({
+            isRightOpen: false
+        });
+    }
 
     render() {
         let {currentPage} = this.state;
@@ -159,7 +172,7 @@ export class Header extends Component {
                             <i className="fas fa-bars"/>
                         </div>
                             <Link className="logo" to="/">
-                                <img src="http://ccsbi.info/usersresource/images/logo.png" alt="logo"/>
+                            <img src={Logo} alt="logo"/>                                
                             </Link></div>
                         {user !== '' &&
                         <div className="user-info" onClick={this._menuRightToggle}>
@@ -230,7 +243,7 @@ export class Header extends Component {
                 </nav>
 
                 <MenuLinks menuStatus={menuStatus} login={this.login} logout={this.logout}/>
-                <UserOptions rightMenuStatus={rightMenuStatus}/>
+                <UserOptions rightMenuStatus={rightMenuStatus} hideMenu={this.hideMenu}/>
             </div>
         )
     }
