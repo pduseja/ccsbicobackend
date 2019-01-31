@@ -25,10 +25,9 @@ public class UsersDetailsServiceImpl implements IUsersDetailsService {
 
 	@Autowired
 	private SecurityQuestionsRepo securityQuestionsRepo;
-	
+
 	@Autowired
 	ReallyStrongSecuredPassword reallyStrongSecuredPassword;
-
 
 	@Override
 	public UsersDetails save(UsersDetails userDetails) {
@@ -75,6 +74,25 @@ public class UsersDetailsServiceImpl implements IUsersDetailsService {
 		usersDetails.setSecurityAnswer2(decryptSecurityAnswer2);
 
 		return usersDetails;
+
+	}
+
+	@Override
+	public int updateUsersDetails(UsersDetails userDetails, int userId) {
+		
+		String memorableWord = userDetails.getMemorableWord();
+		String securityAnswer1 = userDetails.getSecurityAnswer1();
+		String securityAnswer2 = userDetails.getSecurityAnswer2();		
+		int securityQuestionId1 = userDetails.getSecurityQuestionId1();
+		int securityQuestionId2 = userDetails.getSecurityQuestionId2();
+
+		int update = usersDetailsRepo.updateCompleteUsersDetails(userId, memorableWord, securityAnswer1,
+				securityAnswer2, securityQuestionId1, securityQuestionId2);
+		if (update > 0) {
+			return update;
+		} else {
+			return 0;
+		}
 
 	}
 

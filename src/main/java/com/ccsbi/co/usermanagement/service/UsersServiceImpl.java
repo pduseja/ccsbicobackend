@@ -10,6 +10,7 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsbi.co.usermanagement.repository.AddressDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.AddressDetails;
@@ -38,7 +39,7 @@ public class UsersServiceImpl implements IUsersService {
 
 	@Autowired
 	UserNameGeneratorService userNameGeneratorService;
-	
+
 	@Autowired
 	ReallyStrongSecuredPassword reallyStrongSecuredPassword;
 
@@ -55,6 +56,8 @@ public class UsersServiceImpl implements IUsersService {
 
 			String userName = userNameGeneratorService.userNameGen(users.getFirstName(), users.getLastName());
 			users.setUserName(userName);
+			users.setProfileId(1);
+			users.setActive("N");
 
 			users = convertUsers(usersRepo.save(convertU(users)));
 
@@ -84,6 +87,91 @@ public class UsersServiceImpl implements IUsersService {
 		}
 
 		return users;
+
+	}
+
+	@Override
+	public Users update(Users user) {
+		int update = 0;
+		String userName = user.getUserName();
+		int userid = usersRepo.getUserId(userName);
+		int numberOfAddress = addressDetailsService.sizeOfAddressList(userid);
+
+		List<AddressDetails> addressDetailsList = user.getAddressDetailsList();
+		Iterator<AddressDetails> itr = addressDetailsList.iterator();
+		int updateAddress = 0;
+		if (numberOfAddress == addressDetailsList.size()) {
+			while (itr.hasNext()) {
+				AddressDetails addressDetails1 = (AddressDetails) itr.next();
+				AddressDetails addressDetails = new AddressDetails();
+				addressDetails = populateAddressDetails(addressDetails, addressDetails1);
+				addressDetails.setId(addressDetails1.getId());
+				updateAddress = addressDetailsService.update(addressDetails, userid);
+				System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
+			}
+		} else {
+			while (itr.hasNext()) {
+				AddressDetails addressDetails1 = (AddressDetails) itr.next();
+				AddressDetails addressDetails = new AddressDetails();
+				if(addressDetails1.getId()>0) {
+				addressDetails = populateAddressDetails(addressDetails, addressDetails1);
+				addressDetails.setId(addressDetails1.getId());
+				updateAddress = addressDetailsService.update(addressDetails, userid);
+				System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
+				} else {
+					addressDetails = populateAddressDetails(addressDetails, addressDetails1);
+					addressDetails.setId(addressDetails1.getId());
+					user.setUserId(userid);
+					addressDetails.setUsers(user);
+					addressDetailsService.save(addressDetails);
+					System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
+					
+				}
+			}
+			
+		}
+
+		if (updateAddress > 0) {
+			addressDetailsList = addressDetailsService.getAddressList(userid);
+			user.setAddressDetailsList(addressDetailsList);
+			user.setUserId(userid);
+			return user;
+		} else {
+			return new Users();
+		}
+
+	}
+
+	@Override
+	public Users updateSecurityDetails(Users user) {
+		int update = 0;
+		UsersDetails userDetails = user.getUsersDetails();
+		String userName = user.getUserName();
+		int userid = usersRepo.getUserId(userName);
+
+		if (!StringUtils.isEmpty(userDetails.getMemorableWord())) {
+
+			
+			String encryptMemorableWord = reallyStrongSecuredPassword.encrypt(userDetails.getMemorableWord());
+			String encryptSecurityAnswer1 = reallyStrongSecuredPassword.encrypt(userDetails.getSecurityAnswer1());
+			String encryptSecurityAnswer2 = reallyStrongSecuredPassword.encrypt(userDetails.getSecurityAnswer2());
+			
+			userDetails.setMemorableWord(encryptMemorableWord);
+			userDetails.setSecurityAnswer1(encryptSecurityAnswer1);
+			userDetails.setSecurityAnswer2(encryptSecurityAnswer2);			
+			update = usersDetailsServiceImpl.updateUsersDetails(userDetails, userid);
+			UsersDetails usersD = new UsersDetails();			
+		}
+		if(update>0) {
+			userDetails = usersDetailsServiceImpl.getUsersDetails(userName);
+			user.setUserId(userid);
+			user.setUsersDetails(userDetails);
+			return user;
+		} else {
+			return new Users();
+		}
+
+		
 
 	}
 
@@ -126,10 +214,11 @@ public class UsersServiceImpl implements IUsersService {
 
 		if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
 			users = convertUsers(usersRepo.loginUser(userName));
-			
-			com.ccsbi.co.usermanagement.repository.entity.UsersDetails usersDetails = usersDetailsRepo.getUsersDetails(users.getUserId());
+
+			com.ccsbi.co.usermanagement.repository.entity.UsersDetails usersDetails = usersDetailsRepo
+					.getUsersDetails(users.getUserId());
 			System.out.println("Hello");
-			if (usersDetails!=null) {
+			if (usersDetails != null) {
 				String encryptPassword = reallyStrongSecuredPassword.encrypt(password);
 				update = usersDetailsRepo.updateusersDetails(users.getUserId(), encryptPassword);
 				if (update == 0) {
@@ -144,5 +233,15 @@ public class UsersServiceImpl implements IUsersService {
 		return update;
 	}
 
+	@Override
+	public int updatePhoto(Users user) {
+		int update = 0;
+		String userName = user.getUserName();
+		int userid = usersRepo.getUserId(userName);
+
+		update = usersRepo.updatePhoto(userid, user.getPhotoId());
+		
+		return update;
+	}
 
 }
