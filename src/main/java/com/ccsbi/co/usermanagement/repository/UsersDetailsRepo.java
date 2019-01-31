@@ -24,4 +24,20 @@ public interface UsersDetailsRepo extends JpaRepository<UsersDetails, Long> {
 	@Query("select ud.loginAttempts from usersdetails ud where ud.userId=:userId")
 	int loginAttempts(@Param("userId") int userId);
 	
+	@Modifying
+	@Query("update usersdetails ud set ud.loginAttempts=ud.loginAttempts+1 where ud.userId=:userId")
+	int updateloginAttempts(@Param("userId")int userId);
+
+	@Modifying
+	@Query("delete from usersdetails ud where ud.userId=:userId")
+	int delete(@Param("userId")int userId);
+	
+	@Modifying
+	@Query("update usersdetails ud set ud.memorableWord=:memorableWord,"
+			+ "ud.securityAnswer1=:securityAnswer1,ud.securityAnswer2=:securityAnswer2,"			
+			+ "ud.securityQuestionId1=:securityQuestionId1,ud.securityQuestionId2=:securityQuestionId2 where ud.userId=:userId")
+	int updateCompleteUsersDetails(@Param("userId")int userId,@Param("memorableWord") String memorableWord,
+			@Param("securityAnswer1") String securityAnswer1,@Param("securityAnswer2") String securityAnswer2,
+			@Param("securityQuestionId1")int securityQuestionId1,
+			@Param("securityQuestionId2")int securityQuestionId2);
 }
