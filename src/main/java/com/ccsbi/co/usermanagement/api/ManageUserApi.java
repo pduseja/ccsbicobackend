@@ -69,8 +69,9 @@ public class ManageUserApi {
 	@ApiOperation(value = "Update Personal Info", notes = "Update Personal Info", nickname = "Update Personal Info")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@PatchMapping(path = "/updatePerPic", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+	@PatchMapping(path = "/updatePerPic", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.MULTIPART_FORM_DATA_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ResponseEntity<Users> updatePersonalPhoto(@ApiParam(value = "user", required = true) @Valid String users,
 			@RequestParam(value = "photo", required = false) MultipartFile photo) throws Exception {
 
@@ -129,7 +130,8 @@ public class ManageUserApi {
 			@ApiResponse(code = 404, message = "Page not found") })
 	@PatchMapping(path = "/updatePerAddDetails", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Users> updatePersonalPhoto(@ApiParam(value = "", required = true) @RequestBody Users users) {
+	public ResponseEntity<Users> updatePersonalAddress(
+			@ApiParam(value = "", required = true) @RequestBody Users users) {
 
 		LOGGER.debug("Inside update Personal Address Details Method");
 
