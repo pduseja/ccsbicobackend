@@ -14,10 +14,22 @@ spring:
     multipart:
       max-file-size: 1MB
       max-request-size: 3MB
-    
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: noreply@ccsbi.com
+    password: donotreply123
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+        auth: true
+        starttls.enable: true
+        ssl.trust: smtp.gmail.com
+  
+      
   datasource:
     username: root 
-    password: ccsbi@12
+    password: Sogeti@12
     name: ccsbitrans
     url: jdbc:mysql://localhost:3306/ccsbitrans?useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
@@ -43,3 +55,9 @@ springfox:
     swagger:
       v2:
         path: /
+
+---
+contactus:
+  username: contactus@ccsbi.com
+  password: contactus123
+      
