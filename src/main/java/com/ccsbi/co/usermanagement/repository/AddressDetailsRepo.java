@@ -27,4 +27,7 @@ public interface AddressDetailsRepo extends JpaRepository<AddressDetails, Long> 
 	@Query("select ad from addressdetails ad where ad.users.userId=:userid")
 	List<AddressDetails> getAddressDetailsList(@Param("userid") int userid);
 	
+	@Query("select ad from addressdetails ad where ad.users.userId=:userId and ad.type=:type")
+	AddressDetails getAddressDetails(@Param("userId") int userId,@Param("type") String type);
+	
 }
