@@ -13,5 +13,7 @@ public interface IAddressDetailsService {
 	List<AddressDetails> getAddressList(int userid);
 	
 	int sizeOfAddressList(int userId);
+	
+	AddressDetails getAddressDetails(int userId);
 
 }

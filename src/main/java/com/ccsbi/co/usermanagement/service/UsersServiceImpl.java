@@ -10,6 +10,7 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsbi.co.usermanagement.email.IEmailService;
 import com.ccsbi.co.usermanagement.repository.AddressDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
@@ -42,6 +43,13 @@ public class UsersServiceImpl implements IUsersService {
 
 	@Autowired
 	ReallyStrongSecuredPassword reallyStrongSecuredPassword;
+	
+	@Autowired
+	IEmailService iEmailService;
+
+	@Autowired
+	IAddressDetailsService addressDetailsServiceImpl;
+
 
 	@Override
 	@Transactional
@@ -82,6 +90,18 @@ public class UsersServiceImpl implements IUsersService {
 				userDetails.setIsTempPassword('N');
 				userDetails.setAccountLocked("N");
 				userDetails = usersDetailsServiceImpl.save(userDetails);
+			}
+			// Registration Email
+			AddressDetails addressDetails = addressDetailsServiceImpl.getAddressDetails(users.getUserId());
+			String to = addressDetails.getEmail();
+			String subject = "Registration confirmation with CCSBI";
+			String text = "Your are now registered with our site!\n"
+					+ "Your username is '" +users.getUserName() +"' We will inform you once your account is verified and activated!!";
+			if (!StringUtils.isEmpty(to)) {
+				iEmailService.sendRegistrationMail(to,subject, text);
+			} else {
+				String mobile = addressDetails.getMobile();
+				// Add logic to send SMS
 			}
 
 		}
@@ -151,17 +171,16 @@ public class UsersServiceImpl implements IUsersService {
 
 		if (!StringUtils.isEmpty(userDetails.getMemorableWord())) {
 
-			String encryptPassword = reallyStrongSecuredPassword.encrypt(userDetails.getPassword());
+			
 			String encryptMemorableWord = reallyStrongSecuredPassword.encrypt(userDetails.getMemorableWord());
 			String encryptSecurityAnswer1 = reallyStrongSecuredPassword.encrypt(userDetails.getSecurityAnswer1());
 			String encryptSecurityAnswer2 = reallyStrongSecuredPassword.encrypt(userDetails.getSecurityAnswer2());
-			userDetails.setPassword(encryptPassword);
+			
 			userDetails.setMemorableWord(encryptMemorableWord);
 			userDetails.setSecurityAnswer1(encryptSecurityAnswer1);
-			userDetails.setSecurityAnswer2(encryptSecurityAnswer2);
-			userDetails.setIsTempPassword('N');
-			userDetails.setAccountLocked("N");
+			userDetails.setSecurityAnswer2(encryptSecurityAnswer2);			
 			update = usersDetailsServiceImpl.updateUsersDetails(userDetails, userid);
+			UsersDetails usersD = new UsersDetails();			
 		}
 		if(update>0) {
 			userDetails = usersDetailsServiceImpl.getUsersDetails(userName);
@@ -171,41 +190,6 @@ public class UsersServiceImpl implements IUsersService {
 		} else {
 			return new Users();
 		}
-
-		
-
-	}
-
-	private AddressDetails populateAddressDetails(AddressDetails addressDetails, AddressDetails addressDetails1) {
-
-		addressDetails.setActive(addressDetails1.getActive());
-		addressDetails.setAddressLine1(addressDetails1.getAddressLine1());
-		addressDetails.setAddressLine2(addressDetails1.getAddressLine2());
-		addressDetails.setAddressLine3(addressDetails1.getAddressLine3());
-		addressDetails.setCityTown(addressDetails1.getCityTown());
-		addressDetails.setCountry(addressDetails1.getCountry());
-		addressDetails.setEmail(addressDetails1.getEmail());
-		addressDetails.setFlatNo(addressDetails1.getFlatNo());
-		addressDetails.setHouseName(addressDetails1.getHouseName());
-		addressDetails.setLandline(addressDetails1.getLandline());
-		addressDetails.setMobile(addressDetails1.getMobile());
-		addressDetails.setModDate(addressDetails1.getModDate());
-		addressDetails.setPinPostCode(addressDetails1.getPinPostCode());
-		addressDetails.setStateProvince(addressDetails1.getStateProvince());
-		addressDetails.setSysDate(addressDetails1.getSysDate());
-		addressDetails.setType(addressDetails1.getType());
-
-		return addressDetails;
-	}
-
-	private Users convertUsers(com.ccsbi.co.usermanagement.repository.entity.Users users) {
-
-		return dozerMapper.map(users, Users.class);
-	}
-
-	private com.ccsbi.co.usermanagement.repository.entity.Users convertU(Users users) {
-
-		return dozerMapper.map(users, com.ccsbi.co.usermanagement.repository.entity.Users.class);
 	}
 
 	@Override
@@ -244,5 +228,38 @@ public class UsersServiceImpl implements IUsersService {
 		
 		return update;
 	}
+	private AddressDetails populateAddressDetails(AddressDetails addressDetails, AddressDetails addressDetails1) {
+
+		addressDetails.setActive(addressDetails1.getActive());
+		addressDetails.setAddressLine1(addressDetails1.getAddressLine1());
+		addressDetails.setAddressLine2(addressDetails1.getAddressLine2());
+		addressDetails.setAddressLine3(addressDetails1.getAddressLine3());
+		addressDetails.setCityTown(addressDetails1.getCityTown());
+		addressDetails.setCountry(addressDetails1.getCountry());
+		addressDetails.setEmail(addressDetails1.getEmail());
+		addressDetails.setFlatNo(addressDetails1.getFlatNo());
+		addressDetails.setHouseName(addressDetails1.getHouseName());
+		addressDetails.setLandline(addressDetails1.getLandline());
+		addressDetails.setMobile(addressDetails1.getMobile());
+		addressDetails.setModDate(addressDetails1.getModDate());
+		addressDetails.setPinPostCode(addressDetails1.getPinPostCode());
+		addressDetails.setStateProvince(addressDetails1.getStateProvince());
+		addressDetails.setSysDate(addressDetails1.getSysDate());
+		addressDetails.setType(addressDetails1.getType());
+
+		return addressDetails;
+	}
+
+	private Users convertUsers(com.ccsbi.co.usermanagement.repository.entity.Users users) {
+
+		return dozerMapper.map(users, Users.class);
+	}
+
+	private com.ccsbi.co.usermanagement.repository.entity.Users convertU(Users users) {
+
+		return dozerMapper.map(users, com.ccsbi.co.usermanagement.repository.entity.Users.class);
+	}
+
+
 
 }

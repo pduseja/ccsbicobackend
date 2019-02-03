@@ -69,6 +69,25 @@ public class AddressDetailsServiceImpl implements IAddressDetailsService {
 
 	}
 
+	@Override
+	public int sizeOfAddressList(int userId) {
+		
+		List<AddressDetails> listAdd = convertList(addressDetailsRepo.getAddressDetailsList(userId));
+		
+		return listAdd.size();
+	}
+
+	@Override
+	public AddressDetails getAddressDetails(int userId) {
+		String type= "PermA";
+		AddressDetails addressDetails = new AddressDetails();
+		com.ccsbi.co.usermanagement.repository.entity.AddressDetails addressDetailsEnt = addressDetailsRepo.getAddressDetails(userId, type);
+		if(addressDetailsEnt.getId()>0) {
+			addressDetails = convertAddressDetails(addressDetailsEnt);
+		}
+		return addressDetails;
+	}
+	
 	@SuppressWarnings("unchecked")
 	private List<AddressDetails> convertList(
 			List<com.ccsbi.co.usermanagement.repository.entity.AddressDetails> addressDetailsList) {
@@ -88,12 +107,6 @@ public class AddressDetailsServiceImpl implements IAddressDetailsService {
 		return dozerMapper.map(addressDetails, com.ccsbi.co.usermanagement.repository.entity.AddressDetails.class);
 	}
 
-	@Override
-	public int sizeOfAddressList(int userId) {
-		
-		List<AddressDetails> listAdd = convertList(addressDetailsRepo.getAddressDetailsList(userId));
-		
-		return listAdd.size();
-	}
+
 
 }
