@@ -14,11 +14,23 @@ export class ReadonlyAddress extends React.Component{
             addressData: address
         })
     }
+    componentDidUpdate(prevProps, prevState){
+        let address = this.props.details.AddressDetailsList.filter(address => address.type === this.props.type);
+        if(JSON.stringify(this.state.addressData) !== JSON.stringify(address)){
+            this.setState({
+                addressData: address
+            })
+        }
+    }
 
     render(){
         return(<div>
          {this.state.addressData && this.state.addressData.length ?
                     <div>
+                    <div className="form-group">
+                         <label>House number</label>
+                         <span>{this.state.addressData[0].flatNo}</span>
+                    </div>
                     <div className="form-group">
                          <label>House name</label>
                          <span>{this.state.addressData[0].houseName}</span>

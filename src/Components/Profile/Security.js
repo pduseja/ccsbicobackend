@@ -120,7 +120,7 @@ export class Security extends Component {
     handleUserInput = (e) => {
         const name = e.target.name;
         const value = e.target.type === 'radio' ? e.target.value : e.target.value;
-        this.setState({formData:{...this.state.formData,UsersDetails:{...this.state.formData.UsersDetails,[name]: value}}},
+        this.setState({...this.state,formData:{...this.state.formData,UsersDetails:{...this.state.formData.UsersDetails,[name]: value}}},
             () => {
                 this.validateField(name, value)
             });
@@ -131,7 +131,8 @@ export class Security extends Component {
         const value = e.target.value;
         this.setState({[name]:value})
         const questionId = this.state.securityQuestions[id].filter(q => q.hintQuestion === value)[0].securityQuestionId
-        this.setState({formData:{UsersDetails:{...this.state.formData.UsersDetails,[name]: questionId}}},
+        this.setState({...this.state,["securityQuestionIdStr"+(id+1)]: value, formData:{...this.state.formData,
+        UsersDetails:{...this.state.formData.UsersDetails,[name]: questionId  }}},
         ()=>{
                this.validateField(name, value)
         });
@@ -148,7 +149,6 @@ export class Security extends Component {
     };
 
     render() {
-        console.log("formData", this.state.formData)
         let {securityQuestionId1, securityQuestionId2, securityAnswer1, securityAnswer2, memorableWord} = this.state.formErrors;
         let {securityQuestions} = this.state;
 
@@ -160,15 +160,15 @@ export class Security extends Component {
 
                     <div className="col-sm-6 form-group">
                         <label>*Security Question</label>
-                        <select className="input" name="securityQuestionId1" value={this.state.securityQuestionIdStr1}
-                                onChange={(e) => this.handleChangeSecurityQuestion(e,0)}>
+                        <select className="input" name="securityQuestionId1"
+                                onChange={(e) => this.handleChangeSecurityQuestion(e,0)} value={this.state.securityQuestionIdStr1}>
                             {securityQuestions[0] && securityQuestions[0].map(a => <option
                                 value={a.hintQuestion} key={a.securityQuestionId}>{a.hintQuestion}</option>)}</select>
                         <p className="error-message">{securityQuestionId1}</p>
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*Security Answer</label>
-                        <input className="input" type="text" name="securityAnswer1" value={this.state.formData.UsersDetails.securityAnswer1} onChange={this.handleUserInput}/>
+                        <input className="input" type="text" name="securityAnswer1" onChange={this.handleUserInput}/>
                         <p className="error-message">{securityAnswer1}</p>
                     </div>
                     <div className="col-sm-6 form-group">

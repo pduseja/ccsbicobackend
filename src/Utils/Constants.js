@@ -123,9 +123,16 @@ const constants = {
         },
     rightMenu:
         {
-            items: {
-                text: 'Menu Details'
-            }
+            "1": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatistory", "MyDocument"],
+            "2": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatistory", "MyDocument"],
+            "3": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
+            "4": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "PaymentDashboard", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
+            "5": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "AdminDashboard", "CommunicationDashboard", "SecureMessages","WebChatHistory", "MyDocument"],
+            "6": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
+            "7": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
+            "8": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
+            "9": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
+            "10":["AdminDashboard"]
         }
 
 

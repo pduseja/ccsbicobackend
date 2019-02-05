@@ -12,16 +12,8 @@ export class ViewPersonalDetails extends Component {
             file: '',
             imagePreviewUrl: props.details.UsersPhoto ? "data:image/jpeg;base64,"+this.props.details.UsersPhoto.photoContent : '',
             formData: {
-                userName: props.details.userName,
-                photoId: props.details.photoId,
-                UsersPhoto: {
-                    photo: props.details.UsersPhoto.photo,
-                    photoContent: "",
-                    fileType: "",
-                    active: "",
-                }
+                userName: props.details.userName
             }
-
         }
     }
 
@@ -65,7 +57,6 @@ export class ViewPersonalDetails extends Component {
         if (imagePreviewUrl) {
             $imagePreview = (<img className="file-upload-img" alt="user" src={imagePreviewUrl}/>);
         }
-        console.log(imagePreviewUrl)
         return (
 <div className="profile-details">
            <div className="form-group">

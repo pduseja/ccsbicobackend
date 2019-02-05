@@ -4,6 +4,7 @@ import AddressForm from "../../Components/Registration/AddressForm";
 import connect from "react-redux/es/connect/connect";
 import WebApi from "../../Utils/WebApi";
 import {Link} from "react-router-dom";
+import {addUserDetails} from "../../Actions/Actions";
 
 export class Address extends Component {
     constructor(props) {
@@ -73,10 +74,19 @@ export class Address extends Component {
     };
 
     onSubmit = () => {
-        let data = {...this.state.formData,...this.props.details}
-        WebApi.editAddress(data).then(response => response.json()).then(response => {
+        let originalAddress = this.props.details;
+        if(this.state.formData.AddressDetailsList.length === 0){
             this.props.history.push('/Profile');
-        })
+        }
+        else{
+
+                let data = Object.assign({}, originalAddress.AddressDetailsList, this.state.formData.AddressDetailsList)
+
+                WebApi.editAddress(data).then(response => response.json()).then(response => {
+                    this.props.dispatch(addUserDetails(originalAddress));
+
+                })
+        }
     };
 
     render() {
