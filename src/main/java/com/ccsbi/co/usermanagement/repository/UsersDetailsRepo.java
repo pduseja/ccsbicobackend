@@ -33,12 +33,11 @@ public interface UsersDetailsRepo extends JpaRepository<UsersDetails, Long> {
 	int delete(@Param("userId")int userId);
 	
 	@Modifying
-	@Query("update usersdetails ud set ud.password=:password,ud.memorableWord=:memorableWord,"
-			+ "ud.securityAnswer1=:securityAnswer1,ud.securityAnswer2=:securityAnswer2,"
-			+ "ud.isTempPassword=:isTempPassword,ud.accountLocked=:accountLocked,"
+	@Query("update usersdetails ud set ud.memorableWord=:memorableWord,"
+			+ "ud.securityAnswer1=:securityAnswer1,ud.securityAnswer2=:securityAnswer2,"			
 			+ "ud.securityQuestionId1=:securityQuestionId1,ud.securityQuestionId2=:securityQuestionId2 where ud.userId=:userId")
-	int updateCompleteUsersDetails(@Param("userId")int userId,@Param("password") String password,
-			@Param("memorableWord") String memorableWord,@Param("securityAnswer1") String securityAnswer1,@Param("securityAnswer2") String securityAnswer2,
-			@Param("isTempPassword") char isTempPassword,@Param("accountLocked") String accountLocked,@Param("securityQuestionId1")int securityQuestionId1,
+	int updateCompleteUsersDetails(@Param("userId")int userId,@Param("memorableWord") String memorableWord,
+			@Param("securityAnswer1") String securityAnswer1,@Param("securityAnswer2") String securityAnswer2,
+			@Param("securityQuestionId1")int securityQuestionId1,
 			@Param("securityQuestionId2")int securityQuestionId2);
 }
