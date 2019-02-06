@@ -29,7 +29,7 @@ spring:
       
   datasource:
     username: root 
-    password: Sogeti@12
+    password: ccsbi@12
     name: ccsbitrans
     url: jdbc:mysql://localhost:3306/ccsbitrans?useSSL=false
     driver-class-name: com.mysql.jdbc.Driver

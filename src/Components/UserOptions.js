@@ -11,7 +11,7 @@ export class UserOptions extends Component {
             <span className="up-arrow"></span>
                 <ul className="user-options">
                 {id && constants.rightMenu[id].map(tab =>
-                    <li onClick={this.props.hideMenu}><Link to={"/"+tab}>{tab}</Link></li>
+                    <li onClick={this.props.hideMenu}><Link to={"/"+tab}>{constants.pageMapping[tab]}</Link></li>
                     )
                 }
                 </ul>

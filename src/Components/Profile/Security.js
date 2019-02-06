@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
+import {addUserDetails} from "../../Actions/Actions";
 
 export class Security extends Component {
     constructor(props) {
@@ -139,8 +140,23 @@ export class Security extends Component {
     };
 
     submit = () => {
+        let originalData = this.props.details;
+        let dataAfterEdit = {
+        UsersDetails:{
+            securityQuestionIdStr1: this.state.securityQuestionIdStr1,
+            securityQuestionIdStr2: this.state.securityQuestionIdStr2,
+            securityQuestionId1: this.state.formData.UsersDetails.securityQuestionId1,
+            securityQuestionId2: this.state.formData.UsersDetails.securityQuestionId2,
+            securityAnswer1: this.state.formData.UsersDetails.securityAnswer1,
+            securityAnswer2: this.state.formData.UsersDetails.securityAnswer2,
+            memorableWord: this.state.formData.UsersDetails.memorableWord
+            }
+        };
+        let newData = {...originalData, ...dataAfterEdit};
         WebApi.editSecurity(this.state.formData).then(response => response.json()).then(response => {
             this.props.history.push("/Profile");
+            this.props.dispatch(addUserDetails(newData));
+
         })
     };
 
@@ -168,7 +184,7 @@ export class Security extends Component {
                     </div>
                     <div className="col-sm-6 form-group">
                         <label>*Security Answer</label>
-                        <input className="input" type="text" name="securityAnswer1" onChange={this.handleUserInput}/>
+                        <input className="input" type="text" name="securityAnswer1" value={this.state.formData.UsersDetails.securityAnswer1} onChange={this.handleUserInput}/>
                         <p className="error-message">{securityAnswer1}</p>
                     </div>
                     <div className="col-sm-6 form-group">

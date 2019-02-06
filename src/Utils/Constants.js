@@ -123,16 +123,41 @@ const constants = {
         },
     rightMenu:
         {
-            "1": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatistory", "MyDocument"],
-            "2": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatistory", "MyDocument"],
+            "1": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatHistory", "MyDocument"],
+            "2": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatHistory", "MyDocument"],
             "3": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
             "4": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "PaymentDashboard", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
-            "5": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "AdminDashboard", "CommunicationDashboard", "SecureMessages","WebChatHistory", "MyDocument"],
-            "6": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
-            "7": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
-            "8": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
-            "9": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "ManageCompany", "CommunicationDashboard", "SecureMessages","CompletedChat", "MyDocument"],
-            "10":["AdminDashboard"]
+            "5": ["Profile", "AccessUpdate", "MyDashboard", "LiveChatDashboard", "SupportDashboard", "CommunicationDashboard", "SecureMessages","WebChatHistory", "MyDocument","ClientSupportDashboard","AdminDashboard","Miscellaneous"],
+            "6": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "ManageServicesAndProduct", "MyUsageAndBills", "SecureMessages","WebChatHistory", "MyDocument", "CommunicationReport", "FinancialReport", "OtherReports"],
+            "7": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "ManageServicesAndProduct", "MyUsageAndBills", "SecureMessages","WebChatHistory", "MyDocument", "CommunicationReport", "FinancialReport", "OtherReports"],
+            "8": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "ManageServicesAndProduct", "MyUsageAndBills", "SecureMessages","WebChatHistory", "MyDocument", "CommunicationReport", "FinancialReport", "OtherReports"],
+            "9": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "ManageServicesAndProduct", "MyUsageAndBills", "SecureMessages","WebChatHistory", "MyDocument", "CommunicationReport", "FinancialReport", "OtherReports"],
+            "10":["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatistory", "MyDocument", "CommunicationReport", "FinancialReport", "AdminDashboard"]
+        },
+        pageMapping:{
+            "Profile": "My Profile",
+            "AccessUpdate": "Access Update",
+            "MyDashboard": "My Dashboard",
+            "MyOrders": "My Orders",
+            "MyUsageBills": "My Usage Bills",
+            "WebChatHistory": "Web Chat History",
+            "MyDocument": "My Document",
+            "LiveChatDashboard": "Live Chat Dashboard",
+            "ManageCompany": "Manage Company",
+            "CommunicationDashboard": "Communication Dashboard",
+            "SecureMessages": "Secure Messages",
+            "CompletedChat": "Completed Chat",
+            "PaymentDashboard": "Payment Dashboard",
+            "SupportDashboard": "Support Dashboard",
+            "CCSBIPay": "CCSBI Pay",
+            "ManageServicesAndProduct": "Manage Services And Product",
+            "MyUsageAndBills": "MyUsage And Bills",
+            "CommunicationReport": "Communication Report",
+            "FinancialReport": "Financial Report",
+            "OtherReports": "Other Reports",
+            "ClientSupportDashboard": "Client Support Dashboard",
+            "AdminDashboard": "Admin Dashboard",
+            "Miscellaneous": "Miscellaneous"
         }
 
 

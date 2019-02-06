@@ -75,17 +75,32 @@ export class Address extends Component {
 
     onSubmit = () => {
         let originalAddress = this.props.details;
+        let addressType = '';
+        let dataAfterEdit = {
+            AddressDetailsList: []
+        }
         if(this.state.formData.AddressDetailsList.length === 0){
             this.props.history.push('/Profile');
         }
         else{
+            this.state.formData.AddressDetailsList.forEach(address => {
+                addressType = address.type;
+                originalAddress.AddressDetailsList.forEach((a,index) => {
+                    if(a.type === addressType){
 
-                let data = Object.assign({}, originalAddress.AddressDetailsList, this.state.formData.AddressDetailsList)
-
-                WebApi.editAddress(data).then(response => response.json()).then(response => {
-                    this.props.dispatch(addUserDetails(originalAddress));
-
+                        dataAfterEdit.AddressDetailsList[index] = a;
+                    }
+                    else{
+                        dataAfterEdit.AddressDetailsList.push(a)
+                    }
                 })
+            })
+            let originalData = this.props.details;
+            let newData = {...originalData, ...dataAfterEdit};
+            WebApi.editAddress(newData).then(response => response.json()).then(response => {
+                this.props.dispatch(addUserDetails(this.state.formData));
+
+            })
         }
     };
 
