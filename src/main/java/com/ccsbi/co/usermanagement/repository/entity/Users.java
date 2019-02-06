@@ -62,6 +62,7 @@ public class Users implements Serializable {
 	@Column(name="active")
 	private String active;
 
+	
 	/**
 	 * @return the active
 	 */

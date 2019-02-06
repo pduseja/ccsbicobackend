@@ -75,13 +75,12 @@ public class AddressDetails implements Serializable {
 	
 	@Column(name = "email")
 	private String email;
-
+	
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "userid", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Users users;
-	
-	/**
+		/**
 	 * @return the users
 	 */
 	public Users getUsers() {
@@ -333,6 +332,7 @@ public class AddressDetails implements Serializable {
 		this.email = email;
 	}
 	
+
 	@PrePersist
 	private void prePersist() {
 		Date rightNow = new Date(Calendar.getInstance().getTime().getTime());
