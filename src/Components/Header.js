@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import MenuLinks from "./MenuLinks";
+import Logo from '../Images/logo.png'
 import {Link} from "react-router-dom";
 import '../Styles/Header.css'
 import UserOptions from "./UserOptions";
@@ -171,7 +172,7 @@ export class Header extends Component {
                             <i className="fas fa-bars"/>
                         </div>
                             <Link className="logo" to="/">
-                                <img src="http://ccsbi.info/usersresource/images/logo.png" alt="logo"/>
+                            <img src={Logo} alt="logo"/>
                             </Link></div>
                         {user !== '' &&
                         <div className="user-info" onClick={this._menuRightToggle}>
