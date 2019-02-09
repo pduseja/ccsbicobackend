@@ -228,7 +228,7 @@ export class PersonalDetails extends Component {
                 formData: {
                     ...this.state.formData, UsersPhoto: {
                         ...this.state.formData.UsersPhoto,
-                        photo: fileToStore,
+                        photo: '',
                         fileType: file.type,
                         active: "Y"
                     }

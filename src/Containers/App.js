@@ -18,7 +18,9 @@ import Profile from "../Containers/Profile/Profile";
 import UnderConstruction from "../Components/UnderConstruction";
 import Footer from "../Components/Footer";
 import EditRole from "../Components/Admin/EditRole";
-import AdminDashboard from "../Containers/Admin/AdminDashboard"
+import AdminDashboard from "../Containers/Admin/AdminDashboard";
+import ContactUs from "../Containers/ContactUs/ContactUs";
+import SecureMessageForm from "../Containers/ContactUs/SecureMessageForm"
 const store = createStore(Reducers);
 
 class App extends Component {
@@ -63,7 +65,8 @@ class App extends Component {
                     <Route exact path="/AdditionalInfo" component={UnderConstruction}/>
                     <Route exact path="/CharityOptions" component={UnderConstruction}/>
                     <Route exact path="/OpinionPolls" component={UnderConstruction}/>
-                    <Route exact path="/ContactUs" component={UnderConstruction}/>
+                    <Route exact path="/ContactUs" component={ContactUs}/>
+                    <Route exact path="/SecureMessageForm" component={SecureMessageForm}/>
                     <Route exact path="/Profile" component={Profile}/>
                     <Route exact path="/MyDashboard" component={UnderConstruction}/>
                     <Route exact path="/AdminDashboard" component={AdminDashboard}/>

@@ -34,6 +34,16 @@
     box-shadow: 0 3px 15px 0 #c9cdd3;
 }
 
+.full-wrapper {
+    align-items: center;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    z-index:99;
+    box-shadow: 0 3px 15px 0 #c9cdd3;
+}
+
 /* GHOST BUTTON */
 .ghost-btn {
     position: relative;
@@ -94,6 +104,10 @@
     text-align: center;
 }
 
+.title-color{
+    color: #57565a;
+}
+
 .titles .title-bg {
     width: 160px;
     height: 134px;
@@ -115,6 +129,10 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fed20f', endColorstr='#ed9923', GradientType=1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.active-link{
+    color: #007bff!important;
 }
 
 /*SUMMARY*/

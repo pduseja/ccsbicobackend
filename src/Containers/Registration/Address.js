@@ -34,6 +34,7 @@ export class Address extends Component {
     }
 
     next = () => {
+        console.log(this.state.formData)
         this.props.next(states.SECURITY, this.state.formData);
     };
 

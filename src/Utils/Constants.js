@@ -20,6 +20,32 @@ const constants = {
             value: 'dr',
             label: 'Dr',
         }],
+        departments: [
+        {
+            value: 'Sales Support',
+            label: 'Sales Support',
+        },
+        {
+            value: 'Customer Support',
+            label: 'Customer Support',
+        },
+        {
+            value: 'Technical Support',
+            label: 'Technical Support',
+        }],
+       subject: [
+       {
+           value: 'Query',
+           label: 'Query',
+       },
+       {
+           value: 'Feedback',
+           label: 'Feedback',
+       },
+       {
+           value: 'Complaint',
+           label: 'Complaint',
+       }],
     menuItems:
         {
             links: [{

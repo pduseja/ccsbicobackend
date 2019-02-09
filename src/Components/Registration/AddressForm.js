@@ -37,10 +37,9 @@ export class AddressForm extends Component {
     }
 
     componentDidMount() {
-
-        let data = this.props.data.AddressDetailsList ? this.props.data : this.props.details;
+        let data = this.props.data.AddressDetailsList;
         if(data) {
-            let addressType = data.AddressDetailsList.filter(address => address.type === this.state.formData.type);
+            let addressType = this.props.data.AddressDetailsList.filter(address => address.type === this.state.formData.type);
             var address = Object.assign({},addressType[0])
             if(addressType){
                     let mandatoryFields = [

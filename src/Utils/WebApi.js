@@ -200,7 +200,21 @@ let WebApi = {
                 done(request.response);
             };
             request.send(formData);
-        },
+    },
+    addNewServiceRequest(data, file, done){
+
+            let request = new XMLHttpRequest();
+            request.open('POST', 'http://localhost:9090/CCSBI/api/iMessageAdd');
+            let formData = new FormData();
+            formData.append('iMessage', JSON.stringify(data));
+            request.onload = function () {
+                done(null, request.response);
+            };
+            request.onerror = function () {
+                done(request.response);
+            };
+            request.send(formData);
+    }
 
 
 };
