@@ -2,17 +2,17 @@ package com.ccsbi.co.usermanagement.email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailServiceImpl implements IEmailService {
 	
-	@Autowired
-	private JavaMailSender javaMailSender;
 	
 	@Autowired
 	private MailConfigContactUs mailConfigContactUs;
+	
+	/*@Autowired
+	private MailConfigNoReply mailConfigNoReply;*/
 
 		
 	@Override
@@ -21,9 +21,8 @@ public class EmailServiceImpl implements IEmailService {
         mailMessage.setTo(to);
         mailMessage.setSubject(subject);
         mailMessage.setText(text);
-        mailMessage.setFrom("noreply@ccsbi.com");
-        
-        javaMailSender.send(mailMessage);
+        mailMessage.setFrom("noreply@ccsbi.com");        
+        mailConfigContactUs.getJavaMailSender().send(mailMessage);
 
 	}
 
@@ -35,7 +34,7 @@ public class EmailServiceImpl implements IEmailService {
         mailMessage.setSubject(subject);
         mailMessage.setText(text);
         mailMessage.setFrom("noreply@ccsbi.com");
-        javaMailSender.send(mailMessage);		
+        mailConfigContactUs.getJavaMailSender().send(mailMessage);
 	}
 
 	@Override

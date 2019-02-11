@@ -8,15 +8,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
-public class MailConfigContactUs {
+public class MailConfigNoReply {
+	
+	String usernameContactUs = "noreply@ccsbi.com";
 
-	String usernameContactUs = "contactus@ccsbi.com";
-
-	String passwordcontactUs = "contactus123";
-
-/*	String usernameContactUs = "dusejapt@rediffmail.com";
-
-	String passwordcontactUs = "$@kshi!12";*/
+	String passwordcontactUs = "donotreply123";
 
 	@Bean
 	public JavaMailSender getJavaMailSender() {
@@ -60,5 +56,6 @@ public class MailConfigContactUs {
 	 * 
 	 * emailSender.send(message);
 	 */
+
 
 }
