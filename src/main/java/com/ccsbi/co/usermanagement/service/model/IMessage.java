@@ -2,6 +2,12 @@ package com.ccsbi.co.usermanagement.service.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 @SuppressWarnings("serial")
 public class IMessage implements Serializable {
@@ -40,8 +46,6 @@ public class IMessage implements Serializable {
 	
 	private String wasSignedIn;
 	
-	private int followUpTicketId;
-	
 	private String responseStatus;
 	
 	private String messageStatus;
@@ -55,6 +59,22 @@ public class IMessage implements Serializable {
 	private String modBy;
 	
 	private Date modDate;
+
+	private List<IMessageFollowUp> iMessageFollowUpList;
+	
+	/**
+	 * @return the iMessageFollowUpList
+	 */
+	public List<IMessageFollowUp> getiMessageFollowUpList() {
+		return iMessageFollowUpList;
+	}
+
+	/**
+	 * @param iMessageFollowUpList the iMessageFollowUpList to set
+	 */
+	public void setiMessageFollowUpList(List<IMessageFollowUp> iMessageFollowUpList) {
+		this.iMessageFollowUpList = iMessageFollowUpList;
+	}
 
 	/**
 	 * @return the iMessageId
@@ -293,21 +313,7 @@ public class IMessage implements Serializable {
 	public void setWasSignedIn(String wasSignedIn) {
 		this.wasSignedIn = wasSignedIn;
 	}
-
-	/**
-	 * @return the followUpTicketId
-	 */
-	public int getFollowUpTicketId() {
-		return followUpTicketId;
-	}
-
-	/**
-	 * @param followUpTicketId the followUpTicketId to set
-	 */
-	public void setFollowUpTicketId(int followUpTicketId) {
-		this.followUpTicketId = followUpTicketId;
-	}
-
+	
 	/**
 	 * @return the responseStatus
 	 */
@@ -405,6 +411,35 @@ public class IMessage implements Serializable {
 	public void setModDate(Date modDate) {
 		this.modDate = modDate;
 	}
-	
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.iMessageId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj == this) {
+			return true;
+		}
+
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+
+		IMessage rhs = (IMessage) obj;
+		return new EqualsBuilder().append(this.iMessageId, rhs.iMessageId).isEquals();
+	}
+
 
 }
