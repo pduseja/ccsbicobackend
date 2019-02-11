@@ -80,14 +80,16 @@ public class ManageUserApi {
 		int updatePhoto = 0;
 		UsersPhoto userPhoto = new UsersPhoto();
 		JSONObject jsonObj = new JSONObject(users);
+		System.out.println("JSON Object in API class: "+jsonObj);
 
 		ObjectMapper mapper = new ObjectMapper();
 		Users user = mapper.readValue(jsonObj.toString(), Users.class);
-
+		System.out.println("Value of userName "+user.getUserName() + " & photo "+photo);
+		photo = (MultipartFile) user.getUsersPhoto().getPhoto();
 		// Content of Photo from input
 		if (photo != null) {
 			String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
-
+			System.out.println("File name "+fileName);
 			try {
 				// Check if the file's name contains invalid characters
 				if (fileName.contains("..")) {
@@ -103,11 +105,14 @@ public class ManageUserApi {
 			if (user.getPhotoId() > 0) {
 				userPhoto = user.getUsersPhoto();
 				userPhoto.setPhotoId(user.getPhotoId());
+				System.out.println("Existing photo id "+user.getPhotoId());
 				updatePhoto = usersPhotoService.update(convertPModel(userPhoto), photo);
 			} else {
+				System.out.println("New Photo ");
 				userPhoto = convertPClient(usersPhotoService.save(convertPModel(userPhoto), photo));
 				if (userPhoto.getPhotoId() > 0) {
 					user.setPhotoId(userPhoto.getPhotoId());
+					System.out.println("New photo id "+user.getPhotoId());
 					updatePhoto = usersService.updatePhoto(convertUsers(user));
 					user.setUsersPhoto(userPhoto);
 				} else {

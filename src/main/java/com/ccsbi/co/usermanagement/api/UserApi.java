@@ -120,19 +120,22 @@ public class UserApi {
 			@ApiResponse(code = 404, message = "Page not found") })
 	@PostMapping(path = "/registration", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
-					MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+					MediaType.APPLICATION_XHTML_XML_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
 	public String registration(@ApiParam(value = "user", required = true) @Valid String users,
 			@RequestParam(value = "photo", required = false) MultipartFile photo) throws Exception {
 
 		String userName = null;
 		UsersPhoto userPhoto = new UsersPhoto();
 		JSONObject jsonObj = new JSONObject(users);
+		
+		System.out.println("JSON Object in UserAPI class: "+jsonObj);
 
 		ObjectMapper mapper = new ObjectMapper();
 		Users user = mapper.readValue(jsonObj.toString(), Users.class);
 
 		// Content of Photo from input
-		if (photo != null) {
+		if (photo!=null) {
+			System.out.println("File Type "+user.getUsersPhoto().getFileType());
 			String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
 
 			try {
