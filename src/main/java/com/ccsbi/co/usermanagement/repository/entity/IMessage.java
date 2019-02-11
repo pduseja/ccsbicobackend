@@ -2,11 +2,15 @@ package com.ccsbi.co.usermanagement.repository.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @SuppressWarnings("serial")
 @Entity(name = "imessage")
@@ -58,15 +62,12 @@ public class IMessage implements Serializable {
 
 	@Column(name = "fileattached")
 	private String fileAttached;
-	
+
 	@Column(name = "filecontent")
 	private byte[] fileContent;
 
 	@Column(name = "wassignedin")
 	private String wasSignedIn;
-
-	@Column(name = "followupticketid")
-	private int followUpTicketId;
 
 	@Column(name = "responsestatus")
 	private String responseStatus;
@@ -97,7 +98,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param iMessageId the iMessageId to set
+	 * @param iMessageId
+	 *            the iMessageId to set
 	 */
 	public void setiMessageId(int iMessageId) {
 		this.iMessageId = iMessageId;
@@ -111,7 +113,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param userName the userName to set
+	 * @param userName
+	 *            the userName to set
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
@@ -125,7 +128,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param title the title to set
+	 * @param title
+	 *            the title to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -139,7 +143,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param firstName the firstName to set
+	 * @param firstName
+	 *            the firstName to set
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
@@ -153,7 +158,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param lastName the lastName to set
+	 * @param lastName
+	 *            the lastName to set
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
@@ -167,7 +173,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param department the department to set
+	 * @param department
+	 *            the department to set
 	 */
 	public void setDepartment(String department) {
 		this.department = department;
@@ -181,7 +188,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param isExistingCustomer the isExistingCustomer to set
+	 * @param isExistingCustomer
+	 *            the isExistingCustomer to set
 	 */
 	public void setIsExistingCustomer(String isExistingCustomer) {
 		this.isExistingCustomer = isExistingCustomer;
@@ -195,7 +203,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param serviceRef the serviceRef to set
+	 * @param serviceRef
+	 *            the serviceRef to set
 	 */
 	public void setServiceRef(String serviceRef) {
 		this.serviceRef = serviceRef;
@@ -209,7 +218,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param methodOfContact the methodOfContact to set
+	 * @param methodOfContact
+	 *            the methodOfContact to set
 	 */
 	public void setMethodOfContact(String methodOfContact) {
 		this.methodOfContact = methodOfContact;
@@ -223,7 +233,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param landlinePhone the landlinePhone to set
+	 * @param landlinePhone
+	 *            the landlinePhone to set
 	 */
 	public void setLandlinePhone(int landlinePhone) {
 		this.landlinePhone = landlinePhone;
@@ -237,7 +248,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param mobile the mobile to set
+	 * @param mobile
+	 *            the mobile to set
 	 */
 	public void setMobile(int mobile) {
 		this.mobile = mobile;
@@ -251,7 +263,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param email the email to set
+	 * @param email
+	 *            the email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -265,7 +278,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param subject the subject to set
+	 * @param subject
+	 *            the subject to set
 	 */
 	public void setSubject(String subject) {
 		this.subject = subject;
@@ -279,7 +293,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param message the message to set
+	 * @param message
+	 *            the message to set
 	 */
 	public void setMessage(String message) {
 		this.message = message;
@@ -293,7 +308,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param fileAttached the fileAttached to set
+	 * @param fileAttached
+	 *            the fileAttached to set
 	 */
 	public void setFileAttached(String fileAttached) {
 		this.fileAttached = fileAttached;
@@ -307,7 +323,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param fileContent the fileContent to set
+	 * @param fileContent
+	 *            the fileContent to set
 	 */
 	public void setFileContent(byte[] fileContent) {
 		this.fileContent = fileContent;
@@ -321,24 +338,11 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param wasSignedIn the wasSignedIn to set
+	 * @param wasSignedIn
+	 *            the wasSignedIn to set
 	 */
 	public void setWasSignedIn(String wasSignedIn) {
 		this.wasSignedIn = wasSignedIn;
-	}
-
-	/**
-	 * @return the followUpTicketId
-	 */
-	public int getFollowUpTicketId() {
-		return followUpTicketId;
-	}
-
-	/**
-	 * @param followUpTicketId the followUpTicketId to set
-	 */
-	public void setFollowUpTicketId(int followUpTicketId) {
-		this.followUpTicketId = followUpTicketId;
 	}
 
 	/**
@@ -349,7 +353,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param responseStatus the responseStatus to set
+	 * @param responseStatus
+	 *            the responseStatus to set
 	 */
 	public void setResponseStatus(String responseStatus) {
 		this.responseStatus = responseStatus;
@@ -363,7 +368,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param messageStatus the messageStatus to set
+	 * @param messageStatus
+	 *            the messageStatus to set
 	 */
 	public void setMessageStatus(String messageStatus) {
 		this.messageStatus = messageStatus;
@@ -377,7 +383,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param readStatus the readStatus to set
+	 * @param readStatus
+	 *            the readStatus to set
 	 */
 	public void setReadStatus(String readStatus) {
 		this.readStatus = readStatus;
@@ -391,7 +398,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param crBy the crBy to set
+	 * @param crBy
+	 *            the crBy to set
 	 */
 	public void setCrBy(String crBy) {
 		this.crBy = crBy;
@@ -405,7 +413,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param sysDate the sysDate to set
+	 * @param sysDate
+	 *            the sysDate to set
 	 */
 	public void setSysDate(Date sysDate) {
 		this.sysDate = sysDate;
@@ -419,7 +428,8 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param modBy the modBy to set
+	 * @param modBy
+	 *            the modBy to set
 	 */
 	public void setModBy(String modBy) {
 		this.modBy = modBy;
@@ -433,10 +443,38 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @param modDate the modDate to set
+	 * @param modDate
+	 *            the modDate to set
 	 */
 	public void setModDate(Date modDate) {
 		this.modDate = modDate;
 	}
 
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.iMessageId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj == this) {
+			return true;
+		}
+
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+
+		IMessage rhs = (IMessage) obj;
+		return new EqualsBuilder().append(this.iMessageId, rhs.iMessageId).isEquals();
+	}
 }
