@@ -1,5 +1,6 @@
 package com.ccsbi.co.usermanagement.client.entity;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,8 +23,22 @@ public class UsersPhoto implements Serializable {
 	@ApiModelProperty(name = "photo", value = "photo")
 	@JsonProperty("photo")
 	@JacksonXmlProperty(localName = "photo")
-	private String photo;
+	private File photo;
 	
+	/**
+	 * @return the photo
+	 */
+	public File getPhoto() {
+		return photo;
+	}
+
+	/**
+	 * @param photo the photo to set
+	 */
+	public void setPhoto(File photo) {
+		this.photo = photo;
+	}
+
 	@ApiModelProperty(name = "photoContent", value = "photoContent")
 	@JsonProperty("photoContent")
 	@JacksonXmlProperty(localName = "photoContent")
@@ -56,20 +71,6 @@ public class UsersPhoto implements Serializable {
 	 */
 	public void setPhotoContent(byte[] photoContent) {
 		this.photoContent = photoContent;
-	}
-
-	/**
-	 * @return the photo
-	 */
-	public String getPhoto() {
-		return photo;
-	}
-
-	/**
-	 * @param photo the photo to set
-	 */
-	public void setPhoto(String photo) {
-		this.photo = photo;
 	}
 
 
