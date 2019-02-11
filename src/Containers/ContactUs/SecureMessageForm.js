@@ -3,7 +3,7 @@ import constants from '../../Utils/Constants';
 import connect from "react-redux/es/connect/connect";
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
-
+import '../../Styles/MessageForm.css'
 export class SecureMessageForm extends React.Component{
     constructor(props){
         super(props)
@@ -99,8 +99,7 @@ export class SecureMessageForm extends React.Component{
     };
 
     submit = () =>{
-        let file = "";
-        WebApi.addNewServiceRequest(this.state.formData,file, (err, response)=>{
+        WebApi.addNewServiceRequest(this.state.formData,this.state.filePreviewUrl, (err, response)=>{
 
             if(err){ throw err}
             this.props.history.push({pathname:"/UserCreated",data: response})
@@ -205,9 +204,30 @@ export class SecureMessageForm extends React.Component{
 
         };
 
+        handleImageChange = (e) => {
+
+                e.preventDefault();
+
+                let reader = new FileReader();
+                let file = e.target.files[0];
+                    reader.onloadend = () => {
+
+                    this.setState({
+                        file: file,
+                        filePreviewUrl: reader.result
+                    });
+                };
+                reader.readAsDataURL(file)
+            };
+
     render(){
         let {title, firstName, lastName, userName, department, subject, message, mobile, email} = this.state.formErrors;
-
+        let {filePreviewUrl} = this.state;
+        let $filePreview = null;
+        if (filePreviewUrl) {
+            $filePreview = (<div className="file-container"><i class="fa fa-file" aria-hidden="true"></i>
+<p>{this.state.file.name}</p></div>);
+        }
         return(<div className="form-container">
         <div className="wrapper">
                     <div className="registration-form">
@@ -355,6 +375,19 @@ export class SecureMessageForm extends React.Component{
                             <p className="error-message">{message}</p>
                             </div>
                         </div>
+                        <div className="col-sm-3 form-group">
+                                                <label>Upload file
+                                                    <div id="upload_button">
+                                                        <label>
+                                                            <input type="file" id="upload-photo" onChange={this.handleImageChange}/>
+                                                            <i className="fa fa-upload"/>
+                                                        </label>
+
+                                                    </div>
+                                                </label>
+
+                                                {$filePreview}
+                                            </div>
                         <div className="container-login-form-btn">
                             <button className="login-form-btn" onClick={() => this.submit()}
                                     disabled={!this.state.formValid}>Next

@@ -1,0 +1,14 @@
+.file-container{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+.file-container i{
+    font-size: 36px;
+    color: #ccc;
+}
+.file-container p{
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+}

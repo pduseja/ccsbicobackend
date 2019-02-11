@@ -207,6 +207,7 @@ let WebApi = {
             request.open('POST', 'http://localhost:9090/CCSBI/api/iMessageAdd');
             let formData = new FormData();
             formData.append('iMessage', JSON.stringify(data));
+            formData.append('fileAttached', file || {})
             request.onload = function () {
                 done(null, request.response);
             };
