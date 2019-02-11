@@ -34,8 +34,6 @@ spring:
     url: jdbc:mysql://localhost:3306/ccsbitrans?useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
         
-server:
-  port: 8080
   
 management:
   server:
@@ -60,4 +58,8 @@ springfox:
 contactus:
   username: contactus@ccsbi.com
   password: contactus123
-      
+
+---
+app:
+  email: NO
+  sms: NO      
