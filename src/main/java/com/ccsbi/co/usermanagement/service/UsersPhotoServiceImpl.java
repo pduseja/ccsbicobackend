@@ -39,7 +39,7 @@ public class UsersPhotoServiceImpl implements IUsersPhotoService {
 
 		// Normalize file name
 		String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
-
+		System.out.println("File name "+fileName);
 		byte[] bytes = photo.getBytes();
 		Path path = Paths.get(UPLOAD_DIR+fileName);
 		Files.write(path, bytes);
@@ -56,12 +56,16 @@ public class UsersPhotoServiceImpl implements IUsersPhotoService {
 
 		usersPhoto.setPhoto(UPLOAD_DIR+fileName);
 		usersPhoto.setFileType(fileName);
-		return convertUsersPhoto(usersPhotoRepo.save(convertUsersP(usersPhoto)));
+		System.out.println("New Photo about to Save");
+		com.ccsbi.co.usermanagement.repository.entity.UsersPhoto userPhotoEnt =usersPhotoRepo.save(convertUsersP(usersPhoto));
+		System.out.println("New Photo : "+userPhotoEnt.getPhotoId());
+		return convertUsersPhoto(userPhotoEnt);
 	}
 
 	@Override
 	public int update(UsersPhoto usersPhoto, MultipartFile userPhoto) throws Exception {
 		// Make sure directory exists!
+		
 		int update = 0;
 		File uploadDir = new File(UPLOAD_DIR);
 		uploadDir.mkdirs();

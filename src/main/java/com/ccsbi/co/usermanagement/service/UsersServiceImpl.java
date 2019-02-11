@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccsbi.co.usermanagement.email.IEmailService;
-import com.ccsbi.co.usermanagement.repository.AddressDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.AddressDetails;
 import com.ccsbi.co.usermanagement.service.model.Users;
 import com.ccsbi.co.usermanagement.service.model.UsersDetails;
+import com.ccsbi.co.usermanagement.util.Appconfig;
 import com.ccsbi.co.usermanagement.util.ReallyStrongSecuredPassword;
 
 @Transactional
@@ -43,13 +43,15 @@ public class UsersServiceImpl implements IUsersService {
 
 	@Autowired
 	ReallyStrongSecuredPassword reallyStrongSecuredPassword;
-	
+
 	@Autowired
 	IEmailService iEmailService;
 
 	@Autowired
 	IAddressDetailsService addressDetailsServiceImpl;
 
+	@Autowired
+	Appconfig appConfig;
 
 	@Override
 	@Transactional
@@ -93,20 +95,27 @@ public class UsersServiceImpl implements IUsersService {
 			}
 			// Registration Email
 			AddressDetails addressDetails = addressDetailsServiceImpl.getAddressDetails(users.getUserId());
-			String to = addressDetails.getEmail();
+
+			String to = addressDetails.getEmail()!= null ?addressDetails.getEmail() : "";
 			String subject = "Registration confirmation with CCSBI";
-			String text = "Your are now registered with our site!\n"
-					+ "Your username is '" +users.getUserName() +"' We will inform you once your account is verified and activated!!";
+			String text = "Your are now registered with our site!\n" + "Your username is '" + users.getUserName()
+					+ "' We will inform you once your account is verified and activated!!";
 			if (!StringUtils.isEmpty(to)) {
-				iEmailService.sendRegistrationMail(to,subject, text);
+				if (appConfig.getEmail().equalsIgnoreCase("YES")) {
+					iEmailService.sendRegistrationMail(to, subject, text);
+				}
 			} else {
 				String mobile = addressDetails.getMobile();
-				// Add logic to send SMS
+				if (appConfig.getSms().equalsIgnoreCase("YES")) {
+					
+					// Add logic to send SMS
+				}
 			}
+		
 
-		}
+	}
 
-		return users;
+	return users;
 
 	}
 
@@ -127,28 +136,28 @@ public class UsersServiceImpl implements IUsersService {
 				addressDetails = populateAddressDetails(addressDetails, addressDetails1);
 				addressDetails.setId(addressDetails1.getId());
 				updateAddress = addressDetailsService.update(addressDetails, userid);
-				System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
+				System.out.println("Updated: " + updateAddress + " id= " + addressDetails.getId());
 			}
 		} else {
 			while (itr.hasNext()) {
 				AddressDetails addressDetails1 = (AddressDetails) itr.next();
 				AddressDetails addressDetails = new AddressDetails();
-				if(addressDetails1.getId()>0) {
-				addressDetails = populateAddressDetails(addressDetails, addressDetails1);
-				addressDetails.setId(addressDetails1.getId());
-				updateAddress = addressDetailsService.update(addressDetails, userid);
-				System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
+				if (addressDetails1.getId() > 0) {
+					addressDetails = populateAddressDetails(addressDetails, addressDetails1);
+					addressDetails.setId(addressDetails1.getId());
+					updateAddress = addressDetailsService.update(addressDetails, userid);
+					System.out.println("Updated: " + updateAddress + " id= " + addressDetails.getId());
 				} else {
 					addressDetails = populateAddressDetails(addressDetails, addressDetails1);
 					addressDetails.setId(addressDetails1.getId());
 					user.setUserId(userid);
 					addressDetails.setUsers(user);
 					addressDetailsService.save(addressDetails);
-					System.out.println("Updated: "+updateAddress+ " id= "+addressDetails.getId());
-					
+					System.out.println("Updated: " + updateAddress + " id= " + addressDetails.getId());
+
 				}
 			}
-			
+
 		}
 
 		if (updateAddress > 0) {
@@ -171,18 +180,17 @@ public class UsersServiceImpl implements IUsersService {
 
 		if (!StringUtils.isEmpty(userDetails.getMemorableWord())) {
 
-			
 			String encryptMemorableWord = reallyStrongSecuredPassword.encrypt(userDetails.getMemorableWord());
 			String encryptSecurityAnswer1 = reallyStrongSecuredPassword.encrypt(userDetails.getSecurityAnswer1());
 			String encryptSecurityAnswer2 = reallyStrongSecuredPassword.encrypt(userDetails.getSecurityAnswer2());
-			
+
 			userDetails.setMemorableWord(encryptMemorableWord);
 			userDetails.setSecurityAnswer1(encryptSecurityAnswer1);
-			userDetails.setSecurityAnswer2(encryptSecurityAnswer2);			
+			userDetails.setSecurityAnswer2(encryptSecurityAnswer2);
 			update = usersDetailsServiceImpl.updateUsersDetails(userDetails, userid);
-			UsersDetails usersD = new UsersDetails();			
+			UsersDetails usersD = new UsersDetails();
 		}
-		if(update>0) {
+		if (update > 0) {
 			userDetails = usersDetailsServiceImpl.getUsersDetails(userName);
 			user.setUserId(userid);
 			user.setUsersDetails(userDetails);
@@ -225,9 +233,10 @@ public class UsersServiceImpl implements IUsersService {
 		int userid = usersRepo.getUserId(userName);
 
 		update = usersRepo.updatePhoto(userid, user.getPhotoId());
-		
+
 		return update;
 	}
+
 	private AddressDetails populateAddressDetails(AddressDetails addressDetails, AddressDetails addressDetails1) {
 
 		addressDetails.setActive(addressDetails1.getActive());
@@ -259,7 +268,5 @@ public class UsersServiceImpl implements IUsersService {
 
 		return dozerMapper.map(users, com.ccsbi.co.usermanagement.repository.entity.Users.class);
 	}
-
-
 
 }

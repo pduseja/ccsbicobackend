@@ -16,6 +16,7 @@ import com.ccsbi.co.usermanagement.repository.UsersPhotoRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.AddressDetails;
 import com.ccsbi.co.usermanagement.service.model.Users;
+import com.ccsbi.co.usermanagement.util.Appconfig;
 
 @Transactional
 @Service
@@ -29,16 +30,19 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 
 	@Autowired
 	UsersPhotoRepo usersPhotoRepo;
-	
+
 	@Autowired
 	IEmailService iEmailService;
 
 	@Autowired
 	IAddressDetailsService addressDetailsServiceImpl;
-	
+
+	@Autowired
+	Appconfig appConfig;
+
 	@Autowired
 	private Mapper dozerMapper;
-		
+
 	@Override
 	public List<Users> getPendingUsersList() {
 		List<Users> listPend = new ArrayList<>();
@@ -48,7 +52,7 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 
 		if (listEntPend.size() > 0) {
 			listPend = convert(listEntPend);
-			
+
 		}
 
 		return listPend;
@@ -100,19 +104,26 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 		String active = users.getActive();
 		int profileId = users.getProfileId();
 		if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(active)) {
-			update = usersRepo.updateUsersStatus(userName, active,profileId);
+			update = usersRepo.updateUsersStatus(userName, active, profileId);
 			usersM = convertUsers(usersRepo.loginUser(userName));
+
 			// Account activation email
+
 			AddressDetails addressDetails = addressDetailsServiceImpl.getAddressDetails(usersM.getUserId());
-			String to = addressDetails.getEmail();
+			String to = addressDetails.getEmail()!= null ?addressDetails.getEmail() : "";
 			String subject = "Activation of your Account with CCSBI";
 			String text = "Your registration record has been verified!!\n"
 					+ "Your account is now active on our site, please start using it";
 			if (!StringUtils.isEmpty(to)) {
-				iEmailService.sendMailRegistrationActivation(to,subject, text);
+				if (appConfig.getEmail().equalsIgnoreCase("YES")) {
+					iEmailService.sendMailRegistrationActivation(to, subject, text);
+				}
 			} else {
 				String mobile = addressDetails.getMobile();
-				// Add logic to send SMS
+				if (appConfig.getSms().equalsIgnoreCase("YES")) {
+
+					// Add logic to send SMS
+				}
 			}
 
 		} else {
@@ -123,7 +134,7 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 	}
 
 	private Users convertUsers(com.ccsbi.co.usermanagement.repository.entity.Users loginUser) {
-		
+
 		return dozerMapper.map(loginUser, Users.class);
 	}
 
