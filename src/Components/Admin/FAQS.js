@@ -53,7 +53,6 @@ export default class FAQS extends Component{
             "answer": this.state.answer,
             "status": this.state.active
         }
-        console.log(data)
          if(this.state.id)
             WebApi.updateFaqs(data).then(() => {
                 this.getFaqs();
@@ -79,7 +78,6 @@ export default class FAQS extends Component{
     }
 
     onChange = (value,type) =>{
-        console.log(value,type)
         this.setState({...this.state,
             [type]: value,
             eraseQuestion: false,

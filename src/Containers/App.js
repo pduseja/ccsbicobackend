@@ -20,7 +20,9 @@ import Footer from "../Components/Footer";
 import EditRole from "../Components/Admin/EditRole";
 import AdminDashboard from "../Containers/Admin/AdminDashboard";
 import ContactUs from "../Containers/ContactUs/ContactUs";
-import SecureMessageForm from "../Containers/ContactUs/SecureMessageForm"
+import SecureMessageForm from "../Containers/ContactUs/SecureMessageForm";
+import FollowUpMessageForm from "../Containers/ContactUs/FollowUpMessageForm";
+import SecureMessages from "../Components/SecureMessages"
 const store = createStore(Reducers);
 
 class App extends Component {
@@ -71,6 +73,8 @@ class App extends Component {
                     <Route exact path="/MyDashboard" component={UnderConstruction}/>
                     <Route exact path="/AdminDashboard" component={AdminDashboard}/>
                     <Route exact path="/EditRole" component={EditRole}/>
+                    <Route exact path="/SecureMessages" component={SecureMessages} />
+                    <Route exact path="/FollowUpMessageForm" component={FollowUpMessageForm} />
 
                     <Route path="/" component={Footer} />
                 </div>
