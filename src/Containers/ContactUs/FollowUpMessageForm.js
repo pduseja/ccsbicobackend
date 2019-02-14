@@ -75,7 +75,7 @@ export class SecureMessageForm extends React.Component{
         WebApi.addFollowUpMessage(this.state.formData,this.state.filePreviewUrl, (err, response)=>{
 
             if(err){ throw err}
-            this.props.history.push({pathname:"/UserCreated",data: response})
+            this.props.history.push({pathname:"/UserMessage",data: response})
         })
     }
 
@@ -248,7 +248,7 @@ export class SecureMessageForm extends React.Component{
                                             </div>
                         <div className="container-login-form-btn">
                             <button className="login-form-btn" onClick={() => this.submit()}
-                                    disabled={!this.state.formValid}>Next
+                                    disabled={!this.state.formValid}>Submit
                             </button>
                         </div>
         			</div>

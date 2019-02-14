@@ -128,7 +128,8 @@ export class Header extends Component {
 
     hideMenu = () =>{
         this.setState({
-            isRightOpen: false
+            isRightOpen: false,
+            isOpen: false
         });
     }
 
@@ -191,11 +192,11 @@ export class Header extends Component {
                             </li>
                             <li className="nav-item"><Link to="/" className="nav-link">About us</Link>
                                 <ul>
-                                    <li><Link to="/AboutUs">About us</Link></li>
-                                    <li><Link to="/WhatWeDo">What we do</Link></li>
-                                    <li><Link to="/Team">Team</Link></li>
-                                    <li><Link to="/Pricing">Pricing</Link></li>
-                                    <li><Link to="/FAQ">FAQ's</Link></li>
+                                    <li onClick={this.hideMenu}><Link to="/AboutUs">About us</Link></li>
+                                    <li onClick={this.hideMenu}><Link to="/WhatWeDo">What we do</Link></li>
+                                    <li onClick={this.hideMenu}><Link to="/Team">Team</Link></li>
+                                    <li onClick={this.hideMenu}><Link to="/Pricing">Pricing</Link></li>
+                                    <li onClick={this.hideMenu}><Link to="/FAQ">FAQ's</Link></li>
                                 </ul>
                             </li>
                             <li className="nav-item"><Link to="/" className="nav-link">Services</Link>
@@ -242,7 +243,7 @@ export class Header extends Component {
                     </div>
                 </nav>
 
-                <MenuLinks menuStatus={menuStatus} login={this.login} logout={this.logout}/>
+                <MenuLinks menuStatus={menuStatus} hideMenu={this.hideMenu} login={this.login} logout={this.logout}/>
                 <UserOptions rightMenuStatus={rightMenuStatus} hideMenu={this.hideMenu}/>
             </div>
         )

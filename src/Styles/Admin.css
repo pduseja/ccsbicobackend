@@ -1,7 +1,9 @@
-
+.admin-menu{
+    width: 15%;
+}
 .admin-menu-content{
     padding: 0 15px;
-    width:70%
+    width:85%
 }
 
 .ReactTable button{

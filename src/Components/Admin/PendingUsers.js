@@ -38,14 +38,20 @@ export class PendingUsers extends Component{
         })
     }
 
+    convertToDate = (systemDate) =>{
+        var date = new Date(systemDate);
+        return date.toLocaleDateString()
+    }
+
     render(){
        const columns = [{
-         Header: 'UserId',
-         accessor: 'userId'
+         Header: 'Username',
+         accessor: 'userName'
        },
        {
          Header: 'Name',
-         accessor: 'userName'
+         Cell: props => <span style={{textTransform: 'capitalize'}}>{props.original.firstName+" "+props.original.lastName}</span>
+
        },
        {
          Header: 'Gender',
@@ -53,7 +59,7 @@ export class PendingUsers extends Component{
       },
       {
          Header: 'Date of Birth',
-         accessor: 'dateofbirth'
+         Cell: props => <span>{this.convertToDate(props.original.dateofbirth)}</span>
       },
       {
          Header: 'Nationality',

@@ -47,13 +47,13 @@ export class MenuLinks extends Component {
 
     render() {
         let { user } = this.props;
-        let links = constants.menuItems.links.map((link, i) => <li ref={i + 1} key={i}>
+        let links = constants.menuItems.links.map((link, i) => <li ref={i + 1} key={i} onClick={!link.submenu && this.props.hideMenu}>
                 <p onClick={() => this.toggle(link.name)} >
                     {link.link ? <Link to={link.link}>{link.text}</Link> : <span>{link.text}</span>}
                     {link.submenu &&
                     <i className={"icon " + (this.state.active[link.name] ? 'fas fa-chevron-up' : 'fas fa-chevron-down')} />}</p>
                 {link.submenu && this.state.active[link.name] && <ul className="sub-menu">
-                        {link.submenu.map(item => <li key={item.text}><Link to={item.link}>{item.text}</Link></li>)}</ul>}
+                        {link.submenu.map(item => <li key={item.text} onClick={this.props.hideMenu}><Link to={item.link}>{item.text}</Link></li>)}</ul>}
 
         </li>);
 

@@ -14,6 +14,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Reducers from "../Reducers/Reducers";
 import UserCreated from "../Components/UserCreated";
+import UserMessage from "../Components/UserMessage";
 import Profile from "../Containers/Profile/Profile";
 import UnderConstruction from "../Components/UnderConstruction";
 import Footer from "../Components/Footer";
@@ -40,6 +41,7 @@ class App extends Component {
                     <Route exact path="/Security" component={Security}/>
                     <Route exact path="/forgotPassword" component={ForgotPassword}/>
                     <Route exact path="/UserCreated" component={UserCreated} />
+                    <Route exact path="/UserMessage" component={UserMessage} />
                     <Route exact path="/ImportantLinks" component={UnderConstruction} />
                     <Route exact path="/PrivacyPolicy" component={UnderConstruction} />
                     <Route exact path="/TermsOfUse" component={UnderConstruction} />

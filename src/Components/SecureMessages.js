@@ -13,7 +13,7 @@ export class SecureMessages extends React.Component{
     }
 
     componentDidMount(){
-        WebApi.getSecureMessageByUserName("RC100038").then(response => response.json()).then(response => {
+        WebApi.getSecureMessageByUserName(this.props.details.userName).then(response => response.json()).then(response => {
             this.setState({
                 messages: response
             })
@@ -25,7 +25,13 @@ export class SecureMessages extends React.Component{
 
     }
 
+    convertToDate = (systemDate) =>{
+        var date = new Date(systemDate);
+        return date.toLocaleDateString()
+    }
+
     render(){
+
         const columns = [{
                  Header: 'Id',
                  accessor: 'iMessageId'
@@ -44,7 +50,7 @@ export class SecureMessages extends React.Component{
              },
              {
                 Header: 'Creation date',
-                accessor: 'sysDate'
+                Cell: props => <span>{this.convertToDate(props.original.sysDate)}</span>
               },
               {
                 Header: 'Message status',

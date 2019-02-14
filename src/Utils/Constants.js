@@ -158,7 +158,7 @@ const constants = {
             "7": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "ManageServicesAndProduct", "MyUsageAndBills", "SecureMessages","WebChatHistory", "MyDocument", "CommunicationReport", "FinancialReport", "OtherReports"],
             "8": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "ManageServicesAndProduct", "MyUsageAndBills", "SecureMessages","WebChatHistory", "MyDocument", "CommunicationReport", "FinancialReport", "OtherReports"],
             "9": ["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "ManageServicesAndProduct", "MyUsageAndBills", "SecureMessages","WebChatHistory", "MyDocument", "CommunicationReport", "FinancialReport", "OtherReports"],
-            "10":["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatistory", "MyDocument", "CommunicationReport", "FinancialReport", "AdminDashboard"]
+            "10":["Profile", "AccessUpdate", "MyDashboard", "CCSBIPay", "MyOrders", "MyUsageBills", "SecureMessages","WebChatHistory", "MyDocument", "CommunicationReport", "FinancialReport", "AdminDashboard"]
         },
         pageMapping:{
             "Profile": "My Profile",
