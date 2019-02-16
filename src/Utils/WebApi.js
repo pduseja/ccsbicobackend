@@ -238,6 +238,15 @@ let WebApi = {
                 done(request.response);
             };
             request.send(formData);
+    },
+    getDepartmentMessageByUserName(userName){
+        return fetch(`http://localhost:9090/CCSBI/api/iMessageList/${userName}`,{
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                "Content-Type": "application/json"
+            },
+        })
     }
 
 
