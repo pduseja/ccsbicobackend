@@ -112,10 +112,10 @@ public class IMessage implements Serializable {
 	@JacksonXmlProperty(localName = "responseStatus")
 	private String responseStatus;
 
-	@ApiModelProperty(name = "messageStatus", value = "messageStatus")
-	@JsonProperty("messageStatus")
-	@JacksonXmlProperty(localName = "messageStatus")
-	private String messageStatus;
+	@ApiModelProperty(name = "messageReply", value = "messageReply")
+	@JsonProperty("messageReply")
+	@JacksonXmlProperty(localName = "messageReply")
+	private String messageReply;
 
 	@ApiModelProperty(name = "readStatus", value = "readStatus")
 	@JsonProperty("readStatus")
@@ -433,18 +433,18 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @return the messageStatus
+	 * @return the messageReply
 	 */
-	public String getMessageStatus() {
-		return messageStatus;
+	public String getMessageReply() {
+		return messageReply;
 	}
 
 	/**
-	 * @param messageStatus
-	 *            the messageStatus to set
+	 * @param messageReply
+	 *            the messageReply to set
 	 */
-	public void setMessageStatus(String messageStatus) {
-		this.messageStatus = messageStatus;
+	public void setMessageReply(String messageReply) {
+		this.messageReply = messageReply;
 	}
 
 	/**
