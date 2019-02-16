@@ -14,4 +14,9 @@ public interface IContactUsService {
 	
 	public IMessage saveFollowUpIMessage(IMessage iMessage);
 	
+	public IMessage saveFollowUpIMessageSupportTeam(IMessage iMessage);
+	
+	public IMessage saveIMessageSupportTeam(IMessage iMessage);
+	
+	
 }

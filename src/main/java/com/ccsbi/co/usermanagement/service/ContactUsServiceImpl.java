@@ -1,6 +1,8 @@
 package com.ccsbi.co.usermanagement.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class ContactUsServiceImpl implements IContactUsService {
 
 	@Autowired
 	IMessageFollowUpRepo iMessageFollowUpRepo;
-	
+
 	@Autowired
 	Appconfig appConfig;
 
@@ -70,11 +72,8 @@ public class ContactUsServiceImpl implements IContactUsService {
 				String to = iMessageSave.getEmail() != null ? iMessageSave.getEmail() : "";
 				String subject = iMessageSave.getSubject();
 				String text = "Your message has been recorded with us and we will get back to you shortly\n"
-						+ "Please use ref # in subject for your future communications\n"
-						+ "\n"
-						+ "Cheers\n"
-						+ "Thanks & regards,\n"
-						+ "CCSBI Team";
+						+ "Please use ref # in subject for your future communications\n" + "\n" + "Cheers\n"
+						+ "Thanks & regards,\n" + "CCSBI Team";
 				if (!StringUtils.isEmpty(to)) {
 					// iMessage record creation email
 					if (appConfig.getEmail().equalsIgnoreCase("YES")) {
@@ -130,7 +129,7 @@ public class ContactUsServiceImpl implements IContactUsService {
 			Iterator<com.ccsbi.co.usermanagement.repository.entity.IMessage> itr = listMessageEnt.iterator();
 
 			while (itr.hasNext()) {
-				com.ccsbi.co.usermanagement.repository.entity.IMessage iMessageEnt =  itr.next();
+				com.ccsbi.co.usermanagement.repository.entity.IMessage iMessageEnt = itr.next();
 				IMessage iMessageModel = convert(iMessageEnt);
 
 				List<IMessageFollowUp> listIMessageFollowUp = iMessageFollowUpServiceImpl
@@ -138,7 +137,7 @@ public class ContactUsServiceImpl implements IContactUsService {
 
 				iMessageModel.setiMessageFollowUpList(listIMessageFollowUp);
 				listMessage.add(iMessageModel);
-				
+
 			}
 		}
 		return listMessage;
@@ -154,7 +153,7 @@ public class ContactUsServiceImpl implements IContactUsService {
 			Iterator<com.ccsbi.co.usermanagement.repository.entity.IMessage> itr = listMessageEnt.iterator();
 
 			while (itr.hasNext()) {
-				com.ccsbi.co.usermanagement.repository.entity.IMessage iMessageEnt =  itr.next();
+				com.ccsbi.co.usermanagement.repository.entity.IMessage iMessageEnt = itr.next();
 				IMessage iMessageModel = convert(iMessageEnt);
 
 				List<IMessageFollowUp> listIMessageFollowUp = iMessageFollowUpServiceImpl
@@ -173,33 +172,33 @@ public class ContactUsServiceImpl implements IContactUsService {
 		List<IMessageFollowUp> iMessageFollowUpList = iMessage.getiMessageFollowUpList();
 		if (!iMessageFollowUpList.isEmpty()) {
 			IMessageFollowUp iMessageFollowUp = iMessageFollowUpList.get(0);
-			
+
 			iMessageFollowUp.setiMessage(iMessage);
-			com.ccsbi.co.usermanagement.repository.entity.IMessageFollowUp iMessageFollowUpEnt = iMessageFollowUpRepo.save(convertIMessageFollowUp(iMessageFollowUp));
-			if(iMessageFollowUpEnt.getiMessageFollowUpId()>0) {
+			com.ccsbi.co.usermanagement.repository.entity.IMessageFollowUp iMessageFollowUpEnt = iMessageFollowUpRepo
+					.save(convertIMessageFollowUp(iMessageFollowUp));
+			if (iMessageFollowUpEnt.getiMessageFollowUpId() > 0) {
 				iMessageFollowUp = convertIMessageFollowupModel(iMessageFollowUpEnt);
 				iMessage.getiMessageFollowUpList().clear();
 				iMessageFollowUpList.clear();
 				iMessageFollowUpList.add(iMessageFollowUp);
 				iMessage.setiMessageFollowUpList(iMessageFollowUpList);
 				System.out.println("New FollowUp Message Added");
-				
+
 				int originalRefId = iMessage.getiMessageId();
 				int refId = iMessageFollowUpEnt.getiMessageFollowUpId();
 				String to = iMessage.getEmail() != null ? iMessage.getEmail() : "";
 				String subject = iMessage.getSubject();
 				String text = "Your message has been recorded with us and we will get back to you shortly\n"
-						+ "Please use ref # in subject for your future communications\n"
-						+ "\n"
-						+ "Cheers\n"
-						+ "Thanks & regards,\n"
-						+ "CCSBI Team";
+						+ "Please use ref # in subject for your future communications\n" + "\n" + "Cheers\n"
+						+ "Thanks & regards,\n" + "CCSBI Team";
 				if (!StringUtils.isEmpty(to)) {
 					// iMessage record creation email
 					if (appConfig.getEmail().equalsIgnoreCase("YES")) {
 						iEmailService.sendMailIMessage(to,
-								subject + " in context to your followup for your Original RefID: '"+originalRefId + "' A new Followup ID is generated ref #: '" + refId + "' for your Reference"
-										+ " Always use Original RefId for FollowUp", text);
+								subject + " in context to your followup for your Original RefID: '" + originalRefId
+										+ "' A new Followup ID is generated ref #: '" + refId + "' for your Reference"
+										+ " Always use Original RefId for FollowUp",
+								text);
 					}
 				} else {
 					int mobile = iMessage.getMobile();
@@ -209,7 +208,7 @@ public class ContactUsServiceImpl implements IContactUsService {
 					}
 
 				}
-				
+
 			} else {
 				new IMessage();
 			}
@@ -218,14 +217,102 @@ public class ContactUsServiceImpl implements IContactUsService {
 		return iMessage;
 	}
 
+	@Override
+	public IMessage saveFollowUpIMessageSupportTeam(IMessage iMessage) {
+		Date modDate = new Date(Calendar.getInstance().getTime().getTime());
+
+		List<IMessageFollowUp> iMessageFollowUpList = iMessage.getiMessageFollowUpList();
+		if (!iMessageFollowUpList.isEmpty()) {
+			IMessageFollowUp iMessageFollowUp = iMessageFollowUpList.get(0);
+
+			int iMessageFollowUpEnt = iMessageFollowUpRepo.updateiMessageFollowUp(iMessageFollowUp.getMessageReply(),
+					"Y", "Y", iMessageFollowUp.getModBy(), modDate,
+					iMessageFollowUp.getFileContent(), iMessageFollowUp.getiMessageFollowUpId());
+			if (iMessageFollowUpEnt > 0) {
+
+				System.out.println("Reply to FollowUp Message Recorded");
+
+				int originalRefId = iMessage.getiMessageId();
+				int refId = iMessageFollowUp.getiMessageFollowUpId();
+				String to = iMessage.getEmail() != null ? iMessage.getEmail() : "";
+				String subject = iMessage.getSubject();
+				String text = "In context to your query: " + iMessage.getSubject() + "Your Message: "
+						+ iMessage.getMessage() + "\n" + "Our Response is: " + iMessageFollowUp.getMessageReply() + "\n"
+						+ "\n" + "Cheers\n" + "Thanks & regards,\n" + "CCSBI Team";
+				if (!StringUtils.isEmpty(to)) {
+					// iMessage record creation email
+					if (appConfig.getEmail().equalsIgnoreCase("YES")) {
+						iEmailService.sendMailIMessage(to,
+								subject + " In Context to your followup for your Original Ref ID: " + originalRefId
+										+ " and Subsequent followupID " + iMessageFollowUp.getiMessageFollowUpId(),
+								text);
+					}
+				} else {
+					int mobile = iMessage.getMobile();
+					if (appConfig.getSms().equalsIgnoreCase("YES")) {
+
+						// Add logic to send SMS
+					}
+
+				}
+
+			} else {
+				new IMessage();
+			}
+		}
+		iMessage.setModDate(modDate);
+		return iMessage;
+
+	}
+
+	@Override
+	public IMessage saveIMessageSupportTeam(IMessage iMessage) {
+		Date modDate = new Date(Calendar.getInstance().getTime().getTime());
+		int iMessageUpdate = iMessageRepo.updateiMessage(iMessage.getMessageReply(), "Y", "Y", iMessage.getModBy(),
+				modDate, iMessage.getFileContent(), iMessage.getiMessageId());
+		
+		if (iMessageUpdate > 0) {
+
+			System.out.println("Reply to  Message Recorded");
+
+			int originalRefId = iMessage.getiMessageId();
+
+			String to = iMessage.getEmail() != null ? iMessage.getEmail() : "";
+			String subject = iMessage.getSubject();
+			String text = "In context to your query: " + iMessage.getSubject() + "Your Message: "
+					+ iMessage.getMessage() + "\n" + "Our Response is: " + iMessage.getMessageReply() + "\n" + "\n"
+					+ "Cheers\n" + "Thanks & regards,\n" + "CCSBI Team";
+			if (!StringUtils.isEmpty(to)) {
+				// iMessage record creation email
+				if (appConfig.getEmail().equalsIgnoreCase("YES")) {
+					iEmailService.sendMailIMessage(to,
+							subject + " In Context to your followup for your Original Ref ID: " + originalRefId, text);
+				}
+			} else {
+				int mobile = iMessage.getMobile();
+				if (appConfig.getSms().equalsIgnoreCase("YES")) {
+
+					// Add logic to send SMS
+				}
+
+			}
+
+		} else {
+			new IMessage();
+		}
+		iMessage.setModDate(modDate);
+		return iMessage;
+	}
+
 	private IMessageFollowUp convertIMessageFollowupModel(
 			com.ccsbi.co.usermanagement.repository.entity.IMessageFollowUp iMessageFollowUpEnt) {
-		
+
 		return dozerMapper.map(iMessageFollowUpEnt, IMessageFollowUp.class);
 	}
 
-	private com.ccsbi.co.usermanagement.repository.entity.IMessageFollowUp convertIMessageFollowUp(IMessageFollowUp iMessageFollowUp) {
-		
+	private com.ccsbi.co.usermanagement.repository.entity.IMessageFollowUp convertIMessageFollowUp(
+			IMessageFollowUp iMessageFollowUp) {
+
 		return dozerMapper.map(iMessageFollowUp, com.ccsbi.co.usermanagement.repository.entity.IMessageFollowUp.class);
 	}
 
