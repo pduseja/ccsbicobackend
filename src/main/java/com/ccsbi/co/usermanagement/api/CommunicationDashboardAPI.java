@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @Api
 @RequestMapping("/api")
-
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Disposition" })
 public class CommunicationDashboardAPI {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommunicationDashboardAPI.class);
