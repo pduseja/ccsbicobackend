@@ -72,8 +72,8 @@ public class IMessage implements Serializable {
 	@Column(name = "responsestatus")
 	private String responseStatus;
 
-	@Column(name = "messagestatus")
-	private String messageStatus;
+	@Column(name = "messagereply")
+	private String messageReply;
 
 	@Column(name = "readstatus")
 	private String readStatus;
@@ -361,18 +361,17 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @return the messageStatus
+	 * @return the messageReply
 	 */
-	public String getMessageStatus() {
-		return messageStatus;
+	public String getMessageReply() {
+		return messageReply;
 	}
 
 	/**
-	 * @param messageStatus
-	 *            the messageStatus to set
+	 * @param messageReply the messageReply to set
 	 */
-	public void setMessageStatus(String messageStatus) {
-		this.messageStatus = messageStatus;
+	public void setMessageReply(String messageReply) {
+		this.messageReply = messageReply;
 	}
 
 	/**
