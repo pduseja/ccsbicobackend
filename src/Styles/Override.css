@@ -1,15 +1,20 @@
-/*.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{*/
-    /*border: none;*/
-    /*margin-top: 0px;*/
-    /*border-right: 1px solid #dfdfdf;*/
-    /*border-top: 1px solid #ccc;*/
-    /*border-left: 1px solid #ccc;*/
-/*}*/
-/*.nav-tabs>li{*/
-    /*margin-bottom: -2px;*/
-/*}*/
-
-/*.nav>li>a:focus, .nav>li>a:hover {*/
-    /*background-color: transparent;*/
-    /*border:none;*/
-/*}*/
+.ReactTable.outer-table .rt-thead.-header{
+    box-shadow: none !important;
+    background: #e6e6e6;
+}
+.ReactTable.inner-table .rt-thead.-header{
+    box-shadow: none !important;
+    background: #7ba1ee;
+    color:#fff;
+}
+.ReactTable.inner-table{
+    background: #f1f5fd;
+    font-size: 12px;
+    margin: 0;
+    border: none
+}
+.ReactTable .not-found{
+    font-size:12px;
+    background: #f1f5fd;
+    padding: 5px 10px;
+}

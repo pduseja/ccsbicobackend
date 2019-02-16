@@ -1,5 +1,4 @@
 import React from 'react';
-import constants from '../../Utils/Constants';
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
 import '../../Styles/MessageForm.css'
@@ -24,27 +23,24 @@ export class SecureMessageForm extends React.Component{
                 crBy:''}]
             },
             formErrors: {
-                subject: '',
-                message: '',
-                email: '',
-                mobile: '',
-                methodOfContact: ''
+                message: ''
             },
-            subjectValid: false,
             messageValid: false,
-            mobileValid: true,
-            emailValid: true,
-            methodOfContactValid: false,
             formValid: false
         }
     }
     componentDidMount(){
         let data = this.props.location.data;
-        this.setState({...this.state,
+        let a = this.state.formData.IMessageFollowUpList[0];
+        a.email = data.email;
+        a.mobile = data.mobile;
+        a.methodOfContactValid = data.methodOfContact;
+        a.subject = data.subject;
+        a.crBy = data.crBy
+        this.setState({...this.state,IMessageFollowUpList:a,
             formData: {...this.state.formData,
             iMessageId: data.iMessageId,
             userName: data.userName
-
             }
         })
 
@@ -59,14 +55,12 @@ export class SecureMessageForm extends React.Component{
         this.setState({...this.state,IMessageFollowUpList:a},
             () => {
                 this.validateField(name, value)
-                console.log(this.state)
             });
     };
 
     validateForm() {
         this.setState({
-             formValid: this.state.subjectValid && this.state.messageValid &&
-             this.state.emailValid && this.state.mobileValid && this.state.methodOfContactValid
+             formValid: this.state.messageValid
         });
 
     };
@@ -83,40 +77,12 @@ export class SecureMessageForm extends React.Component{
 
         validateField(fieldName, value) {
             let fieldValidationErrors = this.state.formErrors;
-            let {subjectValid, messageValid, emailValid, mobileValid, methodOfContactValid } = this.state;
+            let { messageValid } = this.state;
             switch (fieldName) {
-                case 'subject':
-                    subjectValid = value !== "Select a subject";
-                    fieldValidationErrors.subject = subjectValid ? '' : 'Please select a subject';
-                    break;
-
                 case 'message':
                     messageValid = value.length !== 0;
                     fieldValidationErrors.message = messageValid ? '' : 'Please add a description';
                     break;
-
-                case 'methodOfContact':
-                    if(value === "email"){
-                        emailValid = false
-                        mobileValid = true
-                    }
-                    else{
-                        mobileValid = false
-                        emailValid = true
-                    }
-                    methodOfContactValid = true
-
-                    break;
-
-                case 'email':
-                    emailValid = value.length !== 0
-                    fieldValidationErrors.email = emailValid ? '' : 'Your Email id is required';
-                break;
-
-                case 'mobile':
-                    mobileValid = value.length !== 0
-                    fieldValidationErrors.mobile = mobileValid ? '' : 'Your Mobile number is required';
-                break;
 
                 default:
                     break;
@@ -124,11 +90,7 @@ export class SecureMessageForm extends React.Component{
             this.setState({
                 ...this.state,
                 formErrors: fieldValidationErrors,
-                subjectValid: subjectValid,
                 messageValid: messageValid,
-                emailValid: emailValid,
-                mobileValid: mobileValid,
-                methodOfContactValid: methodOfContactValid
             }, this.validateForm);
 
 
@@ -140,9 +102,11 @@ export class SecureMessageForm extends React.Component{
 
                 let reader = new FileReader();
                 let file = e.target.files[0];
+                let a = this.state.formData.IMessageFollowUpList[0];
+                a.fileattached = "Y";
                     reader.onloadend = () => {
 
-                    this.setState({
+                    this.setState({...this.state,IMessageFollowUpList:a,
                         file: file,
                         filePreviewUrl: reader.result
                     });
@@ -150,8 +114,13 @@ export class SecureMessageForm extends React.Component{
                 reader.readAsDataURL(file)
             };
 
+        back = () => {
+            this.props.history.push("/secureMessages");
+        };
+
+
     render(){
-        let {subject, message, mobile, email} = this.state.formErrors;
+        let {message} = this.state.formErrors;
         let {filePreviewUrl} = this.state;
         let $filePreview = null;
         if (filePreviewUrl) {
@@ -160,71 +129,12 @@ export class SecureMessageForm extends React.Component{
         }
         return(<div className="form-container">
         <div className="wrapper">
-                    <div className="registration-form">
+                    <div className="registration-form-step2">
                         <span className="title">
         					Secure Message
         				</span>
 
 
-                        <div className="wrap-input">
-                            <div className="col-sm-6 form-group">
-                             <label>*Method of contact</label>
-                                <div>
-                                <label htmlFor="email">
-                                <input type="radio"
-                                     name="methodOfContact"
-                                     value="email"
-                                     id="email"
-                                     checked={this.state.formData.IMessageFollowUpList[0].methodOfContact === "email"}
-                                     onChange={this.handleUserInput}
-
-                                />Email</label>
-                            <label htmlFor="mobile">
-                            <input type="radio"
-                                   name="methodOfContact"
-                                   id="mobile"
-                                   checked={this.state.formData.IMessageFollowUpList[0].methodOfContact === "mobile"}
-                                   onChange={this.handleUserInput}
-                                   value="mobile"/>Mobile</label>
-                                   </div>
-                                </div>
-                        </div>
-                        {this.state.formData.IMessageFollowUpList[0].methodOfContact === "email" &&
-                        <div className="wrap-input">
-                            <div className="col-sm-5 form-group">
-                                <label>*Email id</label>
-                                <input className="input" type="text" name="email" placeholder="Email id"
-                                       onChange={this.handleUserInput} value={this.state.formData.IMessageFollowUpList[0].email}/>
-                                <p className="error-message">{email}</p>
-                            </div>
-                         </div>
-
-                        }
-                        {this.state.formData.IMessageFollowUpList[0].methodOfContact === "mobile" &&
-                        <div className="wrap-input">
-                            <div className="col-sm-5 form-group">
-                                <label>*Mobile</label>
-                                <input className="input" type="text" name="mobile" placeholder="Mobile"
-                                       onChange={this.handleUserInput} value={this.state.formData.IMessageFollowUpList[0].mobile}/>
-                                <p className="error-message">{mobile}</p>
-                            </div>
-                         </div>
-
-                        }
-
-                        <div className="wrap-input">
-                            <div className="col-sm-6">
-                                <label>*Subject</label>
-                                  <select className="input" name="subject" value={this.state.formData.IMessageFollowUpList[0].subject}
-                                      onChange={this.handleUserInput}>
-                                  <option>Select a subject</option>
-                                  {constants.subject.map(a =>
-                                      <option
-                                          key={a.value} value={a.value}>{a.label}</option>)}
-                                    </select>
-                                  <p className="error-message">{subject}</p>
-                            </div>
-                        </div>
                         <div className="wrap-input">
                             <div className="col-sm-6">
                                 <label>*Details Message</label>
@@ -247,6 +157,7 @@ export class SecureMessageForm extends React.Component{
                                                 {$filePreview}
                                             </div>
                         <div className="container-login-form-btn">
+                        <button className="login-form-btn" onClick={()=> this.back()}>Back</button>
                             <button className="login-form-btn" onClick={() => this.submit()}
                                     disabled={!this.state.formValid}>Submit
                             </button>

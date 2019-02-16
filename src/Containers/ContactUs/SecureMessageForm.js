@@ -25,9 +25,10 @@ export class SecureMessageForm extends React.Component{
                 fileattached: 'N',
                 wasSignedIn: 'N',
                 responseStatus:'N',
-                messageStatus:'N',
+                messageReply:'N',
                 readStatus:'N',
-                crBy:''
+                crBy:'',
+                IMessageFollowUpList :[]
             },
             formErrors: {
                 title: '',
@@ -66,9 +67,9 @@ export class SecureMessageForm extends React.Component{
             snameValid: true,
             isExistingCustomerValid:true,
             userNameValid:true,
+            crBy: data.userName,
             formData: {...this.state.formData,
             wasSignedIn: "Y",
-            crBy: data.userName,
             userName: data.userName,
             isExistingCustomer: "Y",
             title: data.title,
@@ -220,6 +221,10 @@ export class SecureMessageForm extends React.Component{
                 reader.readAsDataURL(file)
             };
 
+    back = () => {
+        this.props.history.push("/ContactUs");
+    };
+
     render(){
         let {title, firstName, lastName, userName, department, subject, message, mobile, email} = this.state.formErrors;
         let {filePreviewUrl} = this.state;
@@ -230,7 +235,7 @@ export class SecureMessageForm extends React.Component{
         }
         return(<div className="form-container">
         <div className="wrapper">
-                    <div className="registration-form">
+                    <div className="registration-form-step2">
                         <span className="title">
         					Secure Message
         				</span>
@@ -389,6 +394,7 @@ export class SecureMessageForm extends React.Component{
                                                 {$filePreview}
                                             </div>
                         <div className="container-login-form-btn">
+                        <button className="login-form-btn" onClick={()=> this.back()}>Back</button>
                             <button className="login-form-btn" onClick={() => this.submit()}
                                     disabled={!this.state.formValid}>Submit
                             </button>

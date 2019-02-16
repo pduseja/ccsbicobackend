@@ -88,7 +88,7 @@ display:none}
     width: 100%;
 }
 
-.login-form .title, .registration-form .title {
+.login-form .title, .registration-form .title, .registration-form-step2 .title {
     font-family: Poppins-Bold;
     font-size: 24px;
     color: #57565a;
