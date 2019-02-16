@@ -48,7 +48,7 @@ public class IMessage implements Serializable {
 	
 	private String responseStatus;
 	
-	private String messageStatus;
+	private String messageReply;
 	
 	private String readStatus;
 	
@@ -329,17 +329,17 @@ public class IMessage implements Serializable {
 	}
 
 	/**
-	 * @return the messageStatus
+	 * @return the messageReply
 	 */
-	public String getMessageStatus() {
-		return messageStatus;
+	public String getMessageReply() {
+		return messageReply;
 	}
 
 	/**
-	 * @param messageStatus the messageStatus to set
+	 * @param messageReply the messageReply to set
 	 */
-	public void setMessageStatus(String messageStatus) {
-		this.messageStatus = messageStatus;
+	public void setMessageReply(String messageReply) {
+		this.messageReply = messageReply;
 	}
 
 	/**
