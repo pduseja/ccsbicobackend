@@ -25,6 +25,8 @@ import SecureMessageForm from "../Containers/ContactUs/SecureMessageForm";
 import FollowUpMessageForm from "../Containers/ContactUs/FollowUpMessageForm";
 import SecureMessages from "../Components/SecureMessages"
 import CommunicationDashboard from "../Components/Communication/CommunicationDashboard"
+import MessageReply from "../Components/Communication/MessageReply"
+import MessageFollowUpReply from "../Components/Communication/MessageFollowUpReply"
 const store = createStore(Reducers);
 
 class App extends Component {
@@ -79,6 +81,8 @@ class App extends Component {
                     <Route exact path="/SecureMessages" component={SecureMessages} />
                     <Route exact path="/FollowUpMessageForm" component={FollowUpMessageForm} />
                     <Route exact path="/CommunicationDashboard" component={CommunicationDashboard} />
+                    <Route exact path="/MessageReply" component={MessageReply} />
+                    <Route exact path="/MessageFollowUpReply" component={MessageFollowUpReply} />
 
                     <Route path="/" component={Footer} />
                 </div>

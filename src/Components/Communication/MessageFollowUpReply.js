@@ -2,45 +2,46 @@ import React from 'react';
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
 import '../../Styles/MessageForm.css'
-export class SecureMessageForm extends React.Component{
+export class MessageFollowUpReply extends React.Component{
     constructor(props){
         super(props)
         this.state={
             formData:{
                 iMessageId: '',
                 userName: '',
-                IMessageFollowUpList:[{
-                subject: '',
-                message: '',
-                email: '',
-                mobile: '',
                 methodOfContact: '',
+                email: '',
+                subject: '',
+                IMessageFollowUpList:[{
+                message: '',
+                mobile: '',
                 fileattached: 'N',
                 wasSignedIn: 'Y',
                 responseStatus:'N',
-                messageStatus:'N',
+                messageReply:'',
                 readStatus:'N',
                 crBy:''}]
             },
             formErrors: {
-                message: ''
+                messageReply: ''
             },
-            messageValid: false,
+            messageReplyValid: false,
             formValid: false
         }
     }
     componentDidMount(){
-        let data = this.props.location.data;
+        let data = this.props.location.data.iMessage;
         let a = this.state.formData.IMessageFollowUpList[0];
-        a.email = data.email;
-        a.mobile = data.mobile;
-        a.methodOfContactValid = data.methodOfContact;
-        a.subject = data.subject;
-        a.crBy = data.crBy
+        a.crBy = data.crBy;
+        a.message = data.message;
         this.setState({...this.state,IMessageFollowUpList:a,
             formData: {...this.state.formData,
             iMessageId: data.iMessageId,
-            userName: data.userName
+            userName: data.userName,
+            methodOfContactValid: data.methodOfContact,
+            email: data.email,
+            mobile: data.mobile,
+            subject: data.subject
             }
         })
 
@@ -60,13 +61,13 @@ export class SecureMessageForm extends React.Component{
 
     validateForm() {
         this.setState({
-             formValid: this.state.messageValid
+             formValid: this.state.messageReplyValid
         });
 
     };
 
     submit = () =>{
-        WebApi.addFollowUpMessage(this.state.formData,this.state.filePreviewUrl, (err, response)=>{
+        WebApi.replyFollowUpMessage(this.state.formData,this.state.filePreviewUrl, (err, response)=>{
 
             if(err){ throw err}
             this.props.history.push({pathname:"/UserMessage",data: response})
@@ -77,11 +78,11 @@ export class SecureMessageForm extends React.Component{
 
         validateField(fieldName, value) {
             let fieldValidationErrors = this.state.formErrors;
-            let { messageValid } = this.state;
+            let { messageReplyValid } = this.state;
             switch (fieldName) {
-                case 'message':
-                    messageValid = value.length !== 0;
-                    fieldValidationErrors.message = messageValid ? '' : 'Please add a description';
+                case 'messageReply':
+                    messageReplyValid = value.length !== 0;
+                    fieldValidationErrors.messageReply = messageReplyValid ? '' : 'Please add a description';
                     break;
 
                 default:
@@ -90,7 +91,7 @@ export class SecureMessageForm extends React.Component{
             this.setState({
                 ...this.state,
                 formErrors: fieldValidationErrors,
-                messageValid: messageValid,
+                messageReplyValid: messageReplyValid,
             }, this.validateForm);
 
 
@@ -115,12 +116,12 @@ export class SecureMessageForm extends React.Component{
             };
 
         back = () => {
-            this.props.history.push("/secureMessages");
+            this.props.history.push("/CommunicationDashboard");
         };
 
 
     render(){
-        let {message} = this.state.formErrors;
+        let {messageReply} = this.state.formErrors;
         let {filePreviewUrl} = this.state;
         let $filePreview = null;
         if (filePreviewUrl) {
@@ -131,16 +132,16 @@ export class SecureMessageForm extends React.Component{
         <div className="wrapper">
                     <div className="registration-form-step2">
                         <span className="title">
-        					Secure Message
+        					Secure Follow up Message Reply
         				</span>
 
 
                         <div className="wrap-input">
                             <div className="col-sm-6">
-                                <label>*Detail Message</label>
-                                <textarea className="input" name="message" value={this.state.formData.IMessageFollowUpList[0].message}
+                                <label>*Reply</label>
+                                <textarea className="input" name="messageReply" value={this.state.formData.IMessageFollowUpList[0].messageReply}
                                  onChange={this.handleUserInput} />
-                            <p className="error-message">{message}</p>
+                            <p className="error-message">{messageReply}</p>
                             </div>
                         </div>
                         <div className="col-sm-3 form-group">
@@ -171,4 +172,4 @@ export class SecureMessageForm extends React.Component{
 }
 
 
-export default withRouter(SecureMessageForm);
+export default withRouter(MessageFollowUpReply);

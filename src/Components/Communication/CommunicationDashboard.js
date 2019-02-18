@@ -25,7 +25,7 @@ export class CommunicationDashboard extends React.Component{
 
     }
     onFollowUpReply = (props) => {
-        this.props.history.push({pathname:"/FollowUpMessageReply",data: props.original})
+        this.props.history.push({pathname:"/MessageFollowUpReply",data: props.original})
 
     }
 

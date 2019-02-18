@@ -247,7 +247,37 @@ let WebApi = {
                 "Content-Type": "application/json"
             },
         })
-    }
+    },
+    sendReply(data, file, done){
+
+             let request = new XMLHttpRequest();
+             request.open('PATCH', 'http://localhost:9090/CCSBI/api/iMessageReply');
+             let formData = new FormData();
+             formData.append('iMessageFollowUp', JSON.stringify(data));
+             formData.append('fileAttached', file || {})
+             request.onload = function () {
+                 done(null, request.response);
+             };
+             request.onerror = function () {
+                 done(request.response);
+             };
+             request.send(formData);
+    },
+        replyFollowUpMessage(data, file, done){
+
+                 let request = new XMLHttpRequest();
+                 request.open('PATCH', 'http://localhost:9090/CCSBI/api/iMessageReply');
+                 let formData = new FormData();
+                 formData.append('iMessageFollowUp', JSON.stringify(data));
+                 formData.append('fileAttached', file || {})
+                 request.onload = function () {
+                     done(null, request.response);
+                 };
+                 request.onerror = function () {
+                     done(request.response);
+                 };
+                 request.send(formData);
+        },
 
 
 

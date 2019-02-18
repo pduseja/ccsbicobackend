@@ -2,45 +2,45 @@ import React from 'react';
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
 import '../../Styles/MessageForm.css'
-export class SecureMessageForm extends React.Component{
+export class MessageReply extends React.Component{
     constructor(props){
         super(props)
         this.state={
             formData:{
                 iMessageId: '',
                 userName: '',
-                IMessageFollowUpList:[{
                 subject: '',
                 message: '',
                 email: '',
                 mobile: '',
                 methodOfContact: '',
                 fileattached: 'N',
-                wasSignedIn: 'Y',
-                responseStatus:'N',
-                messageStatus:'N',
-                readStatus:'N',
-                crBy:''}]
+                responseStatus: 'Y',
+                messageReply: '',
+                readStatus: 'Y',
+                crBy: '',
+                modBy: ''
             },
             formErrors: {
-                message: ''
+                messageReply: ''
             },
-            messageValid: false,
+            messageReplyValid: false,
             formValid: false
         }
     }
     componentDidMount(){
         let data = this.props.location.data;
-        let a = this.state.formData.IMessageFollowUpList[0];
-        a.email = data.email;
-        a.mobile = data.mobile;
-        a.methodOfContactValid = data.methodOfContact;
-        a.subject = data.subject;
-        a.crBy = data.crBy
-        this.setState({...this.state,IMessageFollowUpList:a,
+        this.setState({...this.state,
             formData: {...this.state.formData,
             iMessageId: data.iMessageId,
-            userName: data.userName
+            userName: data.userName,
+            subject: data.subject,
+            message: data.message,
+            email: data.email,
+            mobile: data.mobile,
+            methodOfContact: '',
+            crBy: data.crBy,
+            modBy: data.modBy
             }
         })
 
@@ -50,9 +50,7 @@ export class SecureMessageForm extends React.Component{
     handleUserInput = (e) => {
         const name = e.target.name;
         const value = e.target.type === 'radio' ? e.target.value : e.target.value;
-        let a = this.state.formData.IMessageFollowUpList[0];
-        a[name] = value;
-        this.setState({...this.state,IMessageFollowUpList:a},
+        this.setState({...this.state,formData:{...this.state.formData, [name]: value}},
             () => {
                 this.validateField(name, value)
             });
@@ -60,13 +58,13 @@ export class SecureMessageForm extends React.Component{
 
     validateForm() {
         this.setState({
-             formValid: this.state.messageValid
+             formValid: this.state.messageReplyValid
         });
 
     };
 
     submit = () =>{
-        WebApi.addFollowUpMessage(this.state.formData,this.state.filePreviewUrl, (err, response)=>{
+        WebApi.sendReply(this.state.formData,this.state.filePreviewUrl, (err, response)=>{
 
             if(err){ throw err}
             this.props.history.push({pathname:"/UserMessage",data: response})
@@ -77,11 +75,11 @@ export class SecureMessageForm extends React.Component{
 
         validateField(fieldName, value) {
             let fieldValidationErrors = this.state.formErrors;
-            let { messageValid } = this.state;
+            let { messageReplyValid } = this.state;
             switch (fieldName) {
-                case 'message':
-                    messageValid = value.length !== 0;
-                    fieldValidationErrors.message = messageValid ? '' : 'Please add a description';
+                case 'messageReply':
+                    messageReplyValid = value.length !== 0;
+                    fieldValidationErrors.messageReply = messageReplyValid ? '' : 'Please add a description';
                     break;
 
                 default:
@@ -90,7 +88,7 @@ export class SecureMessageForm extends React.Component{
             this.setState({
                 ...this.state,
                 formErrors: fieldValidationErrors,
-                messageValid: messageValid,
+                messageReplyValid: messageReplyValid,
             }, this.validateForm);
 
 
@@ -102,11 +100,9 @@ export class SecureMessageForm extends React.Component{
 
                 let reader = new FileReader();
                 let file = e.target.files[0];
-                let a = this.state.formData.IMessageFollowUpList[0];
-                a.fileattached = "Y";
                     reader.onloadend = () => {
 
-                    this.setState({...this.state,IMessageFollowUpList:a,
+                    this.setState({...this.state,formData:{...this.state.formData, fileattached: 'Y'},
                         file: file,
                         filePreviewUrl: reader.result
                     });
@@ -115,12 +111,12 @@ export class SecureMessageForm extends React.Component{
             };
 
         back = () => {
-            this.props.history.push("/secureMessages");
+            this.props.history.push("/CommunicationDashboard");
         };
 
 
     render(){
-        let {message} = this.state.formErrors;
+        let {messageReply} = this.state.formErrors;
         let {filePreviewUrl} = this.state;
         let $filePreview = null;
         if (filePreviewUrl) {
@@ -131,16 +127,16 @@ export class SecureMessageForm extends React.Component{
         <div className="wrapper">
                     <div className="registration-form-step2">
                         <span className="title">
-        					Secure Message
+        					Secure Message Reply
         				</span>
 
 
                         <div className="wrap-input">
                             <div className="col-sm-6">
-                                <label>*Detail Message</label>
-                                <textarea className="input" name="message" value={this.state.formData.IMessageFollowUpList[0].message}
+                                <label>*Reply</label>
+                                <textarea className="input" name="messageReply" value={this.state.formData.messageReply}
                                  onChange={this.handleUserInput} />
-                            <p className="error-message">{message}</p>
+                            <p className="error-message">{messageReply}</p>
                             </div>
                         </div>
                         <div className="col-sm-3 form-group">
@@ -171,4 +167,4 @@ export class SecureMessageForm extends React.Component{
 }
 
 
-export default withRouter(SecureMessageForm);
+export default withRouter(MessageReply);
