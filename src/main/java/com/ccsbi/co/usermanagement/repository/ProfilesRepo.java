@@ -15,5 +15,8 @@ public interface ProfilesRepo extends JpaRepository<Profiles, Long> {
 	
 	@Query("select p.pClass from profiles p where p.id=:profileId")
 	String getRole(@Param("profileId") int profileId);
+	
+	@Query("select p.id from profiles p where p.pClass=:superUser")
+	int findProfileSuperUser(@Param("superUser") String superUser);
 
 }
