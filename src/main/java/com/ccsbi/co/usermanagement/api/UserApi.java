@@ -84,17 +84,25 @@ public class UserApi {
 				user = convertUser(loginService.login(convertLogin(login)));
 				if (user.getUserId() != 0) {
 					user = loginAttemptsConditioncheck(login, user);
-					return new ResponseEntity<>(user,HttpStatus.OK);
+					return new ResponseEntity<>(user, HttpStatus.OK);
 				} else {
-					return ResponseEntity.badRequest().build();
+					if (user.getActive().equalsIgnoreCase("N")) {
+						return new ResponseEntity<>(user, HttpStatus.FORBIDDEN);
+					} else {
+						return ResponseEntity.badRequest().build();
+					}
 				}
 			} else {
 				user = convertUser(loginService.getUserName(convertLogin(login)));
-				if(user.getUserId()!=0) {
-				user = loginAttemptsConditioncheck(login, user);
-				return new ResponseEntity<>(user,HttpStatus.OK);
-				} else { 
-					return ResponseEntity.badRequest().build();
+				if (user.getUserId() != 0) {
+					user = loginAttemptsConditioncheck(login, user);
+					return new ResponseEntity<>(user, HttpStatus.OK);
+				} else {
+					if (user.getActive().equalsIgnoreCase("N")) {
+						return new ResponseEntity<>(user, HttpStatus.FORBIDDEN);
+					} else {
+						return ResponseEntity.badRequest().build();
+					}
 				}
 			}
 		} else {
@@ -103,7 +111,7 @@ public class UserApi {
 			user = convertUser(loginService.login(convertLogin(login)));
 			if (user.getUserId() != 0) {
 				user = loginAttemptsConditioncheck(login, user);
-				return new ResponseEntity<>(user,HttpStatus.OK);
+				return new ResponseEntity<>(user, HttpStatus.OK);
 			} else {
 				return ResponseEntity.badRequest().build();
 			}
@@ -119,23 +127,23 @@ public class UserApi {
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
 	@PostMapping(path = "/registration", produces = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
-					MediaType.APPLICATION_XHTML_XML_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+			MediaType.MULTIPART_FORM_DATA_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.MULTIPART_FORM_DATA_VALUE })
 	public String registration(@ApiParam(value = "user", required = true) @Valid String users,
 			@RequestParam(value = "photo", required = false) MultipartFile photo) throws Exception {
 
 		String userName = null;
 		UsersPhoto userPhoto = new UsersPhoto();
 		JSONObject jsonObj = new JSONObject(users);
-		
-		System.out.println("JSON Object in UserAPI class: "+jsonObj);
+
+		System.out.println("JSON Object in UserAPI class Photo: " + photo);
 
 		ObjectMapper mapper = new ObjectMapper();
 		Users user = mapper.readValue(jsonObj.toString(), Users.class);
 
 		// Content of Photo from input
-		if (photo!=null) {
-			System.out.println("File Type "+user.getUsersPhoto().getFileType());
+		if (photo != null) {
+			System.out.println("File Type " + user.getUsersPhoto().getFileType());
 			String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
 
 			try {
@@ -175,7 +183,7 @@ public class UserApi {
 			@ApiResponse(code = 404, message = "Page not found") })
 	@PostMapping(path = "/passwordReset", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_ATOM_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
-					MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+					MediaType.APPLICATION_ATOM_XML_VALUE })
 	public ResponseEntity<String> resetDone(@ApiParam(value = "", required = true) @RequestBody Users users)
 			throws Exception {
 
@@ -218,7 +226,7 @@ public class UserApi {
 		if (user.getUserId() != 0) {
 			loginAttempts = loginService.loginAttempts(convertLogin(login), user.getUserId());
 			if (loginAttempts < 3 || loginAttempts == 0) {
-				
+
 				user.setUserId(0);
 				return user;
 			} else {
