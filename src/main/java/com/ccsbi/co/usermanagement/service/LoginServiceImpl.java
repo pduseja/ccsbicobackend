@@ -58,7 +58,7 @@ public class LoginServiceImpl implements ILoginService {
 
 		if (!StringUtils.isEmpty(login.getUserName())) {
 			com.ccsbi.co.usermanagement.repository.entity.Users userEnt = usersRepo.loginUser(userName);
-			if (userEnt != null) {
+			if (userEnt != null && userEnt.getActive().equalsIgnoreCase("Y")) {
 				Users user = convertUsers(userEnt);
 
 				encryptPassword = reallyStrongSecuredPassword.encrypt(login.getPassword());

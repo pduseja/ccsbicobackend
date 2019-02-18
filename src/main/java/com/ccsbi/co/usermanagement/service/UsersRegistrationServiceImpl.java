@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccsbi.co.usermanagement.email.IEmailService;
+import com.ccsbi.co.usermanagement.repository.ProfilesRepo;
 import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersPhotoRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
@@ -30,6 +31,9 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 
 	@Autowired
 	UsersPhotoRepo usersPhotoRepo;
+	
+	@Autowired
+	ProfilesRepo profilesRepo;
 
 	@Autowired
 	IEmailService iEmailService;
@@ -48,7 +52,9 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 		List<Users> listPend = new ArrayList<>();
 		List<com.ccsbi.co.usermanagement.repository.entity.Users> listEntPend = new ArrayList<>();
 		final String flag = "N";
-		listEntPend = usersRepo.getPendingUsersList(flag);
+		final String superUser = "SU";
+		int profileId=profilesRepo.findProfileSuperUser(superUser);
+		listEntPend = usersRepo.getPendingUsersList(flag,profileId);
 
 		if (listEntPend.size() > 0) {
 			listPend = convert(listEntPend);
