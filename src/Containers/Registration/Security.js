@@ -3,11 +3,12 @@ import {states} from './States.js';
 import {connect} from "react-redux";
 import WebApi from "../../Utils/WebApi";
 import {withRouter} from "react-router-dom";
-
+import Loader from 'react-loader';
 export class Security extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loaded: false,
             securityQuestions: [],
             securityQuestionId1: '',
             securityQuestionId2: '',
@@ -42,7 +43,8 @@ export class Security extends Component {
      componentDidMount() {
         WebApi.getSecurityQuestions().then(response => response.json()).then(response => {
             this.setState({...this.state,
-                securityQuestions: response
+                securityQuestions: response,
+                loaded: true
             })
         })
     }
@@ -156,6 +158,7 @@ export class Security extends Component {
         let {securityQuestions} = this.state;
 
         return (
+        <Loader loaded={this.state.loaded}>
          <div className="form-container">
             <div className="wrapper">
             <div className="registration-form-step2">
@@ -217,7 +220,7 @@ export class Security extends Component {
             </div>
 
             </div>
-            </div>
+            </div></Loader>
         );
     }
 }

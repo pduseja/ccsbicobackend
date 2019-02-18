@@ -220,7 +220,6 @@ export class PersonalDetails extends Component {
 
         let reader = new FileReader();
         let file = e.target.files[0];
-        let fileToStore = window.URL.createObjectURL(file);
         reader.onloadend = () => {
             this.setState({
                 file: file,
@@ -233,7 +232,7 @@ export class PersonalDetails extends Component {
                         active: "Y"
                     }
                 }
-            }, () => this.props.dispatch(addPhoto(fileToStore)));
+            }, () => this.props.dispatch(addPhoto(this.state.imagePreviewUrl)));
         };
 
         reader.readAsDataURL(file)

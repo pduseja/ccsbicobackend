@@ -7,12 +7,12 @@ import {withRouter} from "react-router-dom";
 export class ViewPersonalDetails extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             file: '',
             imagePreviewUrl: props.details.UsersPhoto ? "data:image/jpeg;base64,"+this.props.details.UsersPhoto.photoContent : '',
             formData: {
-                userName: props.details.userName
+                userName: props.details.userName,
+                photoId: props.details.photoId
             }
         }
     }
@@ -22,7 +22,6 @@ export class ViewPersonalDetails extends Component {
 
         let reader = new FileReader();
         let file = e.target.files[0];
-        let fileToStore = window.URL.createObjectURL(file);
         reader.onloadend = () => {
             this.setState({
                 file: file,
@@ -30,19 +29,20 @@ export class ViewPersonalDetails extends Component {
                 formData: {
                     ...this.state.formData, UsersPhoto: {
                         ...this.state.formData.UsersPhoto,
-                        photo: fileToStore,
+                        photo: '',
                         fileType: file.type,
-                        active: "Y"
+                        active: "Y",
+                        photoContent: ""
                     }
                 }
-            }, () => this.props.dispatch(addPhoto(fileToStore)));
+            }, () => this.props.dispatch(addPhoto(this.state.imagePreviewUrl)));
         };
 
         reader.readAsDataURL(file)
     };
 
     submit = (data) => {
-        WebApi.editPhoto(this.state.formData,this.state.formData.UsersPhoto.photo, (err, response)=>{
+        WebApi.editPhoto(this.state.formData,this.state.imagePreviewUrl, (err, response)=>{
             this.props.history.push({pathname:"/Profile"})
         })
 
