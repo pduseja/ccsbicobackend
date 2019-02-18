@@ -125,7 +125,9 @@ public class LoginServiceImpl implements ILoginService {
 					return new Users();
 				}
 			} else {
-				return new Users();
+				Users user = new Users();
+				user.setActive("N");
+				return user;
 			}
 		} else {
 			return new Users();
