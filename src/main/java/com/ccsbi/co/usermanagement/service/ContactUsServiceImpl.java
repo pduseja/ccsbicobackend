@@ -172,6 +172,7 @@ public class ContactUsServiceImpl implements IContactUsService {
 		List<IMessageFollowUp> iMessageFollowUpList = iMessage.getiMessageFollowUpList();
 		if (!iMessageFollowUpList.isEmpty()) {
 			IMessageFollowUp iMessageFollowUp = iMessageFollowUpList.get(0);
+			iMessageFollowUp.setCrBy(iMessage.getUserName());
 
 			iMessageFollowUp.setiMessage(iMessage);
 			com.ccsbi.co.usermanagement.repository.entity.IMessageFollowUp iMessageFollowUpEnt = iMessageFollowUpRepo
