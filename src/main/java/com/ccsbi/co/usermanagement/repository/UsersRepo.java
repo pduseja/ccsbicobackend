@@ -19,7 +19,7 @@ public interface UsersRepo extends JpaRepository<Users, Long> {
 	@Query("SELECT u FROM users u WHERE u.userId=:userId")
 	Users getUsers(@Param("userId") int userId);
 	
-	@Query("SELECT u FROM users u where u.active=:flag and u.active<>:profileId")
+	@Query("SELECT u FROM users u where u.active=:flag and u.profileId<>:profileId")
 	List<Users> getPendingUsersList(@Param("flag") String flag,@Param("profileId") int profileId);
 	
 	@Query("SELECT u FROM users u where u.active=:flag")
