@@ -22,8 +22,8 @@ public interface UsersRepo extends JpaRepository<Users, Long> {
 	@Query("SELECT u FROM users u where u.active=:flag and u.profileId<>:profileId")
 	List<Users> getPendingUsersList(@Param("flag") String flag,@Param("profileId") int profileId);
 	
-	@Query("SELECT u FROM users u where u.active=:flag")
-	List<Users> getApprovedUsersList(@Param("flag") String flag);
+	@Query("SELECT u FROM users u where u.active=:flag and u.profileId<>:profileId")
+	List<Users> getApprovedUsersList(@Param("flag") String flag,@Param("profileId") int profileId);
 	
 	@Modifying
     @Query("UPDATE users u SET u.active=:active,u.profileId=:profileId WHERE u.userName=:userName")
