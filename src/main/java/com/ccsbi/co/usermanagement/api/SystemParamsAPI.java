@@ -49,6 +49,34 @@ public class SystemParamsAPI {
 		return list;
 			
 	}
+	
+	@ApiOperation(value = "System Params", notes = "System Params", nickname = "System Params")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@GetMapping(path = "/department/{paramsList}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public List<String> departmentList(@ApiParam(value = "", required = true) @PathVariable String paramsList) {
+		
+		LOGGER.debug("Inside departmentList Get Method");
+		List<String> list = new ArrayList<>();
+		list = iSystemParamsService.getContactUsDepartment();
+		
+		return list;
+			
+	}
+	
+	@ApiOperation(value = "System Params", notes = "System Params", nickname = "System Params")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@GetMapping(path = "/subject/{paramsList}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public List<String> subjectList(@ApiParam(value = "", required = true) @PathVariable String paramsList) {
+		
+		LOGGER.debug("Inside subjectList Get Method");
+		List<String> list = new ArrayList<>();
+		list = iSystemParamsService.getMsgAboutList();
+		return list;
+			
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	private List<SystemParams> convert(List<com.ccsbi.co.usermanagement.service.model.SystemParams> paramsList) {
