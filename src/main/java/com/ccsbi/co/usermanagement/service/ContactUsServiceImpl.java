@@ -57,7 +57,8 @@ public class ContactUsServiceImpl implements IContactUsService {
 	@Override
 	public IMessage saveIMessage(IMessage iMessage) {
 		IMessage iMessageSave = new IMessage();
-
+		String subjectType = "Feedback";
+		String text = "";
 		com.ccsbi.co.usermanagement.repository.entity.IMessage iMessageEnt = new com.ccsbi.co.usermanagement.repository.entity.IMessage();
 		String userName = iMessage.getUserName() != null ? iMessage.getUserName() : "";
 		if (StringUtils.isEmpty(userName)) {
@@ -71,9 +72,15 @@ public class ContactUsServiceImpl implements IContactUsService {
 				int refId = iMessageSave.getiMessageId();
 				String to = iMessageSave.getEmail() != null ? iMessageSave.getEmail() : "";
 				String subject = iMessageSave.getSubject();
-				String text = "Your message has been recorded with us and we will get back to you shortly\n"
+				if(subject.equalsIgnoreCase(subjectType)) { 
+					text = "We appretiate you for your feedback\n"
+							+ "Its valuable to us to improve our services\n" + "\n" + "Cheers\n"
+							+ "Thanks & regards,\n" + "CCSBI Team";
+				} else {
+				text = "Your message has been recorded with us and we will get back to you shortly\n"
 						+ "Please use ref # in subject for your future communications\n" + "\n" + "Cheers\n"
 						+ "Thanks & regards,\n" + "CCSBI Team";
+				}
 				if (!StringUtils.isEmpty(to)) {
 					// iMessage record creation email
 					if (appConfig.getEmail().equalsIgnoreCase("YES")) {
