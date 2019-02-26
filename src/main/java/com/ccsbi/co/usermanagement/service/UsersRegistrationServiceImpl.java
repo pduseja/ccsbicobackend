@@ -69,7 +69,9 @@ public class UsersRegistrationServiceImpl implements IUsersRegistrationService {
 		List<Users> listAppr = new ArrayList<>();
 		List<com.ccsbi.co.usermanagement.repository.entity.Users> listEntAppr = new ArrayList<>();
 		final String flag = "Y";
-		listEntAppr = usersRepo.getApprovedUsersList(flag);
+		final String superUser = "SU";
+		int profileId=profilesRepo.findProfileSuperUser(superUser);
+		listEntAppr = usersRepo.getApprovedUsersList(flag,profileId);
 
 		if (listEntAppr.size() > 0) {
 			listAppr = convert(listEntAppr);

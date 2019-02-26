@@ -81,13 +81,19 @@ public class ContactUsApi {
 			byte[] fileContent = fileAttached.getBytes();
 			iMessages.setFileContent(fileContent);
 		}
-
+		String subject = "Feedback";
 		iMessages = convertiMessageClient(iContactUsServiceImpl.saveIMessage(convertiMessage(iMessages)));
 
 		if (iMessages.getiMessageId() > 0) {
+			if(iMessages.getSubject().equalsIgnoreCase(subject)) {
+				return new ResponseEntity<>(
+						"Thanks a Lot for your Feedback.\n" +"Its valuable to us and helps us to improve our services",
+						HttpStatus.OK);
+			} else {
 			return new ResponseEntity<>(
 					"Your Message is recorded and its reference number is: " + iMessages.getiMessageId(),
 					HttpStatus.OK);
+			}
 		} else {
 			return ResponseEntity.badRequest().build();
 		}
