@@ -26,7 +26,8 @@
     "react-table": "^6.8.6",
     "react-tabs": "^2.3.0",
     "redux": "^4.0.1",
-    "universal-cookie": "^3.0.7"
+    "universal-cookie": "^3.0.7",
+    "firebase": "^5.7.0"
   },
   "scripts": {
     "start": "react-scripts start",

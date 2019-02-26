@@ -21,6 +21,7 @@ import Footer from "../Components/Footer";
 import EditRole from "../Components/Admin/EditRole";
 import AdminDashboard from "../Containers/Admin/AdminDashboard";
 import ContactUs from "../Containers/ContactUs/ContactUs";
+import LiveChat from "../Containers/ContactUs/LiveChat";
 import SecureMessageForm from "../Containers/ContactUs/SecureMessageForm";
 import FollowUpMessageForm from "../Containers/ContactUs/FollowUpMessageForm";
 import SecureMessages from "../Components/SecureMessages"
@@ -83,6 +84,7 @@ class App extends Component {
                     <Route exact path="/CommunicationDashboard" component={CommunicationDashboard} />
                     <Route exact path="/MessageReply" component={MessageReply} />
                     <Route exact path="/MessageFollowUpReply" component={MessageFollowUpReply} />
+                    <Route exact path="/LiveChat" component={LiveChat} />
 
                     <Route path="/" component={Footer} />
                 </div>
