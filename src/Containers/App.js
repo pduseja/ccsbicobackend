@@ -23,10 +23,11 @@ import AdminDashboard from "../Containers/Admin/AdminDashboard";
 import ContactUs from "../Containers/ContactUs/ContactUs";
 import SecureMessageForm from "../Containers/ContactUs/SecureMessageForm";
 import FollowUpMessageForm from "../Containers/ContactUs/FollowUpMessageForm";
-import SecureMessages from "../Components/SecureMessages"
-import CommunicationDashboard from "../Components/Communication/CommunicationDashboard"
-import MessageReply from "../Components/Communication/MessageReply"
-import MessageFollowUpReply from "../Components/Communication/MessageFollowUpReply"
+import SecureMessages from "../Components/SecureMessages";
+import CommunicationDashboard from "../Components/Communication/CommunicationDashboard";
+import MessageReply from "../Components/Communication/MessageReply";
+import MessageFollowUpReply from "../Components/Communication/MessageFollowUpReply";
+import AuthenticateChatUser from "../Containers/Chat/AuthenticateChatUser"
 const store = createStore(Reducers);
 
 class App extends Component {
@@ -83,6 +84,7 @@ class App extends Component {
                     <Route exact path="/CommunicationDashboard" component={CommunicationDashboard} />
                     <Route exact path="/MessageReply" component={MessageReply} />
                     <Route exact path="/MessageFollowUpReply" component={MessageFollowUpReply} />
+                    <Route exact path="/AuthenticateChatUser" component={AuthenticateChatUser} />
 
                     <Route path="/" component={Footer} />
                 </div>
