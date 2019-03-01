@@ -14,7 +14,7 @@ export default class ContactUs extends React.Component{
 
                     </div>
                     <div className="col-sm-6">
-                        <Link to="/AuthenticateChatUser" className="active-link">
+                        <Link to="/LiveChat" className="active-link">
                         <i className="fa fa-comments"  style={{marginRight: 8,fontSize: 15,color: 'orange'}}
                          aria-hidden="true"></i>Live chat</Link>
                     </div>

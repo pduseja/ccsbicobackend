@@ -27,6 +27,7 @@ import SecureMessages from "../Components/SecureMessages";
 import CommunicationDashboard from "../Components/Communication/CommunicationDashboard";
 import MessageReply from "../Components/Communication/MessageReply";
 import MessageFollowUpReply from "../Components/Communication/MessageFollowUpReply";
+import LiveChat from "../Containers/Chat/LiveChat"
 import AuthenticateChatUser from "../Containers/Chat/AuthenticateChatUser"
 const store = createStore(Reducers);
 
@@ -84,6 +85,7 @@ class App extends Component {
                     <Route exact path="/CommunicationDashboard" component={CommunicationDashboard} />
                     <Route exact path="/MessageReply" component={MessageReply} />
                     <Route exact path="/MessageFollowUpReply" component={MessageFollowUpReply} />
+                    <Route exact path="/LiveChat" component={LiveChat} />
                     <Route exact path="/AuthenticateChatUser" component={AuthenticateChatUser} />
 
                     <Route path="/" component={Footer} />
