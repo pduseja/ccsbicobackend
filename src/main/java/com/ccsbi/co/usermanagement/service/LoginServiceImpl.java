@@ -32,7 +32,7 @@ public class LoginServiceImpl implements ILoginService {
 
 	@Autowired
 	UsersRepo usersRepo;
-	
+
 	@Autowired
 	UsersDetailsServiceImpl usersDetailsServiceImpl;
 
@@ -41,13 +41,13 @@ public class LoginServiceImpl implements ILoginService {
 
 	@Autowired
 	UsersLoginRecordRepo usersLoginRecordRepo;
-	
+
 	@Autowired
 	ProfilesRepo profilesRepo;
 
 	@Autowired
 	AddressDetailsServiceImpl addressDetailsService;
-	
+
 	@Autowired
 	LiveChatMembersRepo liveChatMembersRepo;
 
@@ -112,9 +112,13 @@ public class LoginServiceImpl implements ILoginService {
 						user.setUsersLoginRecord(usersLoginRecord);
 						// add usersdetails and addressdetails to users object.
 						user = addUserDetailsAddressDetails(user);
-						//Add Team details into LiveChatMembers
-						int add = updatechatMembers(user);
-						
+						// Add Team details into LiveChatMembers
+						int add = checkChatMember(user);
+						if (add > 0) {
+							add = updateChatMembers(user);
+						} else {
+							add = savechatMembers(user);
+						}
 						return user;
 					} else {
 						// Add Login code
@@ -128,8 +132,13 @@ public class LoginServiceImpl implements ILoginService {
 						user.setUsersLoginRecord(usersLoginRecord);
 						// add usersdetails and addressdetails to users object.
 						user = addUserDetailsAddressDetails(user);
-						//Add Team details into LiveChatMembers
-						int add = savechatMembers(user);
+						// Add Team details into LiveChatMembers
+						int add = checkChatMember(user);
+						if (add > 0) {
+							add = updateChatMembers(user);
+						} else {
+							add = savechatMembers(user);
+						}
 						return user;
 
 					}
@@ -148,6 +157,8 @@ public class LoginServiceImpl implements ILoginService {
 		}
 
 	}
+
+	
 
 	@Override
 	public Users getUserName(UsersLoginRecord login) {
@@ -188,7 +199,7 @@ public class LoginServiceImpl implements ILoginService {
 
 		UsersDetails usersD = new UsersDetails();
 		usersD = usersDetailsServiceImpl.getUsersDetails(user.getUserName());
-		
+
 		usersD.setPassword("");
 		user.setUsersDetails(usersD);
 
@@ -293,8 +304,26 @@ public class LoginServiceImpl implements ILoginService {
 		}
 
 	}
-	
-	private int updatechatMembers(Users user) {
+
+	private int checkChatMember(Users user) {
+		int id = 0;
+		LiveChatMembers liveChatMembers = new LiveChatMembers();
+		int profileId = user.getProfileId();
+		String department = profilesRepo.getRole(profileId);
+		if ((StringUtils.startsWith(department, "C")) || (StringUtils.startsWith(department, "S"))
+				|| (StringUtils.startsWith(department, "T"))) {
+			liveChatMembers.setDepartment(department);
+		}
+		String status = "A";
+		com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers liveChatMembersEnt = liveChatMembersRepo.getLiveChatMember(user.getUserName(),department,status);
+		if(liveChatMembersEnt!=null) {
+			return 1;
+		} else {
+			return 0;
+		}
+		
+	}
+	private int updateChatMembers(Users user) {
 		int add = 0;
 		LiveChatMembers liveChatMembers = new LiveChatMembers();
 		int profileId = user.getProfileId();
@@ -302,20 +331,20 @@ public class LoginServiceImpl implements ILoginService {
 		if ((StringUtils.startsWith(department, "C")) || (StringUtils.startsWith(department, "S"))
 				|| (StringUtils.startsWith(department, "T"))) {
 			liveChatMembers.setDepartment(department);
-			String status="A";
-			add = liveChatMembersRepo.update(status,user.getUserName());
-			if(add>0) {
-				
+			String status = "A";
+			add = liveChatMembersRepo.update(status, user.getUserName());
+			if (add > 0) {
+
 				return add;
 			}
 		} else {
 			return add;
 		}
-		
+
 		return 0;
 	}
-	
-	private int savechatMembers(Users user){
+
+	private int savechatMembers(Users user) {
 		int add = 0;
 		LiveChatMembers liveChatMembers = new LiveChatMembers();
 		int profileId = user.getProfileId();
@@ -329,26 +358,25 @@ public class LoginServiceImpl implements ILoginService {
 			liveChatMembers.setStatus("A");
 			liveChatMembers.setUserName(user.getUserName());
 			liveChatMembers = convertChatModel(liveChatMembersRepo.save(convertChatent(liveChatMembers)));
-			if(liveChatMembers.getLiveChatMembersId()>0) {
+			if (liveChatMembers.getLiveChatMembersId() > 0) {
 				add = 1;
 				return add;
 			}
 		} else {
 			return add;
 		}
-		
-		
-		
+
 		return 0;
 	}
 
 	private LiveChatMembers convertChatModel(com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers save) {
-		
+
 		return dozerMapper.map(save, LiveChatMembers.class);
 	}
 
-	private com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers convertChatent(LiveChatMembers liveChatMembers) {
-		
+	private com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers convertChatent(
+			LiveChatMembers liveChatMembers) {
+
 		return dozerMapper.map(liveChatMembers, com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers.class);
 	}
 
