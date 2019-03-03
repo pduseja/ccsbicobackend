@@ -113,7 +113,7 @@ public class LoginServiceImpl implements ILoginService {
 						// add usersdetails and addressdetails to users object.
 						user = addUserDetailsAddressDetails(user);
 						//Add Team details into LiveChatMembers
-						int add = savechatMembers(user);
+						int add = updatechatMembers(user);
 						
 						return user;
 					} else {
@@ -292,6 +292,27 @@ public class LoginServiceImpl implements ILoginService {
 			return new UsersLoginRecord();
 		}
 
+	}
+	
+	private int updatechatMembers(Users user) {
+		int add = 0;
+		LiveChatMembers liveChatMembers = new LiveChatMembers();
+		int profileId = user.getProfileId();
+		String department = profilesRepo.getRole(profileId);
+		if ((StringUtils.startsWith(department, "C")) || (StringUtils.startsWith(department, "S"))
+				|| (StringUtils.startsWith(department, "T"))) {
+			liveChatMembers.setDepartment(department);
+			String status="A";
+			add = liveChatMembersRepo.update(status,user.getUserName());
+			if(add>0) {
+				
+				return add;
+			}
+		} else {
+			return add;
+		}
+		
+		return 0;
 	}
 	
 	private int savechatMembers(Users user){
