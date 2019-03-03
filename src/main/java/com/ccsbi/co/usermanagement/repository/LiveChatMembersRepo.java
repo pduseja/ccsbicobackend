@@ -16,4 +16,8 @@ public interface LiveChatMembersRepo extends JpaRepository<LiveChatMembers, Long
 	@Modifying
 	@Query("Update livechatmembers lcm set lcm.queue=:queue where lcm.userName=:userName and lcm.department=:department")
 	int updateQueueNumber(@Param("userName") String userName,@Param("department") String department,@Param("queue") int queue);
+	
+	@Modifying
+	@Query("Update livechatmembers lcm set lcm.status=:status where lcm.userName=:userName")
+	int update(@Param("status") String status,@Param("userName") String userName);
 }
