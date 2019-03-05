@@ -12,6 +12,7 @@ export default class WelcomeBoard extends Component {
           inputValue: ''
         }
   }
+
   render() {
     return (
       <div className="viewWelcomeBoard">

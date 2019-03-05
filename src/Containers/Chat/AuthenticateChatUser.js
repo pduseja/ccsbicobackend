@@ -37,7 +37,7 @@ class AuthenticateChatUser extends Component {
             <Route
               exact
               path="/CCSBI/main"
-              render={props => <Main showToast={this.showToast} {...props} />}
+              render={props => <Main showToast={this.showToast} {...props} userData={this.props.location.data} />}
             />
 
           </Switch>

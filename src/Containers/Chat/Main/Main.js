@@ -7,6 +7,7 @@ import WelcomeBoard from '../WelcomeBoard/WelcomeBoard'
 import './Main.css'
 import ChatBoard from './../ChatBoard/ChatBoard'
 import { AppString } from './../Const'
+import WebApi from "../../../Utils/WebApi";
 
 class Main extends Component {
   constructor(props) {
@@ -23,6 +24,10 @@ class Main extends Component {
   }
 
   componentDidMount() {
+    WebApi.getQueueDetails(this.props.userData.userName, this.props.userData.department)
+    .then(response => response.json()).then(response => {
+        console.log(response)
+    })
     this.checkLogin()
   }
 

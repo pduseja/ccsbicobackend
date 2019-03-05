@@ -2,7 +2,9 @@ import React from 'react';
 import constants from '../../Utils/Constants';
 import connect from "react-redux/es/connect/connect";
 import {withRouter} from "react-router-dom";
-import '../../Styles/MessageForm.css'
+import '../../Styles/MessageForm.css';
+import WebApi from "../../Utils/WebApi";
+
 export class LiveChat extends React.Component{
     constructor(props){
         super(props)
@@ -15,7 +17,9 @@ export class LiveChat extends React.Component{
                 userName: '',
                 email: '',
                 mobile: '',
-                serviceRef: ''
+                serviceRef: '',
+                registeredUser: 'N',
+                methodOfContact: '',
             },
             formErrors: {
                 title: '',
@@ -51,7 +55,8 @@ export class LiveChat extends React.Component{
             userName: data.userName,
             title: data.title,
             firstName: data.firstName,
-            lastName: data.lastName
+            lastName: data.lastName,
+            registeredUser: 'Y'
             }
         })
         }
@@ -76,11 +81,11 @@ export class LiveChat extends React.Component{
     };
 
     submit = () =>{
-//        WebApi.addNewServiceRequest(this.state.formData, (err, response)=>{
-//
-//            if(err){ throw err}
-            this.props.history.push({pathname:"/AuthenticateChatUser",data: this.state.formData.userName})
-        //})
+        WebApi.sendLiveChatRequest(this.state.formData).then(response => response.json()
+        ).then(response => {
+             console.log(response)
+        }).catch(() => {
+        });
     }
 
 
