@@ -1,10 +1,14 @@
 package com.ccsbi.co.usermanagement.api;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ccsbi.co.usermanagement.client.entity.IMessage;
 import com.ccsbi.co.usermanagement.client.entity.LiveChat;
 import com.ccsbi.co.usermanagement.client.entity.LiveChatMembers;
 import com.ccsbi.co.usermanagement.service.IChatService;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -100,11 +108,19 @@ public class ChatApi {
 	@ApiOperation(value = "Get The Queue Number", notes = "Get The Queue Number", nickname = "Get The Queue Number")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@PostMapping(path = "/liveChatRequest", produces = {
-			MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<LiveChat> getLivechatRequestQueue(@ApiParam(value = "", required = true) @RequestBody LiveChat liveChat) {
+	@PostMapping(path = "/liveChatRequest", produces = {MediaType.APPLICATION_JSON_VALUE,
+			MediaType.MULTIPART_FORM_DATA_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<LiveChat> getLivechatRequestQueue(@ApiParam(value = "", required = true) @Valid String liveChat) throws Exception {
 
-		LiveChat  list = convertLCClientList(chatService.getLivechatRequestQueue(convertLC(liveChat)));
+		LOGGER.info("Inside {}.getLivechatRequestQueue()", getClass().getSimpleName());
+
+		JSONObject jsonObj = new JSONObject(liveChat);
+
+		ObjectMapper mapper = new ObjectMapper();
+		LiveChat livechatClient = mapper.readValue(jsonObj.toString(), LiveChat.class);
+
+		LiveChat  list = convertLCClientList(chatService.getLivechatRequestQueue(convertLC(livechatClient)));
 		if (list.getLiveChatId()>0) {
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} else {
