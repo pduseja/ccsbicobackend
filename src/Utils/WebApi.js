@@ -287,14 +287,18 @@ let WebApi = {
             },
         })
     },
-    sendLiveChatRequest(data){
-      return fetch("http://localhost:9090/CCSBI/api/liveChatRequest",{
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: {
-                  "Content-Type": "application/json"
-              },
-      })
+    sendLiveChatRequest(data, done){
+             let request = new XMLHttpRequest();
+             request.open('POST', 'http://localhost:9090/CCSBI/api/liveChatRequest');
+             let formData = new FormData();
+             formData.append('liveChat', JSON.stringify(data));
+             request.onload = function () {
+                 done(null, request.response);
+             };
+             request.onerror = function () {
+                 done(request.response);
+             };
+             request.send(formData);
     },
 
 

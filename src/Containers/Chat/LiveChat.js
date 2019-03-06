@@ -81,11 +81,10 @@ export class LiveChat extends React.Component{
     };
 
     submit = () =>{
-        WebApi.sendLiveChatRequest(this.state.formData).then(response => response.json()
-        ).then(response => {
-             console.log(response)
-        }).catch(() => {
-        });
+        WebApi.sendLiveChatRequest(this.state.formData, (err, response)=>{
+        if(err){ throw err}
+            this.props.history.push({pathname:"/AuthenticateChatUser",data: response})
+        })
     }
 
 
