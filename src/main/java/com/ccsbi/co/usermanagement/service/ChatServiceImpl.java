@@ -40,7 +40,7 @@ public class ChatServiceImpl implements IChatService {
 		} else {
 			return 0;
 		}
-  
+
 	}
 
 	@Override
@@ -57,14 +57,14 @@ public class ChatServiceImpl implements IChatService {
 		} else {
 			if (queue == 0) {
 				decrease = updateQueue(department, status);
-				update=0;
+				update = 0;
 			} else {
 				queue = queue - 1;
 				decrease = updateQueue(department, status);
 				update = liveChatMembersRepo.updateQueueNumber(liveChatMembers.getUserName(), department, queue);
 			}
 		}
-		
+
 		if (update > 0) {
 			liveChatMembers.setQueue(queue);
 			return liveChatMembers;
@@ -74,19 +74,19 @@ public class ChatServiceImpl implements IChatService {
 
 	}
 
-
 	@Override
 	public List<LiveChat> getlivechatAsPerdepartment(String department) {
 
 		department = findDepartment(department);
 		String status = "A";
-		List<com.ccsbi.co.usermanagement.repository.entity.LiveChat> listent =liveChatRepo.getlivechatAsPerdepartment(department, status); 
+		List<com.ccsbi.co.usermanagement.repository.entity.LiveChat> listent = liveChatRepo
+				.getlivechatAsPerdepartment(department, status);
 		List<LiveChat> listLiveChat = new ArrayList<>();
 		if (listent.isEmpty()) {
 			return new ArrayList<LiveChat>();
 		} else {
 			Iterator<com.ccsbi.co.usermanagement.repository.entity.LiveChat> itr = listent.iterator();
-			while(itr.hasNext()) {
+			while (itr.hasNext()) {
 				LiveChat liveChatModel = convertLCModel(itr.next());
 				listLiveChat.add(liveChatModel);
 			}
@@ -106,7 +106,16 @@ public class ChatServiceImpl implements IChatService {
 		if (!list.isEmpty()) {
 			number = liveChatRepo.getChatQueueNumber(department, status);
 		} else {
-			number = liveChatMembersRepo.getQueueNumber(department, status);
+			List<com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers> listEnt = liveChatMembersRepo
+					.getListLiveChatMember(department, status);
+			if (!listEnt.isEmpty()) {
+				number = liveChatMembersRepo.getQueueNumber(department, status);
+			} else {
+				number = 0;
+				LiveChat livechatModel = new LiveChat();
+				livechatModel.setLiveChatId(0);
+				return livechatModel;
+			}
 		}
 
 		liveChat.setQueue(number + 1);
@@ -122,7 +131,6 @@ public class ChatServiceImpl implements IChatService {
 		return queue;
 	}
 
-	
 	private int updateQueue(String department, String status) {
 		int i = 0;
 		List<LiveChat> list = getlivechatAsPerdepartment(department);
@@ -134,13 +142,13 @@ public class ChatServiceImpl implements IChatService {
 				if (queue > 0) {
 					queue = queue - 1;
 				}
-				i = liveChatRepo.updateQueue(queue,lc.getLiveChatId()); 
+				i = liveChatRepo.updateQueue(queue, lc.getLiveChatId());
 
 			}
 		}
 		return i;
 	}
-	
+
 	private String findDepartment(String department) {
 		if ((StringUtils.startsWith(department, "C"))) {
 			department = "C";
@@ -162,6 +170,5 @@ public class ChatServiceImpl implements IChatService {
 
 		return dozerMapper.map(liveChat, com.ccsbi.co.usermanagement.repository.entity.LiveChat.class);
 	}
-
 
 }
