@@ -237,14 +237,6 @@ public class UsersServiceImpl implements IUsersService {
 		return update;
 	}
 
-	@Override
-	public Users loadUserByUsername(String username) throws Exception {
-		Users user = convertUsers(usersRepo.findByUsername(username));
-        if (user == null) {
-            throw new Exception(String.format("User %s does not exist!", username));
-        }
-        return new Users();
-	}
 	
 	private AddressDetails populateAddressDetails(AddressDetails addressDetails, AddressDetails addressDetails1) {
 
