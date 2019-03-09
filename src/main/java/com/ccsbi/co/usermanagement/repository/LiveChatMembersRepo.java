@@ -1,5 +1,7 @@
 package com.ccsbi.co.usermanagement.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,5 +28,8 @@ public interface LiveChatMembersRepo extends JpaRepository<LiveChatMembers, Long
 	
 	@Query("select lcm from livechatmembers lcm where lcm.userName=:userName and lcm.department=:department and lcm.status=:status")
 	LiveChatMembers getLiveChatMember(@Param("userName") String userName,@Param("department") String department,@Param("status") String status);
+	
+	@Query("select lcm from livechatmembers lcm where lcm.department=:department and lcm.status=:status")
+	List<LiveChatMembers> getListLiveChatMember(@Param("department") String department,@Param("status") String status);
 	
 }
