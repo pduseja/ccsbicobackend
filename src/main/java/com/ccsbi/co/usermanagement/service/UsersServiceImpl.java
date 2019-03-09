@@ -10,13 +10,13 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsbi.co.usermanagement.config.Appconfig;
 import com.ccsbi.co.usermanagement.email.IEmailService;
 import com.ccsbi.co.usermanagement.repository.UsersDetailsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.AddressDetails;
 import com.ccsbi.co.usermanagement.service.model.Users;
 import com.ccsbi.co.usermanagement.service.model.UsersDetails;
-import com.ccsbi.co.usermanagement.util.Appconfig;
 import com.ccsbi.co.usermanagement.util.ReallyStrongSecuredPassword;
 
 @Transactional
@@ -237,6 +237,15 @@ public class UsersServiceImpl implements IUsersService {
 		return update;
 	}
 
+	@Override
+	public Users loadUserByUsername(String username) throws Exception {
+		Users user = convertUsers(usersRepo.findByUsername(username));
+        if (user == null) {
+            throw new Exception(String.format("User %s does not exist!", username));
+        }
+        return new Users();
+	}
+	
 	private AddressDetails populateAddressDetails(AddressDetails addressDetails, AddressDetails addressDetails1) {
 
 		addressDetails.setActive(addressDetails1.getActive());
@@ -268,5 +277,7 @@ public class UsersServiceImpl implements IUsersService {
 
 		return dozerMapper.map(users, com.ccsbi.co.usermanagement.repository.entity.Users.class);
 	}
+
+	
 
 }

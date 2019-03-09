@@ -14,5 +14,7 @@ public interface IChatService {
 	public List<LiveChat> getlivechatAsPerdepartment(String department);
 	
 	public LiveChat getLivechatRequestQueue(LiveChat livechat);
+	
+	public int getLatestQueueForUser(String userName, String department);
 
 }

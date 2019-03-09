@@ -13,6 +13,7 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsbi.co.usermanagement.config.Appconfig;
 import com.ccsbi.co.usermanagement.email.IEmailService;
 import com.ccsbi.co.usermanagement.repository.IMessageFollowUpRepo;
 import com.ccsbi.co.usermanagement.repository.IMessageRepo;
@@ -21,7 +22,6 @@ import com.ccsbi.co.usermanagement.repository.SystemParamsRepo;
 import com.ccsbi.co.usermanagement.repository.UsersRepo;
 import com.ccsbi.co.usermanagement.service.model.IMessage;
 import com.ccsbi.co.usermanagement.service.model.IMessageFollowUp;
-import com.ccsbi.co.usermanagement.util.Appconfig;
 
 @Transactional
 @Service

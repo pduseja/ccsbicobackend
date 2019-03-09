@@ -114,6 +114,15 @@ public class ChatServiceImpl implements IChatService {
 		return liveChat;
 	}
 
+	@Override
+	public int getLatestQueueForUser(String userName, String department) {
+		department = findDepartment(department);
+		String status = "A";
+		int queue = liveChatRepo.getLatestQueueForUser(department, status, userName);
+		return queue;
+	}
+
+	
 	private int updateQueue(String department, String status) {
 		int i = 0;
 		List<LiveChat> list = getlivechatAsPerdepartment(department);
@@ -153,5 +162,6 @@ public class ChatServiceImpl implements IChatService {
 
 		return dozerMapper.map(liveChat, com.ccsbi.co.usermanagement.repository.entity.LiveChat.class);
 	}
+
 
 }
