@@ -58,6 +58,20 @@ export class SecureMessageForm extends React.Component{
         }
     }
     componentDidMount(){
+        WebApi.getDepartmentNames().then(response => response.json()).then(response => {
+            this.setState({...this.state,
+                departments: response
+            })
+
+        })
+
+        WebApi.getSubjects().then(response => response.json()).then(response => {
+            this.setState({...this.state,
+                subjects: response
+            })
+
+        })
+
         let data = this.props.details ? this.props.details : "";
         let userSignedIn = Object.keys(data).length !== 0 && data.constructor === Object;
         if(userSignedIn){
@@ -270,9 +284,9 @@ export class SecureMessageForm extends React.Component{
                                   <select className="input" name="department" value={this.state.formData.department}
                                       onChange={this.handleUserInput}>
                                   <option>Select the department</option>
-                                  {constants.departments.map(a =>
+                                  {this.state.departments && this.state.departments.map(a =>
                                       <option
-                                          key={a.value} value={a.value}>{a.label}</option>)}
+                                          key={a} value={a}>{a}</option>)}
                                     </select>
                                   <p className="error-message">{department}</p>
                             </div>
@@ -365,9 +379,9 @@ export class SecureMessageForm extends React.Component{
                                   <select className="input" name="subject" value={this.state.formData.subject}
                                       onChange={this.handleUserInput}>
                                   <option>Select a subject</option>
-                                  {constants.subject.map(a =>
+                                  {this.state.subjects && this.state.subjects.map(a =>
                                       <option
-                                          key={a.value} value={a.value}>{a.label}</option>)}
+                                          key={a} value={a}>{a}</option>)}
                                     </select>
                                   <p className="error-message">{subject}</p>
                             </div>

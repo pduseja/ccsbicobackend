@@ -28,7 +28,10 @@ import CommunicationDashboard from "../Components/Communication/CommunicationDas
 import MessageReply from "../Components/Communication/MessageReply";
 import MessageFollowUpReply from "../Components/Communication/MessageFollowUpReply";
 import LiveChat from "../Containers/Chat/LiveChat"
+import LiveChatDashboard from "../Containers/LiveChat/LiveChatDashboard"
 import AuthenticateChatUser from "../Containers/Chat/AuthenticateChatUser"
+import ChatBoard from "../Containers/Chat/ChatBoard/ChatBoard"
+
 const store = createStore(Reducers);
 
 class App extends Component {
@@ -87,6 +90,8 @@ class App extends Component {
                     <Route exact path="/MessageFollowUpReply" component={MessageFollowUpReply} />
                     <Route exact path="/LiveChat" component={LiveChat} />
                     <Route exact path="/AuthenticateChatUser" component={AuthenticateChatUser} />
+                    <Route exact path="/ChatBoard" component={ChatBoard} />
+                    <Route exact path="/LiveChatDashboard" component={LiveChatDashboard} />
 
                     <Route path="/" component={Footer} />
                 </div>

@@ -24,9 +24,14 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    WebApi.getQueueDetails(this.props.userData.userName, this.props.userData.department)
+    let userData = JSON.parse(this.props.userData)
+
+    WebApi.getQueueDetails(userData.userName, userData.department)
     .then(response => response.json()).then(response => {
-        console.log(response)
+        this.setState({
+            currentQueueNumber: response,
+            userData: userData
+        })
     })
     this.checkLogin()
   }
@@ -114,6 +119,7 @@ class Main extends Component {
   }
 
   render() {
+  console.log("main render")
     return (
       <div className="common-wrapper">
                         <div className="full-wrapper">
@@ -130,7 +136,7 @@ class Main extends Component {
 
         {/* Body */}
         <div className="body">
-          <div className="viewListUser"> {this.renderListUser()}</div>
+
           <div className="viewBoard">
             {this.state.currentPeerUser ? (
               <ChatBoard
@@ -141,6 +147,8 @@ class Main extends Component {
               <WelcomeBoard
                 currentUserNickname={this.currentUserNickname}
                 currentUserAvatar={this.currentUserAvatar}
+                currentQueueNumber={this.state.currentQueueNumber}
+                userData={this.state.userData}
               />
             )}
           </div>

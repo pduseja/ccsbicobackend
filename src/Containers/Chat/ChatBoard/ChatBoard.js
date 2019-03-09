@@ -1,6 +1,5 @@
 import moment from 'moment'
 import React, { Component } from 'react'
-import ReactLoading from 'react-loading'
 import 'react-toastify/dist/ReactToastify.css'
 import { myFirestore, myStorage } from '../../../Utils/MyFirebase'
 import images from '../Themes/Images'
@@ -55,11 +54,11 @@ export default class ChatBoard extends Component {
     this.setState({ isLoading: true })
     if (
       this.hashString(this.currentUserId) <=
-      this.hashString(this.currentPeerUser.id)
+      this.hashString(this.currentPeerUser)
     ) {
-      this.groupChatId = `${this.currentUserId}-${this.currentPeerUser.id}`
+      this.groupChatId = `${this.currentUserId}-${this.currentPeerUser}`
     } else {
-      this.groupChatId = `${this.currentPeerUser.id}-${this.currentUserId}`
+      this.groupChatId = `${this.currentPeerUser}-${this.currentUserId}`
     }
 
     // Get history and listen new data added
@@ -101,7 +100,7 @@ export default class ChatBoard extends Component {
 
     const itemMessage = {
       idFrom: this.currentUserId,
-      idTo: this.currentPeerUser.id,
+      idTo: this.currentPeerUser,
       timestamp: timestamp,
       content: content.trim(),
       type: type
@@ -189,12 +188,7 @@ export default class ChatBoard extends Component {
         {/* List message */}
         <div className="viewListContentChat">
           {this.renderListMessage()}
-          <div
-            style={{ float: 'left', clear: 'both' }}
-            ref={el => {
-              this.messagesEnd = el
-            }}
-          />
+
         </div>
 
         {/* Stickers */}
@@ -243,22 +237,12 @@ export default class ChatBoard extends Component {
         </div>
 
         {/* Loading */}
-        {this.state.isLoading ? (
-          <div className="viewLoading">
-            <ReactLoading
-              type={'spin'}
-              color={'#203152'}
-              height={'3%'}
-              width={'3%'}
-            />
-          </div>
-        ) : null}
+
       </div>
     )
   }
 
   renderListMessage = () => {
-    if (this.listMessage.length > 0) {
       let viewListMessage = []
       this.listMessage.forEach((item, index) => {
         if (item.idFrom === this.currentUserId) {
@@ -296,15 +280,9 @@ export default class ChatBoard extends Component {
             viewListMessage.push(
               <div className="viewWrapItemLeft" key={item.timestamp}>
                 <div className="viewWrapItemLeft3">
-                  {this.isLastMessageLeft(index) ? (
-                    <img
-                      src={this.currentPeerUser.photoUrl}
-                      alt="avatar"
-                      className="peerAvatarLeft"
-                    />
-                  ) : (
+
                     <div className="viewPaddingLeft" />
-                  )}
+
                   <div className="viewItemLeft">
                     <span className="textContentItem">{item.content}</span>
                   </div>
@@ -320,15 +298,8 @@ export default class ChatBoard extends Component {
             viewListMessage.push(
               <div className="viewWrapItemLeft2" key={item.timestamp}>
                 <div className="viewWrapItemLeft3">
-                  {this.isLastMessageLeft(index) ? (
-                    <img
-                      src={this.currentPeerUser.photoUrl}
-                      alt="avatar"
-                      className="peerAvatarLeft"
-                    />
-                  ) : (
+
                     <div className="viewPaddingLeft" />
-                  )}
                   <div className="viewItemLeft2">
                     <img
                       className="imgItemLeft"
@@ -348,15 +319,8 @@ export default class ChatBoard extends Component {
             viewListMessage.push(
               <div className="viewWrapItemLeft2" key={item.timestamp}>
                 <div className="viewWrapItemLeft3">
-                  {this.isLastMessageLeft(index) ? (
-                    <img
-                      src={this.currentPeerUser.photoUrl}
-                      alt="avatar"
-                      className="peerAvatarLeft"
-                    />
-                  ) : (
+
                     <div className="viewPaddingLeft" />
-                  )}
                   <div className="viewItemLeft3" key={item.timestamp}>
                     <img
                       className="imgItemLeft"
@@ -376,19 +340,8 @@ export default class ChatBoard extends Component {
         }
       })
       return viewListMessage
-    } else {
-      return (
-        <div className="viewWrapSayHi">
-          <span className="textSayHi">Say hi to new friend</span>
-          <img
-            className="imgWaveHand"
-            src={images.ic_wave_hand}
-            alt="wave hand"
-          />
-        </div>
-      )
     }
-  }
+
 
   renderStickers = () => {
     return (

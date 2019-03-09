@@ -41,7 +41,7 @@ export class CommunicationDashboard extends React.Component{
                       },{
                         Header: 'Subject',
                         accessor: 'subject'
-      },{
+                    },{
                       Header: 'Message',
                       accessor: 'message'
                     },{

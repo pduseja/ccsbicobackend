@@ -288,18 +288,73 @@ let WebApi = {
         })
     },
     sendLiveChatRequest(data, done){
-             let request = new XMLHttpRequest();
-             request.open('POST', 'http://localhost:9090/CCSBI/api/liveChatRequest');
-             let formData = new FormData();
-             formData.append('liveChat', JSON.stringify(data));
-             request.onload = function () {
-                 done(null, request.response);
-             };
-             request.onerror = function () {
-                 done(request.response);
-             };
-             request.send(formData);
+         let request = new XMLHttpRequest();
+         request.open('POST', 'http://localhost:9090/CCSBI/api/liveChatRequest');
+         let formData = new FormData();
+         formData.append('liveChat', JSON.stringify(data));
+         request.onload = function () {
+             done(null, request.response);
+         };
+         request.onerror = function () {
+             done(request.response);
+         };
+         request.send(formData);
     },
+    getDepartmentNames(){
+        return fetch('http://localhost:9090/CCSBI/api/department/a ',{
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json"
+            },
+        })
+    },
+     getSubjects(){
+        return fetch('http://localhost:9090/CCSBI/api/subject/a ',{
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json"
+            }
+        })
+     },
+     startNewChat(userName, department){
+        const data = {
+            "userName": userName,
+            "department": department,
+            "addNumber": "Y"
+        }
+        return fetch("http://localhost:9090/CCSBI/api/updateQueueNumber",{
+                method: "PATCH",
+                mode: "cors",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+        })
+     },
+      endChat(userName, department){
+         const data = {
+             "userName": userName,
+             "department": department,
+             "addNumber": "N"
+         }
+         return fetch("http://localhost:9090/CCSBI/api/updateQueueNumber",{
+                 method: "PATCH",
+                 mode: "cors",
+                 body: JSON.stringify(data),
+                 headers: {
+                     "Content-Type": "application/json"
+                 }
+         })
+      },
+      getChatRequestByDepartment(dept){
+          return fetch(`http://localhost:9090/CCSBI/api/liveChat/${dept}`,{
+                  method: "GET",
+                  credentials: 'include',
+                  headers: {
+                  "Content-Type": "application/json"
+              },
+          })
+      },
 
 
 

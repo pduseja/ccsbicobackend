@@ -5,6 +5,10 @@ import Main from './Main/Main'
 import { toast, ToastContainer } from 'react-toastify'
 
 class AuthenticateChatUser extends Component {
+    constructor(props){
+        super(props)
+        console.log(props)
+    }
   showToast = (type, message) => {
     // 0 = warning, 1 = success
     switch (type) {
@@ -20,6 +24,7 @@ class AuthenticateChatUser extends Component {
   }
 
   render() {
+  console.log("authentication render")
     return (
       <BrowserRouter>
         <div>

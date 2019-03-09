@@ -184,6 +184,11 @@ const constants = {
             "ClientSupportDashboard": "Client Support Dashboard",
             "AdminDashboard": "Admin Dashboard",
             "Miscellaneous": "Miscellaneous"
+        },
+        profiles:{
+            "3": "Sales_Support",
+            "2": "Customer_Support",
+            "1": "Techical_Support"
         }
 
 
