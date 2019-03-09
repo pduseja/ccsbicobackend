@@ -42,4 +42,7 @@ public interface UsersRepo extends JpaRepository<Users, Long> {
 	
 	@Query("SELECT u.profileId FROM users u WHERE u.userName=:userName")
 	int getProfileId(@Param("userName") String userName);
+	
+	@Query("SELECT u FROM users u WHERE u.userName=:userName")
+	Users findByUsername(@Param("userName") String userName) throws Exception;
 }
