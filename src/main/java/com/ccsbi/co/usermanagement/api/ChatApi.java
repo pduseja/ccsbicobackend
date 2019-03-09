@@ -1,6 +1,5 @@
 package com.ccsbi.co.usermanagement.api;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsbi.co.usermanagement.client.entity.IMessage;
 import com.ccsbi.co.usermanagement.client.entity.LiveChat;
 import com.ccsbi.co.usermanagement.client.entity.LiveChatMembers;
 import com.ccsbi.co.usermanagement.service.IChatService;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
