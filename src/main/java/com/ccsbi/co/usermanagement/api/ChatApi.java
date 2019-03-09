@@ -119,6 +119,8 @@ public class ChatApi {
 		LiveChat  list = convertLCClientList(chatService.getLivechatRequestQueue(convertLC(livechatClient)));
 		if (list.getLiveChatId()>0) {
 			return new ResponseEntity<>(list, HttpStatus.OK);
+		} else if (list.getLiveChatId()==0){
+			return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
 		} else {
 			return ResponseEntity.badRequest().build();
 		}
