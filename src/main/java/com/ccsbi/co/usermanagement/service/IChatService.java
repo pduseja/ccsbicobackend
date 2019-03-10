@@ -16,5 +16,7 @@ public interface IChatService {
 	public LiveChat getLivechatRequestQueue(LiveChat livechat);
 	
 	public int getLatestQueueForUser(String userName, String department);
+	
+	public String broadcastMessage(String userName, String department);
 
 }
