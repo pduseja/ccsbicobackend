@@ -82,16 +82,16 @@ public class ChatApi {
 		}
 
 	}
-	
+
 	@ApiOperation(value = "Get The Queue Number", notes = "Get The Queue Number", nickname = "Get The Queue Number")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@GetMapping(path = "/liveChat/{department}", produces = {
-			MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(path = "/liveChat/{department}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
 	public List<LiveChat> getlivechatAsPerDepartment(
 			@ApiParam(value = "", required = true) @PathVariable String department) {
 
-		List<LiveChat>  list = convertLCClientList(chatService.getlivechatAsPerdepartment(department));
+		List<LiveChat> list = convertLCClientList(chatService.getlivechatAsPerdepartment(department));
 		if (list.isEmpty()) {
 			return new ArrayList<LiveChat>();
 		} else {
@@ -100,14 +100,14 @@ public class ChatApi {
 
 	}
 
-
 	@ApiOperation(value = "Get The Queue Number", notes = "Get The Queue Number", nickname = "Get The Queue Number")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
 			@ApiResponse(code = 404, message = "Page not found") })
-	@PostMapping(path = "/liveChatRequest", produces = {MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(path = "/liveChatRequest", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.MULTIPART_FORM_DATA_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
 					MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<LiveChat> getLivechatRequestQueue(@ApiParam(value = "", required = true) @Valid String liveChat) throws Exception {
+	public ResponseEntity<LiveChat> getLivechatRequestQueue(
+			@ApiParam(value = "", required = true) @Valid String liveChat) throws Exception {
 
 		LOGGER.info("Inside {}.getLivechatRequestQueue()", getClass().getSimpleName());
 
@@ -116,10 +116,10 @@ public class ChatApi {
 		ObjectMapper mapper = new ObjectMapper();
 		LiveChat livechatClient = mapper.readValue(jsonObj.toString(), LiveChat.class);
 
-		LiveChat  list = convertLCClientList(chatService.getLivechatRequestQueue(convertLC(livechatClient)));
-		if (list.getLiveChatId()>0) {
+		LiveChat list = convertLCClientList(chatService.getLivechatRequestQueue(convertLC(livechatClient)));
+		if (list.getLiveChatId() > 0) {
 			return new ResponseEntity<>(list, HttpStatus.OK);
-		} else if (list.getLiveChatId()==0){
+		} else if (list.getLiveChatId() == 0) {
 			return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
 		} else {
 			return ResponseEntity.badRequest().build();
@@ -127,14 +127,33 @@ public class ChatApi {
 
 	}
 
-	private LiveChat convertLCClientList(
-			com.ccsbi.co.usermanagement.service.model.LiveChat livechatRequestQueue) {
+	@ApiOperation(value = "Get The Queue Number", notes = "Get The Queue Number", nickname = "Get The Queue Number")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@PostMapping(path = "/broadcastMessage", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE  })
+	public ResponseEntity<String> broadcastMessage(@ApiParam(value = "", required = true) @Valid String userName,
+			@ApiParam(value = "", required = true) @Valid String department) throws Exception {
+
+		LOGGER.info("Inside {}.broadcastMessage()", getClass().getSimpleName());
+
 		
+		String success = chatService.broadcastMessage(userName,department);
+		if (!StringUtils.isEmpty(success)) {
+			return new ResponseEntity<>(success, HttpStatus.OK);
+		} else {
+			return ResponseEntity.badRequest().build();
+		}
+
+	}
+
+	private LiveChat convertLCClientList(com.ccsbi.co.usermanagement.service.model.LiveChat livechatRequestQueue) {
+
 		return dozerMapper.map(livechatRequestQueue, LiveChat.class);
 	}
 
 	private com.ccsbi.co.usermanagement.service.model.LiveChat convertLC(LiveChat liveChat) {
-		
+
 		return dozerMapper.map(liveChat, com.ccsbi.co.usermanagement.service.model.LiveChat.class);
 	}
 
@@ -142,7 +161,7 @@ public class ChatApi {
 	private List<LiveChat> convertLCClientList(
 			List<com.ccsbi.co.usermanagement.service.model.LiveChat> getlivechatAsPerdepartment) {
 		List<LiveChat> list = new ArrayList<>();
-		return (List<LiveChat>)dozerMapper.map(getlivechatAsPerdepartment, list.getClass());
+		return (List<LiveChat>) dozerMapper.map(getlivechatAsPerdepartment, list.getClass());
 	}
 
 	private LiveChatMembers convertModel(com.ccsbi.co.usermanagement.service.model.LiveChatMembers updateQueueNumber) {
