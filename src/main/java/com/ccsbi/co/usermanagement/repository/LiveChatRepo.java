@@ -24,6 +24,13 @@ public interface LiveChatRepo extends JpaRepository<LiveChat, Long> {
 	@Query("update livechat lc set lc.queue=:queue where lc.liveChatId=:liveChatId")
 	int  updateQueue(@Param("queue")int queue,@Param("liveChatId") int liveChatId);
 	
-	@Query("select lc.queue from livechat lc where lc.department like concat(:department,'%') and lc.status=:status and lc.userName=:userName")
-	int getLatestQueueForUser(@Param("department") String department,@Param("status") String status,@Param("userName") String userName);
+	@Query("select lc from livechat lc where lc.department like concat(:department,'%') and lc.status=:status and lc.userName=:userName")
+	LiveChat getLatestQueueForUser(@Param("department") String department,@Param("status") String status,@Param("userName") String userName);
+	
+	@Query("select lc from livechat lc where lc.userName=:userName and lc.status=:status and lc.department=:department")
+	LiveChat findUser(@Param("userName") String userName,@Param("status") String status, @Param("department") String department);
+	
+	@Modifying
+	@Query("update livechat lc set lc.status=:status where lc.liveChatId=:liveChatId")
+	int  updateLiveChat(@Param("liveChatId") int liveChatId,@Param("status")String status);
 }

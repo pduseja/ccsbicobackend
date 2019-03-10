@@ -12,8 +12,8 @@ import com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers;
 
 public interface LiveChatMembersRepo extends JpaRepository<LiveChatMembers, Long> {
 
-	@Query("SELECT lcm.queue from livechatmembers lcm where lcm.userName=:userName and lcm.department=:department and lcm.status=:status")
-	int getLatestQueueNumber(@Param("userName") String userName,@Param("department") String department,@Param("status") String status);
+	@Query("SELECT lcm from livechatmembers lcm where lcm.userName=:userName and lcm.department=:department and lcm.status=:status")
+	LiveChatMembers getLatestQueueNumber(@Param("userName") String userName,@Param("department") String department,@Param("status") String status);
 	
 	@Modifying
 	@Query("Update livechatmembers lcm set lcm.queue=:queue where lcm.userName=:userName and lcm.department=:department")
@@ -32,4 +32,6 @@ public interface LiveChatMembersRepo extends JpaRepository<LiveChatMembers, Long
 	@Query("select lcm from livechatmembers lcm where lcm.department=:department and lcm.status=:status")
 	List<LiveChatMembers> getListLiveChatMember(@Param("department") String department,@Param("status") String status);
 	
+	@Query("select lcm.userName from livechatmembers lcm where lcm.department=:department and lcm.status=:status and userName<>:userName")
+	List<String> broadcastMessage(@Param("userName") String userName,@Param("department") String department,@Param("status") String status);
 }
