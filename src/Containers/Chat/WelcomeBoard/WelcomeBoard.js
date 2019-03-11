@@ -24,13 +24,11 @@ class WelcomeBoard extends Component {
     }
 
   toggleWindowPortal = () => {
-      WebApi.startNewChat(this.props.userData.userName, this.props.userData.department)
-      .then(response => response.json()).then(response => {
+
       this.setState(state => ({
         ...state,
         showWindowPortal: !state.showWindowPortal,
       }));
-      })
     }
 
     closeWindowPortal = () => {

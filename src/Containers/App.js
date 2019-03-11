@@ -29,6 +29,7 @@ import MessageReply from "../Components/Communication/MessageReply";
 import MessageFollowUpReply from "../Components/Communication/MessageFollowUpReply";
 import LiveChat from "../Containers/Chat/LiveChat"
 import LiveChatDashboard from "../Containers/LiveChat/LiveChatDashboard"
+import ChatWindow from "../Containers/LiveChat/ChatWindow"
 import AuthenticateChatUser from "../Containers/Chat/AuthenticateChatUser"
 import ChatBoard from "../Containers/Chat/ChatBoard/ChatBoard"
 
@@ -92,6 +93,7 @@ class App extends Component {
                     <Route exact path="/AuthenticateChatUser" component={AuthenticateChatUser} />
                     <Route exact path="/ChatBoard" component={ChatBoard} />
                     <Route exact path="/LiveChatDashboard" component={LiveChatDashboard} />
+                    <Route exact path="/ChatWindow" component={ChatWindow} />
 
                     <Route path="/" component={Footer} />
                 </div>

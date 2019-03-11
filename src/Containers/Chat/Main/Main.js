@@ -119,7 +119,6 @@ class Main extends Component {
   }
 
   render() {
-  console.log("main render")
     return (
       <div className="common-wrapper">
                         <div className="full-wrapper">

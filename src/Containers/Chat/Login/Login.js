@@ -40,7 +40,7 @@ class Login extends Component {
       .then(async result => {
         let user = result.user
         if (user) {
-          let userName = "RC100003"
+          let userName = "RC100005"
           const result = await myFirestore
             .collection(AppString.NODE_USERS)
             .where(AppString.ID, '==', userName)
