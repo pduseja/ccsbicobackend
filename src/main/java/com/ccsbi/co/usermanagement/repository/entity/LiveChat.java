@@ -51,6 +51,23 @@ public class LiveChat implements Serializable {
 	
 	@Column(name = "userid")
 	private int userId;
+	
+	@Column(name="supportusername")
+	private String supportUserName;
+
+	/**
+	 * @return the supportUserName
+	 */
+	public String getSupportUserName() {
+		return supportUserName;
+	}
+
+	/**
+	 * @param supportUserName the supportUserName to set
+	 */
+	public void setSupportUserName(String supportUserName) {
+		this.supportUserName = supportUserName;
+	}
 
 	/**
 	 * @return the liveChatId
