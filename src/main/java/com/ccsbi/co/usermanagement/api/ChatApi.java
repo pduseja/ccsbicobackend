@@ -147,13 +147,44 @@ public class ChatApi {
 
 	}
 
-	private LiveChat convertLCClientList(com.ccsbi.co.usermanagement.service.model.LiveChat livechatRequestQueue) {
+	@ApiOperation(value = "Join the Chat Room", notes = "Join the Chat Room", nickname = "Join the Chat Room")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@PostMapping(path = "/joinChat", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE  })
+	public ResponseEntity<String> joinChat(@ApiParam(value = "", required = true) @Valid String userName) throws Exception {
 
+		LOGGER.info("Inside {}.joinChat()", getClass().getSimpleName());		
+		String success = chatService.joinChat(userName);
+		if (!StringUtils.isEmpty(success)) {
+			return new ResponseEntity<>(success, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Failed", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+
+	@ApiOperation(value = "Leave the Chat Room", notes = "Leave the Chat Room", nickname = "Leave the Chat Room")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success!"),
+			@ApiResponse(code = 404, message = "Page not found") })
+	@PostMapping(path = "/leaveChat", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE  })
+	public ResponseEntity<String> leaveChat(@ApiParam(value = "", required = true) @Valid String userName) throws Exception {
+
+		LOGGER.info("Inside {}.leaveChat()", getClass().getSimpleName());		
+		String success = chatService.leaveChat(userName);
+		if (!StringUtils.isEmpty(success)) {
+			return new ResponseEntity<>(success, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Failed", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	private LiveChat convertLCClientList(com.ccsbi.co.usermanagement.service.model.LiveChat livechatRequestQueue) {
 		return dozerMapper.map(livechatRequestQueue, LiveChat.class);
 	}
 
 	private com.ccsbi.co.usermanagement.service.model.LiveChat convertLC(LiveChat liveChat) {
-
 		return dozerMapper.map(liveChat, com.ccsbi.co.usermanagement.service.model.LiveChat.class);
 	}
 
@@ -165,12 +196,10 @@ public class ChatApi {
 	}
 
 	private LiveChatMembers convertModel(com.ccsbi.co.usermanagement.service.model.LiveChatMembers updateQueueNumber) {
-
 		return dozerMapper.map(updateQueueNumber, LiveChatMembers.class);
 	}
 
 	private com.ccsbi.co.usermanagement.service.model.LiveChatMembers convert(LiveChatMembers liveChatMembers) {
-
 		return dozerMapper.map(liveChatMembers, com.ccsbi.co.usermanagement.service.model.LiveChatMembers.class);
 	}
 

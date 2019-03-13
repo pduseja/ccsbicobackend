@@ -15,13 +15,14 @@ public class ChatController {
 
 	@MessageMapping("/chatQueue")
 	@SendTo("/topic/chatQueue")
-	public int getUser(String userName, String department) throws Exception {
+	public String getUser(String userName, String department) throws Exception {
 		int queue = chatService.getLatestQueueForUser(userName, department);
+		String supportUserName = chatService.getLatestQueueForUserName(userName, department);
 		if(queue==0) {
-			return 0;
+			return 0+supportUserName;
 		} else {
 			Thread.sleep(4000);
-			return queue;
+			return String.valueOf(queue);
 		}
 		
 	}
