@@ -23,7 +23,7 @@ public interface LiveChatMembersRepo extends JpaRepository<LiveChatMembers, Long
 	@Query("Update livechatmembers lcm set lcm.status=:status where lcm.userName=:userName")
 	int update(@Param("status") String status,@Param("userName") String userName);
 	
-	@Query("SELECT max(lcm.queue) from livechatmembers lcm where lcm.department=:department and lcm.status=:status order by lcm.department")
+	@Query("SELECT COALESCE(max(lcm.queue),0) from livechatmembers lcm where lcm.department=:department and lcm.status=:status order by lcm.department")
 	int getQueueNumber(@Param("department") String department,@Param("status") String status);
 	
 	@Query("select lcm from livechatmembers lcm where lcm.userName=:userName and lcm.department=:department and lcm.status=:status")
@@ -34,4 +34,5 @@ public interface LiveChatMembersRepo extends JpaRepository<LiveChatMembers, Long
 	
 	@Query("select lcm.userName from livechatmembers lcm where lcm.department=:department and lcm.status=:status and userName<>:userName")
 	List<String> broadcastMessage(@Param("userName") String userName,@Param("department") String department,@Param("status") String status);
+	
 }
