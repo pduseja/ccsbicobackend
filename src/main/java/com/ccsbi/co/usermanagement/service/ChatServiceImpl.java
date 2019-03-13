@@ -70,25 +70,48 @@ public class ChatServiceImpl implements IChatService {
 		int queue = 0;
 		int update = 0;
 		int decrease = 0;
+		int add = 0;
 		String status = "A";
-		com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers queue1 = liveChatMembersRepo
+		String userNameChat = liveChatMembers.getChatMember() != null ? liveChatMembers.getChatMember() : "";
+		com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers livechatM = liveChatMembersRepo
 				.getLatestQueueNumber(liveChatMembers.getUserName(), department, status);
+		
+		// If a New chat is started then increment of Queue Number for support
+		// User Queue, but not the user with whom chat has started
 		if (liveChatMembers.getAddNumber().equalsIgnoreCase("Y")) {
-			queue = queue1.getQueue() + 1;
+			queue = livechatM.getQueue() + 1;
+			if (!StringUtils.isEmpty(userNameChat)) {
+				add = liveChatRepo.updateSupportUserName(0, status, liveChatMembers.getUserName(), userNameChat);
+				// Sending Queue number to inform UI that User with whom you
+				// have initiated chat is still active. '0' means active: '1' :
+				// Means inactive
+				if (add != 0) {
+					liveChatMembers.setQueue(0);
+				} else {
+					liveChatMembers.setQueue(1);
+				}
+			}
 			update = liveChatMembersRepo.updateQueueNumber(liveChatMembers.getUserName(), department, queue);
 		} else {
 			if (queue == 0) {
 				decrease = updateQueueZero(department, status, queue);
+
+				add = liveChatRepo.updateSupportUserName(0, status, liveChatMembers.getUserName(), userNameChat);
+				if (add != 0) {
+					liveChatMembers.setQueue(0);
+				} else {
+					liveChatMembers.setQueue(1);
+				}
 				update = 0;
 			} else {
-				queue = queue1.getQueue() - 1;
+				queue = livechatM.getQueue() - 1;
 				decrease = updateQueue(department, status);
 				update = liveChatMembersRepo.updateQueueNumber(liveChatMembers.getUserName(), department, queue);
 			}
 		}
 
 		if (update > 0) {
-			liveChatMembers.setQueue(queue);
+
 			return liveChatMembers;
 		} else {
 			return liveChatMembers;
@@ -125,7 +148,7 @@ public class ChatServiceImpl implements IChatService {
 		String department = findDepartment(liveChat.getDepartment());
 		department = getDepartment(department);
 		com.ccsbi.co.usermanagement.repository.entity.LiveChat chatEnt = liveChatRepo.findUser(liveChat.getUserName(),
-				status,department);		
+				status, department);
 		if (chatEnt != null) {
 			number = chatEnt.getQueue();
 		}
@@ -179,7 +202,20 @@ public class ChatServiceImpl implements IChatService {
 		} else {
 			return 0;
 		}
+	}
 
+	@Override
+	public String getLatestQueueForUserName(String userName, String department) {
+		department = findDepartment(department);
+		String status = "A";
+		int queue = 0;
+		com.ccsbi.co.usermanagement.repository.entity.LiveChat liveChat = liveChatRepo
+				.getLatestQueueForUserSupportName(status, userName, queue);
+		if (liveChat != null) {
+			return liveChat.getSupportUserName();
+		} else {
+			return "";
+		}
 	}
 
 	@Override
@@ -205,20 +241,40 @@ public class ChatServiceImpl implements IChatService {
 					if (appConfig.getEmail().equalsIgnoreCase("YES")) {
 						iEmailService.sendRegistrationMail(to, subject, text);
 					}
-				} else {
-					String mobile = addressDetails.getMobile();
-					if (appConfig.getSms().equalsIgnoreCase("YES")) {
-
-						// Add logic to send SMS
-					}
 				}
-
 			}
 			return "success";
 		} else {
 			return "No User Available now";
 		}
+	}
 
+	@Override
+	public String joinChat(String userName) {
+		String success = new String();
+		int update = 0;
+		String status = "A";
+		update = liveChatMembersRepo.update(status, userName);
+		if (update > 0) {
+			success = "Success";
+		} else {
+			success = "";
+		}
+		return success;
+	}
+
+	@Override
+	public String leaveChat(String userName) {
+		String success = new String();
+		int update = 0;
+		String status = "N";
+		update = liveChatMembersRepo.update(status, userName);
+		if (update > 0) {
+			success = "Success";
+		} else {
+			success = "";
+		}
+		return success;
 	}
 
 	private String getDepartment(String department) {
@@ -261,9 +317,7 @@ public class ChatServiceImpl implements IChatService {
 			while (itr.hasNext()) {
 				LiveChat lc = itr.next();
 				queue = lc.getQueue();
-				if (queue > 0) {
-					queue = queue;
-				}
+
 				i = liveChatRepo.updateQueue(queue, lc.getLiveChatId());
 
 			}

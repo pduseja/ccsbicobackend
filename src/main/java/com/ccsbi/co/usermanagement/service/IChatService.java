@@ -19,4 +19,10 @@ public interface IChatService {
 	
 	public String broadcastMessage(String userName, String department);
 
+	public String joinChat(String userName);
+
+	public String leaveChat(String userName);
+
+	public String getLatestQueueForUserName(String userName, String department);
+
 }
