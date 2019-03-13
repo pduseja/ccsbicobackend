@@ -20,6 +20,22 @@ public class LiveChatMembers implements Serializable {
 	private int priority;
 	
 	private String addNumber;
+	
+	private String chatMember;
+
+	/**
+	 * @return the chatMember
+	 */
+	public String getChatMember() {
+		return chatMember;
+	}
+
+	/**
+	 * @param chatMember the chatMember to set
+	 */
+	public void setChatMember(String chatMember) {
+		this.chatMember = chatMember;
+	}
 
 	/**
 	 * @return the addNumber
