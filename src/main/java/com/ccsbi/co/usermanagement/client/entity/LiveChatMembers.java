@@ -56,6 +56,25 @@ public class LiveChatMembers implements Serializable {
 	@JacksonXmlProperty(localName = "addNumber")
 	private String addNumber;
 	
+	@ApiModelProperty(name = "chatMember", value = "chatMember")
+	@JsonProperty("chatMember")
+	@JacksonXmlProperty(localName = "chatMember")
+	private String chatMember;
+	
+	/**
+	 * @return the chatMember
+	 */
+	public String getChatMember() {
+		return chatMember;
+	}
+
+	/**
+	 * @param chatMember the chatMember to set
+	 */
+	public void setChatMember(String chatMember) {
+		this.chatMember = chatMember;
+	}
+
 	/**
 	 * @return the addNumber
 	 */
