@@ -28,6 +28,7 @@ export default class ChatBoard extends Component {
     this.scrollToBottom()
   }
 
+
   componentDidMount() {
     // For first render, it's not go through componentWillReceiveProps
     this.getListHistory()

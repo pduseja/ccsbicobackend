@@ -8,6 +8,7 @@ import './Main.css'
 import ChatBoard from './../ChatBoard/ChatBoard'
 import { AppString } from './../Const'
 import WebApi from "../../../Utils/WebApi";
+import SockJsClient from 'react-stomp';
 
 class Main extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Main extends Component {
       isOpenDialogConfirmLogout: false,
       currentPeerUser: null
     }
-    this.currentUserId = localStorage.getItem(AppString.ID)
+    this.currentUserId = "RC100005"
     this.currentUserAvatar = localStorage.getItem(AppString.PHOTO_URL)
     this.currentUserNickname = localStorage.getItem(AppString.NICKNAME)
     this.listUser = []
@@ -28,6 +29,7 @@ class Main extends Component {
 
     WebApi.getQueueDetails(userData.userName, userData.department)
     .then(response => response.json()).then(response => {
+
         this.setState({
             currentQueueNumber: response,
             userData: userData
@@ -59,6 +61,10 @@ class Main extends Component {
       isOpenDialogConfirmLogout: true
     })
   }
+
+    sendMessage = (msg) => {
+      this.clientRef.sendMessage('/topic/api', msg);
+    }
 
   doLogout = () => {
     this.setState({ isLoading: true })
@@ -135,7 +141,9 @@ class Main extends Component {
 
         {/* Body */}
         <div className="body">
-
+        <SockJsClient url='http://localhost:9090/ws' topics={['/topic/api']}
+            onMessage={(msg) => { console.log(msg); }}
+            ref={ (client) => { this.clientRef = client }} />
           <div className="viewBoard">
             {this.state.currentPeerUser ? (
               <ChatBoard
