@@ -1,5 +1,5 @@
 import React from 'react'
-//import WebApi from "../../Utils/WebApi";
+import WebApi from "../../Utils/WebApi";
 import moment from 'moment';
 import { myFirestore } from '../../Utils/MyFirebase'
 import images from '../Chat/Themes/Images'
@@ -22,18 +22,17 @@ export default class ChatWindow extends React.Component{
 
         componentDidMount(){
             this.getListHistory()
-//              WebApi.startNewChat(window.currentUser, window.data.original.userName)
-//                    .then(response => response.json()).then(response => {
-//
-//              this.setState({
-//                ...this.state,
-//                currentUserId: window.currentUser,
-//                currentPeerUser : window.data.original.userName
-//              },()=> {
-//                this.getListHistory();
-//                 console.log("didmount", this.state )
-//              });
-//            })
+              WebApi.startNewChat(window.currentUser, window.data.original.userName, window.data.original.department)
+                    .then(response => response.json()).then(response => {
+              this.setState({
+                ...this.state,
+                currentUserId: window.currentUser,
+                currentPeerUser : window.data.original.userName
+              },()=> {
+                this.getListHistory();
+                 console.log("didmount", this.state )
+              });
+            })
 
         }
   componentWillReceiveProps(newProps) {

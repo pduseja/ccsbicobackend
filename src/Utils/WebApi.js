@@ -316,9 +316,10 @@ let WebApi = {
             }
         })
      },
-     startNewChat(userName, department){
+     startNewChat(userName, department, peerUser){
         const data = {
             "userName": userName,
+            "chatMamber": peerUser,
             "department": department,
             "addNumber": "Y"
         }
