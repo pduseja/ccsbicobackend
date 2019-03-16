@@ -19,7 +19,7 @@ public class ChatController {
 		int queue = chatService.getLatestQueueForUser(userName, department);
 		String supportUserName = chatService.getLatestQueueForUserName(userName, department);
 		if(queue==0) {
-			return 0+":"+supportUserName;
+			return String.valueOf(queue)+":"+supportUserName;
 		} else {
 			Thread.sleep(4000);
 			return String.valueOf(queue);
