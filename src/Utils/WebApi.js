@@ -319,7 +319,7 @@ let WebApi = {
      startNewChat(userName, department, peerUser){
         const data = {
             "userName": userName,
-            "chatMamber": peerUser,
+            "chatMember": peerUser,
             "department": department,
             "addNumber": "Y"
         }

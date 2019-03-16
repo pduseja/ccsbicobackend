@@ -33,6 +33,8 @@
     "react-tabs": "^2.3.0",
     "react-toastify": "^4.4.1",
     "redux": "^4.0.1",
+    "sockjs-client": "^1.3.0",
+    "stomp-websocket": "^2.3.4-next",
     "universal-cookie": "^3.0.7"
   },
   "scripts": {

@@ -8,8 +8,10 @@ import './Main.css'
 import ChatBoard from './../ChatBoard/ChatBoard'
 import { AppString } from './../Const'
 import WebApi from "../../../Utils/WebApi";
-import SockJsClient from 'react-stomp';
+import Stomp from 'stomp-websocket';
+import SockJs from 'sockjs-client'
 
+let stompClient = null;
 class Main extends Component {
   constructor(props) {
     super(props)
@@ -26,6 +28,19 @@ class Main extends Component {
 
   componentDidMount() {
     let userData = JSON.parse(this.props.userData)
+      var socket = new SockJs('/chatQueue');
+      stompClient = Stomp.over(socket);
+      stompClient.connect({}, function(frame) {
+          console.log('Connected: ' + frame);
+          stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
+          stompClient.subscribe('/topic/api', function(greeting){
+              console.log("message")
+          });
+      });
+
+//      socket.onmessage = (m) =>{
+//        console.log(m, "message")
+//      }
 
     WebApi.getQueueDetails(userData.userName, userData.department)
     .then(response => response.json()).then(response => {
@@ -62,8 +77,10 @@ class Main extends Component {
     })
   }
 
-    sendMessage = (msg) => {
-      this.clientRef.sendMessage('/topic/api', msg);
+    sendMessage = () => {
+    debugger
+    let userData = JSON.parse(this.props.userData)
+      this.clientRef.sendMessage('/topic/api', {}, JSON.stringify({'userName': userData.userName, 'department': userData.department}));
     }
 
   doLogout = () => {
@@ -125,6 +142,7 @@ class Main extends Component {
   }
 
   render() {
+
     return (
       <div className="common-wrapper">
                         <div className="full-wrapper">
@@ -141,9 +159,6 @@ class Main extends Component {
 
         {/* Body */}
         <div className="body">
-        <SockJsClient url='http://localhost:9090/ws' topics={['/topic/api']}
-            onMessage={(msg) => { console.log(msg); }}
-            ref={ (client) => { this.clientRef = client }} />
           <div className="viewBoard">
             {this.state.currentPeerUser ? (
               <ChatBoard
