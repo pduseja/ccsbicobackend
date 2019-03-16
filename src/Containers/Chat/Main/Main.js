@@ -29,18 +29,18 @@ class Main extends Component {
   }
 
   componentDidMount() {
-  let socket = new SockJs('/chatQueue');
+  let socket = new SockJs('/chat');
   let stompClient = null;
   stompClient = Stomp.over(socket);
     let userData = JSON.parse(this.props.userData)
       stompClient = Stomp.over(socket);
       stompClient.connect({}, function(frame) {
           console.log('Connected: ' + frame);
-          stompClient.subscribe('/topic/api', function(greeting){
+          stompClient.subscribe('/topic/chatQueue', function(greeting){
                 debugger
               console.log("message", greeting)
           });
-          stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
+          stompClient.send('/api/chatQueue', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
       });
 
 //    var connect_callback = function() {
@@ -111,7 +111,7 @@ class Main extends Component {
     sendMessage = () => {
     debugger
     let userData = JSON.parse(this.props.userData)
-      this.clientRef.sendMessage('/topic/api', {}, JSON.stringify({'userName': userData.userName, 'department': userData.department}));
+      this.clientRef.sendMessage('/api/chatQueue', {}, JSON.stringify({'userName': userData.userName, 'department': userData.department}));
     }
 
   doLogout = () => {
