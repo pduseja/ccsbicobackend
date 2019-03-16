@@ -17,8 +17,10 @@ public class ChatController {
 	@SendTo("/topic/chatQueue")
 	public String getUser(String userName, String department) throws Exception {
 		int queue = chatService.getLatestQueueForUser(userName, department);
+		System.out.println("Queue "+queue);
 		String supportUserName = chatService.getLatestQueueForUserName(userName, department);
-		if(queue==0) {
+		if(queue==0 && supportUserName!=null) {
+			System.out.println("Hello : "+supportUserName);
 			return String.valueOf(queue)+":"+supportUserName;
 		} else {
 			Thread.sleep(4000);
