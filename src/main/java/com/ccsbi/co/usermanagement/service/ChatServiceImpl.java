@@ -75,37 +75,56 @@ public class ChatServiceImpl implements IChatService {
 		String userNameChat = liveChatMembers.getChatMember() != null ? liveChatMembers.getChatMember() : "";
 		com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers livechatM = liveChatMembersRepo
 				.getLatestQueueNumber(liveChatMembers.getUserName(), department, status);
-		
+		// To check if any user is available for that support team, if not then return queue as zero
+		if(livechatM!=null) {
+			queue = livechatM.getQueue();
+		} else {
+			liveChatMembers.setQueue(1);
+			liveChatMembers.setStatus("N");
+			return liveChatMembers;
+		}
+
 		// If a New chat is started then increment of Queue Number for support
 		// User Queue, but not the user with whom chat has started
-		if (liveChatMembers.getAddNumber().equalsIgnoreCase("Y")) {
-			queue = livechatM.getQueue() + 1;
-			if (!StringUtils.isEmpty(userNameChat)) {
-				add = liveChatRepo.updateSupportUserName(0, status, liveChatMembers.getUserName(), userNameChat);
-				// Sending Queue number to inform UI that User with whom you
-				// have initiated chat is still active. '0' means active: '1' :
-				// Means inactive
-				if (add != 0) {
-					liveChatMembers.setQueue(0);
-				} else {
-					liveChatMembers.setQueue(1);
+		if (liveChatMembers.getAddNumber().equalsIgnoreCase("Y")) {	
+				queue = queue+1;
+				if (!StringUtils.isEmpty(userNameChat)) {
+					department = getDepartment(department);
+					add = liveChatRepo.updateSupportUserName(0, status, userNameChat, liveChatMembers.getUserName(),
+							department);
+					// Sending Queue number to inform UI that User with whom you
+					// have initiated chat is still active. '0' means active:
+					// '1' :
+					// Means inactive
+					if (add != 0) {
+						liveChatMembers.setStatus("A");
+						liveChatMembers.setQueue(0);
+					} else {
+						liveChatMembers.setQueue(1);
+						liveChatMembers.setStatus("N");
+					}
 				}
-			}
+			
+			department = findDepartment(department);
 			update = liveChatMembersRepo.updateQueueNumber(liveChatMembers.getUserName(), department, queue);
 		} else {
 			if (queue == 0) {
 				decrease = updateQueueZero(department, status, queue);
-
-				add = liveChatRepo.updateSupportUserName(0, status, liveChatMembers.getUserName(), userNameChat);
+				department = getDepartment(department);
+				add = liveChatRepo.updateSupportUserName(0, status, liveChatMembers.getUserName(), userNameChat,
+						department);
 				if (add != 0) {
 					liveChatMembers.setQueue(0);
+					liveChatMembers.setStatus("A");
 				} else {
 					liveChatMembers.setQueue(1);
+					liveChatMembers.setStatus("N");
 				}
 				update = 0;
 			} else {
-				queue = livechatM.getQueue() - 1;
+				queue = queue - 1;
 				decrease = updateQueue(department, status);
+				department = findDepartment(department);
 				update = liveChatMembersRepo.updateQueueNumber(liveChatMembers.getUserName(), department, queue);
 			}
 		}
@@ -153,42 +172,38 @@ public class ChatServiceImpl implements IChatService {
 			number = chatEnt.getQueue();
 		}
 		List<com.ccsbi.co.usermanagement.repository.entity.LiveChat> list = liveChatRepo
-				.getLiveChatQueueNumber(department, status);
-		if (number == 0) {
-			if (!list.isEmpty()) {
-				number = liveChatRepo.getChatQueueNumber(department, status);
-			} else {
-				List<com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers> listEnt = liveChatMembersRepo
-						.getListLiveChatMember(department, status);
-				if (!listEnt.isEmpty()) {
-					number = liveChatMembersRepo.getQueueNumber(department, status);
-				} else {
-					number = 0;
-					LiveChat livechatModel = new LiveChat();
-					livechatModel.setLiveChatId(0);
-					return livechatModel;
-				}
-			}
+				.getLiveChatQueueNumber(department, status, liveChat.getUserName());
+
+		if (!list.isEmpty()) {
+			number = liveChatRepo.getChatQueueNumber(department, status);
 			liveChat.setQueue(number + 1);
 			liveChat = convertLCModel(liveChatRepo.save(convertEnt(liveChat)));
+			status = "N";
+			Iterator<com.ccsbi.co.usermanagement.repository.entity.LiveChat> itr = list.iterator();
+			while (itr.hasNext()) {
+				com.ccsbi.co.usermanagement.repository.entity.LiveChat liveChatUpdate = itr.next();
+
+				update = liveChatRepo.updateLiveChat(liveChatUpdate.getLiveChatId(), status);
+			}
 			return liveChat;
 		} else {
-			status = "N";
-			if (chatEnt != null) {
-				update = liveChatRepo.updateLiveChat(chatEnt.getLiveChatId(), status);
-				if (update > 0) {
-					liveChat.setQueue(chatEnt.getQueue());
-					liveChat = convertLCModel(liveChatRepo.save(convertEnt(liveChat)));
-					return liveChat;
-				} else {
-					return new LiveChat();
-				}
-			} else {
+			department = findDepartment(department);
+			List<com.ccsbi.co.usermanagement.repository.entity.LiveChatMembers> listEnt = liveChatMembersRepo
+					.getListLiveChatMember(department, status);
+			if (!listEnt.isEmpty()) {
+				number = liveChatMembersRepo.getQueueNumber(department, status);
 				liveChat.setQueue(number);
 				liveChat = convertLCModel(liveChatRepo.save(convertEnt(liveChat)));
 				return liveChat;
+			} else {
+				number = 0;
+				LiveChat livechatModel = new LiveChat();
+				livechatModel.setLiveChatId(0);
+				return livechatModel;
 			}
+
 		}
+
 	}
 
 	@Override

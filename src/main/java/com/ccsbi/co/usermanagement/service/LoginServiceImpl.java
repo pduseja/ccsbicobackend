@@ -274,6 +274,14 @@ public class LoginServiceImpl implements ILoginService {
 
 		return usersLoginRecord;
 	}
+	
+
+	@Override
+	public String logout(String userName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	private UsersLoginRecord updateUsersLoginRecord(UsersLoginRecord usersLoginRecord, Users users) {
 		long currTime = System.currentTimeMillis();
