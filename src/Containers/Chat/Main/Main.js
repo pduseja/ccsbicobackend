@@ -33,43 +33,43 @@ class Main extends Component {
   let stompClient = null;
   stompClient = Stomp.over(socket);
     let userData = JSON.parse(this.props.userData)
-//      stompClient = Stomp.over(socket);
-//      stompClient.connect({}, function(frame) {
-//          console.log('Connected: ' + frame);
-//          stompClient.subscribe('/topic/api', function(greeting){
-//                debugger
-//              console.log("message", greeting)
-//          });
-//          stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
-//      });
+      stompClient = Stomp.over(socket);
+      stompClient.connect({}, function(frame) {
+          console.log('Connected: ' + frame);
+          stompClient.subscribe('/topic/api', function(greeting){
+                debugger
+              console.log("message", greeting)
+          });
+          stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
+      });
 
-    var connect_callback = function() {
-
-    stompClient.subscribe("/topic/api", subs_callback);
-    stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
-    console.log('subscribe to /topic/chatQueue');
-    };
-
-    var on_error =  function(error) {
-        console.log('error');
-    };
-
-    var    subs_callback = function(message) {
-    // called when the client receives
-     //a STOMP message from the server
-    if (message.body) {
-      alert("got message with body " + message.body)
-    //console.log('got message with body' + message.body);
-    } else {
-      alert("got empty message");
-    }
-    };
-
-
-    stompClient.connect({},{}, connect_callback, on_error);
-
-
-    console.log('message.body');
+//    var connect_callback = function() {
+//
+//    stompClient.subscribe("/topic/api", subs_callback);
+//    stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
+//    console.log('subscribe to /topic/chatQueue');
+//    };
+//
+//    var on_error =  function(error) {
+//        console.log('error');
+//    };
+//
+//    var    subs_callback = function(message) {
+//    // called when the client receives
+//     //a STOMP message from the server
+//    if (message.body) {
+//      alert("got message with body " + message.body)
+//    //console.log('got message with body' + message.body);
+//    } else {
+//      alert("got empty message");
+//    }
+//    };
+//
+//
+//    stompClient.connect({},{}, connect_callback, on_error);
+//
+//
+//    console.log('message.body');
 
 
 
