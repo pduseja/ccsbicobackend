@@ -18,7 +18,6 @@ public class ChatController {
 	public String getUser(String userName, String department) throws Exception {
 		int queue = chatService.getLatestQueueForUser(userName, department);
 		String supportUserName = chatService.getLatestQueueForUserName(userName, department);
-		System.out.println("support user $$$$$$$$$$"+ supportUserName);
 		if(queue==0) {
 			return String.valueOf(queue)+":"+supportUserName;
 		} else {

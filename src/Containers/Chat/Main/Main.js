@@ -45,7 +45,7 @@ class Main extends Component {
 
     var connect_callback = function() {
 
-    var subscription = stompClient.subscribe("/topic/chatQueue", subs_callback);
+    stompClient.subscribe("/topic/api", subs_callback);
     stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
     console.log('subscribe to /topic/chatQueue');
     };
