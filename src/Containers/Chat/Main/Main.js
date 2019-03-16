@@ -11,7 +11,9 @@ import WebApi from "../../../Utils/WebApi";
 import Stomp from 'stomp-websocket';
 import SockJs from 'sockjs-client'
 
-let stompClient = null;
+
+
+
 class Main extends Component {
   constructor(props) {
     super(props)
@@ -27,20 +29,49 @@ class Main extends Component {
   }
 
   componentDidMount() {
+  let socket = new SockJs('/chatQueue');
+  let stompClient = null;
+  stompClient = Stomp.over(socket);
     let userData = JSON.parse(this.props.userData)
-      var socket = new SockJs('/chatQueue');
-      stompClient = Stomp.over(socket);
-      stompClient.connect({}, function(frame) {
-          console.log('Connected: ' + frame);
-          stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
-          stompClient.subscribe('/topic/api', function(greeting){
-              console.log("message")
-          });
-      });
+//      stompClient = Stomp.over(socket);
+//      stompClient.connect({}, function(frame) {
+//          console.log('Connected: ' + frame);
+//          stompClient.subscribe('/topic/api', function(greeting){
+//                debugger
+//              console.log("message", greeting)
+//          });
+//          stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
+//      });
 
-//      socket.onmessage = (m) =>{
-//        console.log(m, "message")
-//      }
+    var connect_callback = function() {
+
+    var subscription = stompClient.subscribe("/topic/chatQueue", subs_callback);
+    stompClient.send('/topic/api', {} ,JSON.stringify({'userName': userData.userName, 'department': userData.department}))
+    console.log('subscribe to /topic/chatQueue');
+    };
+
+    var on_error =  function(error) {
+        console.log('error');
+    };
+
+    var    subs_callback = function(message) {
+    // called when the client receives
+     //a STOMP message from the server
+    if (message.body) {
+      alert("got message with body " + message.body)
+    //console.log('got message with body' + message.body);
+    } else {
+      alert("got empty message");
+    }
+    };
+
+
+    stompClient.connect({},{}, connect_callback, on_error);
+
+
+    console.log('message.body');
+
+
 
     WebApi.getQueueDetails(userData.userName, userData.department)
     .then(response => response.json()).then(response => {
