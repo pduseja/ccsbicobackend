@@ -41,8 +41,8 @@ public interface LiveChatRepo extends JpaRepository<LiveChat, Long> {
 	int updateSupportUserName(@Param("queue") int queue, @Param("status") String status,
 			@Param("userName") String userName, @Param("supportUserName") String supportUserName,@Param("department") String department);
 
-	@Modifying
-	@Query("Select lc from livechat lc where lc.userName=:userName and lc.status=:status and lc.queue=:queue and lc.supportUserName!=null")
+		@Modifying
+	@Query("Select lc from livechat lc where lc.userName=:userName and lc.status=:status and lc.queue=:queue and lc.supportUserName<>:blank")
 	LiveChat getLatestQueueForUserSupportName(@Param("status") String status,
-			@Param("userName") String userName, @Param("queue") int queue);
+			@Param("userName") String userName, @Param("queue") int queue,@Param("blank") String blank);
 }
