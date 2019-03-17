@@ -224,8 +224,9 @@ public class ChatServiceImpl implements IChatService {
 		department = findDepartment(department);
 		String status = "A";
 		int queue = 0;
+		String blank="";
 		com.ccsbi.co.usermanagement.repository.entity.LiveChat liveChat = liveChatRepo
-				.getLatestQueueForUserSupportName(status, userName, queue);
+				.getLatestQueueForUserSupportName(status, userName, queue,blank);
 		if (liveChat != null) {
 			return liveChat.getSupportUserName();
 		} else {
